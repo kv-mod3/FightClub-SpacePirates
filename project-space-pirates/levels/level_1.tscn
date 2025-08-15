@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://dubu7ix63wqvm"]
+
+[ext_resource type="PackedScene" uid="uid://c1vwxu07abuus" path="res://entities/player/PlayerPlatformer/player_platformer.tscn" id="1_vn7o3"]
+
+[node name="Level 1" type="Node2D"]
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(0, 32)
+
+[node name="Polygon2D" type="Polygon2D" parent="Floor"]
+scale = Vector2(1.25, 1)
+color = Color(0.158472, 0.158472, 0.158472, 1)
+polygon = PackedVector2Array(230.4, 32, 230.4, 16, -230.4, 16, -230.4, 32)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Floor"]
+polygon = PackedVector2Array(-288, 32, 288, 32, 288, 16, -288, 16)
+
+[node name="PlayerPlatformer" parent="." instance=ExtResource("1_vn7o3")]
