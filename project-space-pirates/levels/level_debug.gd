@@ -5,8 +5,3 @@ extends Node2D
 func _ready() -> void:
 	pass
 	# $Floor/CollisionPolygon2D.polygon = $Floor/Polygon2D.polygon
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass

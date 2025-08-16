@@ -8,12 +8,16 @@
 [node name="DebugRoom" type="Node2D"]
 script = ExtResource("1_tlh8j")
 
+[node name="Background" type="Polygon2D" parent="."]
+color = Color(0.0156863, 0.00392157, 0.317647, 1)
+polygon = PackedVector2Array(-640, 64, 960, 64, 960, -384, -640, -384)
+
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(0, 32)
 
 [node name="Polygon2D" type="Polygon2D" parent="Floor"]
 scale = Vector2(1.25, 1)
-color = Color(0.158472, 0.158472, 0.158472, 1)
+color = Color(0.254902, 0.313726, 0.494118, 1)
 polygon = PackedVector2Array(768, 32, 768, -96, 512, -96, 326.4, -56, 230.4, 16, -230.4, 16, -230.4, -48, -262.4, -48, -262.4, -112, -307.2, -112, -307.2, -176, -512, -176, -512, 32)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Floor"]
@@ -22,13 +26,13 @@ polygon = PackedVector2Array(-640, 32, 960, 32, 960, -96, 640, -96, 408, -56, 28
 [node name="Platforms" type="Node" parent="."]
 
 [node name="Platform" parent="Platforms" instance=ExtResource("4_u2tkn")]
-position = Vector2(-128, -88)
+position = Vector2(-144, -88)
 
 [node name="Platform2" parent="Platforms" instance=ExtResource("4_u2tkn")]
-position = Vector2(128, -136)
+position = Vector2(96, -136)
 
 [node name="Platform3" parent="Platforms" instance=ExtResource("4_u2tkn")]
-position = Vector2(408, -192)
+position = Vector2(320, -200)
 
 [node name="Enemies" type="Node" parent="."]
 

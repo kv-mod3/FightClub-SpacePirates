@@ -74,5 +74,6 @@ func _on_direction_timer_timeout() -> void:
 	if current_state == State.ROAM:
 		direction = choose([Vector2.LEFT, Vector2.RIGHT])
 
+
 func _on_jumping_timer_timeout() -> void:
 	current_state = State.JUMP

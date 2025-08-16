@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+# WARNING: This scene is from a previous project, to be used as reference only.
+
 enum State {
 	IDLE,
 	NEW_DIRECTION,

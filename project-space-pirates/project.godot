@@ -11,9 +11,14 @@ config_version=5
 [application]
 
 config/name="Project Space Pirates"
-run/main_scene="uid://e1h2ictdyujb"
+run/main_scene="uid://mla2uybpdk5c"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+PlayerVariables="*res://common/player_variables.gd"
+SceneManager="*res://common/scene_manager.gd"
 
 [file_customization]
 
