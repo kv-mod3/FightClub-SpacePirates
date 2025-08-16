@@ -1,8 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://e1h2ictdyujb"]
+[gd_scene load_steps=5 format=3 uid="uid://e1h2ictdyujb"]
 
 [ext_resource type="PackedScene" uid="uid://c1vwxu07abuus" path="res://entities/player/PlayerPlatformer/player_platformer.tscn" id="1_75gwh"]
+[ext_resource type="Script" uid="uid://be8efiufn4g0p" path="res://levels/level_debug.gd" id="1_tlh8j"]
+[ext_resource type="PackedScene" uid="uid://dkc7n6xag5por" path="res://entities/enemies/PirateEnemy/pirate_enemy.tscn" id="2_03qpd"]
+[ext_resource type="PackedScene" uid="uid://bacqw7l3u02n6" path="res://objects/platform.tscn" id="4_u2tkn"]
 
 [node name="DebugRoom" type="Node2D"]
+script = ExtResource("1_tlh8j")
 
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(0, 32)
@@ -10,9 +14,35 @@ position = Vector2(0, 32)
 [node name="Polygon2D" type="Polygon2D" parent="Floor"]
 scale = Vector2(1.25, 1)
 color = Color(0.158472, 0.158472, 0.158472, 1)
-polygon = PackedVector2Array(230.4, 32, 230.4, 16, -230.4, 16, -230.4, 32)
+polygon = PackedVector2Array(768, 32, 768, -96, 512, -96, 326.4, -56, 230.4, 16, -230.4, 16, -230.4, -48, -262.4, -48, -262.4, -112, -307.2, -112, -307.2, -176, -512, -176, -512, 32)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Floor"]
-polygon = PackedVector2Array(-288, 32, 288, 32, 288, 16, -288, 16)
+polygon = PackedVector2Array(-640, 32, 960, 32, 960, -96, 640, -96, 408, -56, 288, 16, -288, 16, -288, -48, -328, -48, -328, -112, -384, -112, -384, -176, -640, -176)
+
+[node name="Platforms" type="Node" parent="."]
+
+[node name="Platform" parent="Platforms" instance=ExtResource("4_u2tkn")]
+position = Vector2(-128, -88)
+
+[node name="Platform2" parent="Platforms" instance=ExtResource("4_u2tkn")]
+position = Vector2(128, -136)
+
+[node name="Platform3" parent="Platforms" instance=ExtResource("4_u2tkn")]
+position = Vector2(408, -192)
+
+[node name="Enemies" type="Node" parent="."]
+
+[node name="PirateEnemy" parent="Enemies" instance=ExtResource("2_03qpd")]
+position = Vector2(96, 8)
+
+[node name="PirateEnemy2" parent="Enemies" instance=ExtResource("2_03qpd")]
+position = Vector2(160, -40)
+
+[node name="PirateEnemy3" parent="Enemies" instance=ExtResource("2_03qpd")]
+position = Vector2(224, -8)
+
+[node name="PirateEnemy4" parent="Enemies" instance=ExtResource("2_03qpd")]
+position = Vector2(912, -104)
 
 [node name="PlayerPlatformer" parent="." instance=ExtResource("1_75gwh")]
+position = Vector2(0, 24)

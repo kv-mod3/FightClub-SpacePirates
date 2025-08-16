@@ -1,21 +1,29 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1vwxu07abuus"]
+[gd_scene load_steps=5 format=3 uid="uid://c1vwxu07abuus"]
 
 [ext_resource type="Script" uid="uid://b0jyw622gwwpt" path="res://entities/player/PlayerPlatformer/player_platformer.gd" id="1_qgnnd"]
-[ext_resource type="Texture2D" uid="uid://r8bxqlncs3q1" path="res://icon.svg" id="2_5442t"]
+[ext_resource type="Texture2D" uid="uid://cw0k2qagu3gtg" path="res://assets/concepts/GJ_-_Alien_ideas_01.png" id="2_qgnnd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5442t"]
+atlas = ExtResource("2_qgnnd")
+region = Rect2(128, 448, 832, 1088)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4y5so"]
-size = Vector2(32, 32)
+size = Vector2(16, 32)
 
 [node name="PlayerPlatformer" type="CharacterBody2D"]
 collision_layer = 4
 script = ExtResource("1_qgnnd")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_5442t")
+[node name="TestSprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -9.53674e-07)
+scale = Vector2(0.0384615, 0.0384615)
+texture = SubResource("AtlasTexture_5442t")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_4y5so")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(13, 2)

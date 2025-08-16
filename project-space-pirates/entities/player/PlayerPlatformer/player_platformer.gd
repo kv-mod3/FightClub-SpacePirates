@@ -2,9 +2,12 @@ extends CharacterBody2D
 
 # INFO: Platformer controls for the player.
 
-@export var speed = 300.0
+@export var move_speed = 200.0
 @export var jump_velocity = -400.0
+@export var bullet := preload("res://entities/player/PlayerBullet/player_bullet.tscn")
 
+func _ready() -> void:
+	pass
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -14,13 +17,31 @@ func _physics_process(delta: float) -> void:
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
+	
+	if Input.is_action_just_pressed("shoot"):
+		shoot()
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
 	if direction:
-		velocity.x = direction * speed
+		velocity.x = direction * move_speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, speed)
+		velocity.x = move_toward(velocity.x, 0, move_speed) # moves toward a destination speed before stopping.
 
+	animate_player()
 	move_and_slide()
+
+
+# Animate Player
+func animate_player() -> void:
+	if velocity.x < 0:
+		$TestSprite2D.flip_h = true
+	if velocity.x > 0:
+		$TestSprite2D.flip_h = false
+
+
+func shoot() -> void:
+	var b = bullet.instantiate()
+	owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
+	b.transform = $Muzzle.global_transform

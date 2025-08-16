@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://dkc7n6xag5por"]
+
+[ext_resource type="Script" uid="uid://byyr2k7trv3q0" path="res://entities/enemies/PirateEnemy/pirate_enemy.gd" id="1_dw1y7"]
+[ext_resource type="Texture2D" uid="uid://cw0k2qagu3gtg" path="res://assets/concepts/GJ_-_Alien_ideas_01.png" id="2_aqd2k"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ke628"]
+atlas = ExtResource("2_aqd2k")
+region = Rect2(1122.11, 128.978, 811.221, 1442.82)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4dykm"]
+size = Vector2(32, 64)
+
+[node name="PirateEnemy" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_dw1y7")
+
+[node name="TestSprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1.90735e-06, 3.8147e-06)
+scale = Vector2(0.0443896, 0.0443896)
+texture = SubResource("AtlasTexture_ke628")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_4dykm")
+
+[node name="DirectionTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="JumpingTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]
+[connection signal="timeout" from="JumpingTimer" to="." method="_on_jumping_timer_timeout"]
