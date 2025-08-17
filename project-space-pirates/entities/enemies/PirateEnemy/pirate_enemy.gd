@@ -1,3 +1,4 @@
+class_name Enemy
 extends CharacterBody2D
 
 
@@ -9,15 +10,14 @@ enum State {
 	DEATH
 }
 
-@export var health: int = 20
+@export var health: float = 25
 @export var move_speed: float = 30
 @export var acceleration: float = 5 # How quickly the node accelerates to target velocity.
 @export var jump_velocity: float = -400
 
-var current_state = State.ROAM
+var current_state := State.ROAM
 var shuffling_states: Array = [State.IDLE, State.ROAM]
 var direction: Vector2
-var will_stop: bool = false
 var instinct_rising: bool = false
 
 var dealing_damage: bool = false
@@ -55,7 +55,7 @@ func animate_enemy() -> void:
 		$TestSprite2D.flip_h = false
 
 
-func move_enemy():
+func move_enemy() -> void:
 	# velocity = velocity.move_toward(direction * move_speed, acceleration)
 	velocity = direction * move_speed
 
@@ -64,7 +64,7 @@ func jump() -> void:
 	velocity.y = jump_velocity
 
 
-func choose(array):
+func choose(array): # Not given a static type (Vector2) to ensure the function remains flexible for arrays too.
 	array.shuffle()
 	return array.front() # Chooses the first element in the array and returns it.
 
@@ -77,3 +77,24 @@ func _on_direction_timer_timeout() -> void:
 
 func _on_jumping_timer_timeout() -> void:
 	current_state = State.JUMP
+
+
+func take_damage(damage) -> void:
+	# TODO: Prevent enemy taking damage multiple times while animating.
+	health -= damage
+	print("Enemy current health: ", health)
+	
+	# Enemy flashes red on hit.
+	var flash_red_color: Color = Color(50, 0.5, 0.5)
+	modulate = flash_red_color
+	
+	if health <= 0:
+		queue_free()
+		# TODO: Add dying state.
+	
+	# Awaits the timeout of a timer of 0.2 seconds, created within the SceneTree, before continuing down the code.
+	await get_tree().create_timer(0.2).timeout
+	
+	# Enemy returns to original color.
+	var original_color: Color = Color(1, 1, 1)
+	modulate = original_color

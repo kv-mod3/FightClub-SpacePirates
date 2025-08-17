@@ -2,15 +2,15 @@ class_name Player
 extends CharacterBody2D
 
 # INFO: This is the player with platformer controls.
-# TODO: Fix the bullets in bullet script not shooting left.
 
-@export var move_speed = 200.0
-@export var jump_velocity = -400.0
-@export var bullet := preload("res://entities/player/PlayerBullet/player_bullet.tscn")
-var facing_left: bool = false
+@export var move_speed: float = 200.0
+@export var jump_velocity: float = -400.0
+@export var bullet: PackedScene = preload("res://entities/player/PlayerPlatformer/player_bullet.tscn")
+
 
 func _ready() -> void:
 	pass
+
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -25,12 +25,11 @@ func _physics_process(delta: float) -> void:
 		shoot()
 
 	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
 	if direction:
 		velocity.x = direction * move_speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, move_speed) # moves toward a destination speed before stopping.
+		velocity.x = move_toward(velocity.x, 0, move_speed) # Moves toward a destination speed before stopping.
 
 	face_player()
 	move_and_slide()
@@ -40,13 +39,21 @@ func _physics_process(delta: float) -> void:
 func face_player() -> void:
 	if velocity.x < 0:
 		$TestSprite2D.flip_h = true
-		$Muzzle.position = Vector2(-13, 2) # Face muzzle to the left.
+		$Muzzle.position = Vector2(-18, 2) # Face muzzle to the left.
+		$Muzzle.rotation_degrees = 180 # Sets the muzzle to a rotation of 180 degrees.
 	if velocity.x > 0:
 		$TestSprite2D.flip_h = false
-		$Muzzle.position = Vector2(13, 2) # Face muzzle to the right.
+		$Muzzle.position = Vector2(18, 2) # Face muzzle to the right (default).
+		$Muzzle.rotation_degrees = 0 # Sets the muzzle back to its original rotation.
 
 
 func shoot() -> void:
-	var b = bullet.instantiate()
-	owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
-	b.transform = $Muzzle.global_transform
+	if $ShootCooldownTimer.is_stopped():
+		$ShootCooldownTimer.start()
+		var b = bullet.instantiate()
+		owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
+		b.transform = $Muzzle.global_transform
+
+
+func _on_shoot_cooldown_timer_timeout() -> void:
+	print("Ready to shoot.")
