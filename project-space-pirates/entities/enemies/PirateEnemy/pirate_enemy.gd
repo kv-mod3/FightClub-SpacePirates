@@ -1,13 +1,11 @@
-class_name Enemy
 extends CharacterBody2D
 
 
 enum State {
 	IDLE,
-	SHOOT,
 	ROAM,
 	JUMP,
-	DEATH
+	SHOOT
 }
 
 @export var health: float = 25
@@ -35,11 +33,10 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		match current_state:
 			State.ROAM:
-				move_enemy()
-				animate_enemy()
+				move()
 				if instinct_rising == false:
-					instinct_rising = true
-					$JumpingTimer.start(range(5, 10).pick_random())
+					instinct_rising = true # The instinctual need to jump becomes true.
+					$JumpingTimer.start(range(5, 10).pick_random()) # Picks a time between 5-10 seconds, until jump.
 			State.JUMP:
 				jump()
 				current_state = State.ROAM
@@ -48,14 +45,14 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-func animate_enemy() -> void:
+func animate() -> void:
 	if direction == Vector2.RIGHT:
 		$TestSprite2D.flip_h = true
 	else:
 		$TestSprite2D.flip_h = false
 
 
-func move_enemy() -> void:
+func move() -> void:
 	# velocity = velocity.move_toward(direction * move_speed, acceleration)
 	velocity = direction * move_speed
 
@@ -73,6 +70,7 @@ func _on_direction_timer_timeout() -> void:
 	$DirectionTimer.wait_time = range(2, 5).pick_random()
 	if current_state == State.ROAM:
 		direction = choose([Vector2.LEFT, Vector2.RIGHT])
+		animate()
 
 
 func _on_jumping_timer_timeout() -> void:
@@ -80,21 +78,24 @@ func _on_jumping_timer_timeout() -> void:
 
 
 func take_damage(damage) -> void:
-	# TODO: Prevent enemy taking damage multiple times while animating.
-	health -= damage
-	print("Enemy current health: ", health)
+	if taking_damage == false: # Prevents the enemy from taking too many instances of damage while the code runs.
+		taking_damage = true
+		health -= damage
+		print("Enemy current health: ", health)
 	
-	# Enemy flashes red on hit.
-	var flash_red_color: Color = Color(50, 0.5, 0.5)
-	modulate = flash_red_color
+		# Enemy flashes red on hit.
+		var flash_red_color: Color = Color(50, 0.5, 0.5)
+		modulate = flash_red_color
 	
-	if health <= 0:
-		queue_free()
-		# TODO: Add dying state.
+		# Awaits the timeout of a timer of 0.2 seconds, created within the SceneTree, before continuing the code.
+		await get_tree().create_timer(0.2).timeout
+		
+		# Removes the enemy if it is dead, otherwise continues running code.
+		if health <= 0:
+			queue_free()
 	
-	# Awaits the timeout of a timer of 0.2 seconds, created within the SceneTree, before continuing down the code.
-	await get_tree().create_timer(0.2).timeout
-	
-	# Enemy returns to original color.
-	var original_color: Color = Color(1, 1, 1)
-	modulate = original_color
+		# Enemy returns to original color.
+		var original_color: Color = Color(1, 1, 1)
+		modulate = original_color
+		
+		taking_damage = false

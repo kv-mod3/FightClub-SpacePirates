@@ -30,6 +30,11 @@ folder_colors={
 "res://objects/": "green"
 }
 
+[global_group]
+
+Enemies=""
+Obstacles="Static and solid obstacles, such as environments."
+
 [input]
 
 up={
@@ -68,6 +73,7 @@ shoot={
 2d_physics/layer_1="Environment"
 2d_physics/layer_2="Enemies"
 2d_physics/layer_3="Player"
+2d_physics/layer_4="Bullets"
 
 [rendering]
 

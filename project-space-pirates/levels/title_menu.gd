@@ -18,6 +18,7 @@ func _on_credits_button_pressed() -> void:
 	pass # Replace with function body.
 
 
+# Toggles the controls information label.
 func _on_controls_button_pressed() -> void:
 	if $CanvasLayer/ControlsLabel.visible:
 		$CanvasLayer/ControlsLabel.visible = false

@@ -53,7 +53,3 @@ func shoot() -> void:
 		var b = bullet.instantiate()
 		owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
 		b.transform = $Muzzle.global_transform
-
-
-func _on_shoot_cooldown_timer_timeout() -> void:
-	print("Ready to shoot.")

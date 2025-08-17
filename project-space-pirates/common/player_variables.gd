@@ -1,6 +1,6 @@
 extends Node
 
-# Minmium and maximum health allowed.
+# Minimum and maximum health values, used to clamp health.
 const MIN_HEALTH: float = 0.0
 const MAX_HEALTH: float = 100.0
 

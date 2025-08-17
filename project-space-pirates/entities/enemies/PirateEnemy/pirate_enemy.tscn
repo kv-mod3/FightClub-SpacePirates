@@ -10,7 +10,7 @@ region = Rect2(1122.11, 128.978, 811.221, 1442.82)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4dykm"]
 size = Vector2(32, 64)
 
-[node name="PirateEnemy" type="CharacterBody2D"]
+[node name="PirateEnemy" type="CharacterBody2D" groups=["Enemies"]]
 collision_layer = 2
 script = ExtResource("1_dw1y7")
 
