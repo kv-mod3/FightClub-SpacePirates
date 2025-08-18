@@ -21,8 +21,8 @@ func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.is_in_group("Enemies"):
+	if body.is_in_group("enemies"):
 		body.take_damage(DAMAGE)
 		queue_free() # Deletes bullet on collision.
-	if body.is_in_group("Obstacles"):
+	if body.is_in_group("solids"):
 		queue_free()

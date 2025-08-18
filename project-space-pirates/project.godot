@@ -20,6 +20,10 @@ config/icon="res://icon.svg"
 PlayerVariables="*res://common/player_variables.gd"
 SceneManager="*res://common/scene_manager.gd"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [file_customization]
 
 folder_colors={
@@ -32,8 +36,9 @@ folder_colors={
 
 [global_group]
 
-Enemies=""
-Obstacles="Static and solid obstacles, such as environments."
+enemies=""
+solids="Includes solid terrain or impenetrable objects."
+destructibles="Destructible objects that can receive damage until they break."
 
 [input]
 

@@ -12,7 +12,7 @@ script = ExtResource("1_tlh8j")
 color = Color(0.0156863, 0.00392157, 0.317647, 1)
 polygon = PackedVector2Array(-640, 64, 960, 64, 960, -384, -640, -384)
 
-[node name="Floor" type="StaticBody2D" parent="." groups=["Obstacles"]]
+[node name="Floor" type="StaticBody2D" parent="." groups=["solids"]]
 position = Vector2(0, 32)
 
 [node name="Polygon2D" type="Polygon2D" parent="Floor"]
