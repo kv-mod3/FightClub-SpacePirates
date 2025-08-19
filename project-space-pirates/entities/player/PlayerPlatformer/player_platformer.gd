@@ -9,7 +9,11 @@ extends CharacterBody2D
 
 
 func _ready() -> void:
-	pass
+	# Grabs the health in player_variables and replaces the placeholder in string (and formats it into an floored int).
+	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
+	
+	# Alternative with same result:
+	# $CanvasLayer/HealthLabel.text = "HP: " + str(int(PlayerVariables.health))
 
 
 func _physics_process(delta: float) -> void:
@@ -39,12 +43,12 @@ func _physics_process(delta: float) -> void:
 func face_player() -> void:
 	if velocity.x < 0:
 		$TestSprite2D.flip_h = true
-		$Muzzle.position = Vector2(-18, 2) # Face muzzle to the left.
-		$Muzzle.rotation_degrees = 180 # Sets the muzzle to a rotation of 180 degrees.
+		$MuzzleMarker.position = Vector2(-18, 2) # Face muzzle to the left.
+		$MuzzleMarker.rotation_degrees = 180 # Sets the muzzle to a rotation of 180 degrees.
 	if velocity.x > 0:
 		$TestSprite2D.flip_h = false
-		$Muzzle.position = Vector2(18, 2) # Face muzzle to the right (default).
-		$Muzzle.rotation_degrees = 0 # Sets the muzzle back to its original rotation.
+		$MuzzleMarker.position = Vector2(18, 2) # Face muzzle to the right (default).
+		$MuzzleMarker.rotation_degrees = 0 # Sets the muzzle back to its original rotation.
 
 
 func shoot() -> void:
@@ -52,4 +56,20 @@ func shoot() -> void:
 		$ShootCooldownTimer.start()
 		var b = bullet.instantiate()
 		owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
-		b.transform = $Muzzle.global_transform
+		b.transform = $MuzzleMarker.global_transform
+
+
+func take_damage(damage) -> void:
+	# TODO: Add sound effects.
+	PlayerVariables.health -= damage
+	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
+	print("Player took %d damage!" % damage)
+	print("Current Player HP: ", PlayerVariables.health)
+
+
+func restore_health(health) -> void:
+	# TODO: Add sound effects.
+	PlayerVariables.health += health
+	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
+	print("Player HP restored by %d" % health)
+	print("Current Player HP: ", PlayerVariables.health)

@@ -17,8 +17,6 @@ var current_state := State.ROAM
 var shuffling_states: Array = [State.IDLE, State.ROAM]
 var direction: Vector2
 var instinct_rising: bool = false
-
-var dealing_damage: bool = false
 var taking_damage: bool = false
 
 
@@ -42,6 +40,8 @@ func _physics_process(delta: float) -> void:
 				current_state = State.ROAM
 				if instinct_rising == true:
 					instinct_rising = false
+			State.SHOOT:
+				pass
 	move_and_slide()
 
 
@@ -75,6 +75,10 @@ func _on_direction_timer_timeout() -> void:
 
 func _on_jumping_timer_timeout() -> void:
 	current_state = State.JUMP
+
+
+func shoot() -> void:
+	pass
 
 
 func take_damage(damage) -> void:

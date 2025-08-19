@@ -10,7 +10,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	position += transform.x * SPEED * delta
+	# By default, move left.
+	position -= transform.x * SPEED * delta
 
 
 # Deletes the bullet a few seconds after it exits the screen.

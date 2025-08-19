@@ -10,6 +10,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	# By default, move right.
 	position += transform.x * SPEED * delta
 
 
