@@ -5,7 +5,7 @@ extends CharacterBody2D
 
 @export var move_speed: float = 200.0
 @export var jump_velocity: float = -400.0
-@export var bullet: PackedScene = preload("res://entities/player/PlayerPlatformer/player_bullet.tscn")
+var bullet: PackedScene = preload("res://entities/player/PlayerPlatformer/player_bullet.tscn")
 
 
 func _ready() -> void:

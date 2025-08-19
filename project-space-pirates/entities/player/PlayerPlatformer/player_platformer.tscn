@@ -40,5 +40,3 @@ offset_top = 24.0
 offset_right = 64.0
 offset_bottom = 47.0
 text = "HP: 000"
-
-[connection signal="timeout" from="ShootCooldownTimer" to="." method="_on_shoot_cooldown_timer_timeout"]
