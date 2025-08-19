@@ -7,7 +7,6 @@ size = Vector2(32, 16)
 
 [node name="HealthItem" type="CharacterBody2D"]
 collision_layer = 16
-collision_mask = 4
 script = ExtResource("1_ssjt5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
