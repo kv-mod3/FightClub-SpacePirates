@@ -19,10 +19,10 @@ position = Vector2(0, 32)
 [node name="Polygon2D" type="Polygon2D" parent="Floor"]
 scale = Vector2(1.25, 1)
 color = Color(0.254902, 0.313726, 0.494118, 1)
-polygon = PackedVector2Array(768, 32, 768, -96, 512, -96, 326.4, -56, 230.4, 16, -230.4, 16, -230.4, -48, -262.4, -48, -262.4, -112, -307.2, -112, -307.2, -176, -512, -176, -512, 32)
+polygon = PackedVector2Array(768, 32, 768, -280, 748.8, -280, 748.8, -96, 512, -96, 326.4, -56, 230.4, 16, -230.4, 16, -230.4, -48, -262.4, -48, -262.4, -112, -307.2, -112, -307.2, -176, -512, -176, -512, 32)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Floor"]
-polygon = PackedVector2Array(-640, 32, 960, 32, 960, -96, 640, -96, 408, -56, 288, 16, -288, 16, -288, -48, -328, -48, -328, -112, -384, -112, -384, -176, -640, -176)
+polygon = PackedVector2Array(-640, 32, 960, 32, 960, -280, 936, -280, 936, -96, 640, -96, 408, -56, 288, 16, -288, 16, -288, -48, -328, -48, -328, -112, -384, -112, -384, -176, -640, -176)
 
 [node name="Platforms" type="Node" parent="."]
 
@@ -38,15 +38,14 @@ position = Vector2(320, -200)
 [node name="Enemies" type="Node" parent="."]
 
 [node name="PirateEnemy" parent="Enemies" instance=ExtResource("2_03qpd")]
-position = Vector2(96, 8)
-initial_direction = 1
+position = Vector2(248, 0)
 
 [node name="PirateEnemy2" parent="Enemies" instance=ExtResource("2_03qpd")]
-position = Vector2(160, -40)
+position = Vector2(752, -128)
 initial_direction = 1
 
 [node name="PirateEnemy3" parent="Enemies" instance=ExtResource("2_03qpd")]
-position = Vector2(224, -8)
+position = Vector2(824, -168)
 initial_direction = 1
 
 [node name="PirateEnemy4" parent="Enemies" instance=ExtResource("2_03qpd")]
@@ -58,5 +57,8 @@ initial_direction = 1
 [node name="HealthItem" parent="Objects" instance=ExtResource("4_ppha6")]
 position = Vector2(-248, -80)
 
+[node name="HealthItem2" parent="Objects" instance=ExtResource("4_ppha6")]
+position = Vector2(-584, -200)
+
 [node name="PlayerPlatformer" parent="." instance=ExtResource("1_75gwh")]
-position = Vector2(0, 24)
+position = Vector2(-160, 24)

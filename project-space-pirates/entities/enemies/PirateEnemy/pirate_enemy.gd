@@ -52,7 +52,8 @@ func _physics_process(delta: float) -> void:
 				jump()
 				current_state = State.ROAM
 			State.SHOOT:
-				shoot()
+				await shoot()
+				current_state = State.IDLE
 	move_and_slide()
 
 
@@ -97,13 +98,15 @@ func _on_jumping_timer_timeout() -> void:
 
 
 func shoot() -> void:
-	var burst_fire: int = 0
-	if burst_fire < 3:
-		var b = bullet.instantiate()
-		# owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
-		get_owner().call_deferred("add_child", b)
-		b.transform = $MuzzleMarker.global_transform
-		burst_fire += 1
+	for burst_fire in range(3):
+		await get_tree().create_timer(0.2).timeout
+		create_bullet()
+
+
+func create_bullet() -> void:
+	var b = bullet.instantiate()
+	get_owner().call_deferred("add_child", b)
+	b.transform = $MuzzleMarker.global_transform
 
 
 func take_damage(damage) -> void:
@@ -133,11 +136,19 @@ func take_damage(damage) -> void:
 
 func _on_detection_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
-		current_state = State.SHOOT # Enemy goes into SHOOT state.
+		$AttentionLabel.visible = true
+		current_state = State.IDLE
+		velocity = Vector2(0, 0) # Stops enemy movement. BUG: Enemy falls down slower if caught in middle of jump.
+		await get_tree().create_timer(1).timeout
+		$AttentionLabel.visible = false
+		current_state = State.SHOOT
 		# target = body # Sets the enemy's target.
 		print("Enemy detected Player.")
 
-
+# BUG: If player exits detection during shoot(), then enemy never returns to ROAM state.
+# May need to use a loop for checking for body overlapping.
 func _on_detection_area_2d_body_exited(body: Node2D) -> void:
-	current_state = State.ROAM
-	print("Enemy lost sight of Player.")
+	if body is Player:
+		current_state = State.ROAM
+		$DirectionTimer.wait_time = 5
+		print("Enemy lost sight of Player.")
