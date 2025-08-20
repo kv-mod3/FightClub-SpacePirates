@@ -39,15 +39,19 @@ position = Vector2(320, -200)
 
 [node name="PirateEnemy" parent="Enemies" instance=ExtResource("2_03qpd")]
 position = Vector2(96, 8)
+initial_direction = 1
 
 [node name="PirateEnemy2" parent="Enemies" instance=ExtResource("2_03qpd")]
 position = Vector2(160, -40)
+initial_direction = 1
 
 [node name="PirateEnemy3" parent="Enemies" instance=ExtResource("2_03qpd")]
 position = Vector2(224, -8)
+initial_direction = 1
 
 [node name="PirateEnemy4" parent="Enemies" instance=ExtResource("2_03qpd")]
 position = Vector2(912, -104)
+initial_direction = 1
 
 [node name="Objects" type="Node" parent="."]
 

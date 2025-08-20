@@ -8,10 +8,14 @@ enum State {
 	SHOOT
 }
 
+enum InitialDirection {Left, Right}
+@export var initial_direction := InitialDirection.Left # Allows choosing initial direction within the editor.
+
 @export var health: float = 25
 @export var move_speed: float = 30
 @export var acceleration: float = 5 # How quickly the node accelerates to target velocity.
 @export var jump_velocity: float = -400
+
 var bullet: PackedScene = preload("res://entities/enemies/PirateEnemy/pirate_bullet.tscn")
 
 var current_state := State.ROAM
@@ -22,8 +26,15 @@ var target: Node2D # Starts with a value of null on load. Currently unused.
 var taking_damage: bool = false
 
 
-func _ready() -> void:	
-	pass
+func _ready() -> void:
+	# Initial direction on scene load.
+	match initial_direction:
+		InitialDirection.Left:
+			direction = Vector2.LEFT
+			animate()
+		InitialDirection.Right:
+			direction = Vector2.RIGHT
+			animate()
 
 
 func _physics_process(delta: float) -> void:
@@ -40,8 +51,6 @@ func _physics_process(delta: float) -> void:
 			State.JUMP:
 				jump()
 				current_state = State.ROAM
-				if instinct_to_jump == true:
-					instinct_to_jump = false
 			State.SHOOT:
 				shoot()
 	move_and_slide()
@@ -82,14 +91,19 @@ func _on_direction_timer_timeout() -> void:
 
 
 func _on_jumping_timer_timeout() -> void:
-	current_state = State.JUMP
+	instinct_to_jump = false # Loses the instinct to jump.
+	if current_state == State.ROAM: # Enemy only jumps if not roaming.
+		current_state = State.JUMP
 
 
 func shoot() -> void:
-	# TODO: Cooldown on shoot.
-	var b = bullet.instantiate()
-	owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
-	b.transform = $MuzzleMarker.global_transform
+	var burst_fire: int = 0
+	if burst_fire < 3:
+		var b = bullet.instantiate()
+		# owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
+		get_owner().call_deferred("add_child", b)
+		b.transform = $MuzzleMarker.global_transform
+		burst_fire += 1
 
 
 func take_damage(damage) -> void:
@@ -119,5 +133,11 @@ func take_damage(damage) -> void:
 
 func _on_detection_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
-		shoot()
-		print("Detected Player.")
+		current_state = State.SHOOT # Enemy goes into SHOOT state.
+		# target = body # Sets the enemy's target.
+		print("Enemy detected Player.")
+
+
+func _on_detection_area_2d_body_exited(body: Node2D) -> void:
+	current_state = State.ROAM
+	print("Enemy lost sight of Player.")

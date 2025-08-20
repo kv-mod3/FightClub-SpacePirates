@@ -10,7 +10,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	# By default, move left.
+	# Bullet moves right by default.
 	position -= transform.x * SPEED * delta
 
 
