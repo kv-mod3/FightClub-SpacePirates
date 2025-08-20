@@ -35,20 +35,20 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, move_speed) # Moves toward a destination speed before stopping.
 
-	face_player()
+	face_direction()
 	move_and_slide()
 
 
 # Animate Player
-func face_player() -> void:
+func face_direction() -> void:
 	if velocity.x < 0:
 		$TestSprite2D.flip_h = true
-		$MuzzleMarker.position = Vector2(-18, 2) # Face muzzle to the left.
-		$MuzzleMarker.rotation_degrees = 180 # Sets the muzzle to a rotation of 180 degrees.
+		$MuzzleMarker.position = Vector2(-18, 2) # Face player muzzle to the left.
+		$MuzzleMarker.rotation_degrees = 180 # Sets the player muzzle to a rotation of 180 degrees.
 	if velocity.x > 0:
 		$TestSprite2D.flip_h = false
-		$MuzzleMarker.position = Vector2(18, 2) # Face muzzle to the right (default).
-		$MuzzleMarker.rotation_degrees = 0 # Sets the muzzle back to its original rotation.
+		$MuzzleMarker.position = Vector2(18, 2) # Face player muzzle to the right (default).
+		$MuzzleMarker.rotation_degrees = 0 # Sets the player muzzle back to its original rotation.
 
 
 func shoot() -> void:

@@ -18,7 +18,7 @@ var current_state := State.ROAM
 var shuffling_states: Array = [State.IDLE, State.ROAM]
 var direction: Vector2
 var instinct_to_jump: bool = false
-var target: Node2D # Starts with a value of null on load. Currently unused.
+var target: Node2D # Starts with a value of null on load.
 var taking_damage: bool = false
 
 
@@ -50,14 +50,8 @@ func _physics_process(delta: float) -> void:
 func animate() -> void:
 	if direction == Vector2.RIGHT:
 		$TestSprite2D.flip_h = true
-		$DetectionArea2D/DetectCollisionShape.position = Vector2(108, -12) # Moves detection collision shape to the right.
-		$MuzzleMarker.position = Vector2(20, 8) # Face enemy muzzle to the right.
-		$MuzzleMarker.rotation_degrees = 180 # Sets the enemy muzzle to a rotation of 180 degrees.
 	else:
 		$TestSprite2D.flip_h = false
-		$DetectionArea2D/DetectCollisionShape.position = Vector2(-108, -12) # Moves detection collision shape to the left.
-		$MuzzleMarker.position = Vector2(-20, 8) # Face enemy muzzle to the left.
-		$MuzzleMarker.rotation_degrees = 0 # Sets the enemy muzzle to a rotation of 180 degrees.
 
 
 func move() -> void:
@@ -87,9 +81,10 @@ func _on_jumping_timer_timeout() -> void:
 
 func shoot() -> void:
 	# TODO: Cooldown on shoot.
-	var b = bullet.instantiate()
-	owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
-	b.transform = $MuzzleMarker.global_transform
+	if target: # If target exists:
+		var b = bullet.instantiate()
+		owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
+		b.transform = $MuzzleMarker.global_transform
 
 
 func take_damage(damage) -> void:
@@ -119,5 +114,17 @@ func take_damage(damage) -> void:
 
 func _on_detection_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
-		shoot()
-		print("Detected Player.")
+		# TODO: Hook it up to enemy states.
+		target = body # Assigns the body (in this case the Player) to "target".
+		var distance_to_player: Vector2
+		
+		# Gets the distance by taking the target's position vectors and subtracting the enemy's position vectors.
+		distance_to_player = target.global_position - global_position
+		
+		# Normalizes the vector so that only the direction to the target remains.
+		var direction_normal: Vector2 = distance_to_player.normalized()
+		print(direction_normal)
+		if direction_normal.x < -0.707: # If target is detected on the left.
+			pass # TODO: Hook it up to shoot.
+		if direction_normal.x > 0.707: # If target is detected on the right.
+			pass
