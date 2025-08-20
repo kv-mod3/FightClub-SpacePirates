@@ -8,33 +8,22 @@ enum State {
 	SHOOT
 }
 
-enum InitialDirection {Left, Right}
-@export var initial_direction := InitialDirection.Left # Allows choosing initial direction within the editor.
-
 @export var health: float = 25
 @export var move_speed: float = 30
 @export var acceleration: float = 5 # How quickly the node accelerates to target velocity.
 @export var jump_velocity: float = -400
-
 var bullet: PackedScene = preload("res://entities/enemies/PirateEnemy/pirate_bullet.tscn")
 
 var current_state := State.ROAM
 var shuffling_states: Array = [State.IDLE, State.ROAM]
 var direction: Vector2
 var instinct_to_jump: bool = false
-var target: Node2D # Starts with a value of null on load. Currently unused.
+var target: Node2D # Starts with a value of null on load.
 var taking_damage: bool = false
 
 
-func _ready() -> void:
-	# Initial direction on scene load.
-	match initial_direction:
-		InitialDirection.Left:
-			direction = Vector2.LEFT
-			animate()
-		InitialDirection.Right:
-			direction = Vector2.RIGHT
-			animate()
+func _ready() -> void:	
+	pass
 
 
 func _physics_process(delta: float) -> void:
@@ -51,23 +40,18 @@ func _physics_process(delta: float) -> void:
 			State.JUMP:
 				jump()
 				current_state = State.ROAM
+				if instinct_to_jump == true:
+					instinct_to_jump = false
 			State.SHOOT:
-				await shoot()
-				current_state = State.IDLE
+				shoot()
 	move_and_slide()
 
 
 func animate() -> void:
 	if direction == Vector2.RIGHT:
 		$TestSprite2D.flip_h = true
-		$DetectionArea2D/DetectCollisionShape.position = Vector2(108, -12) # Moves detection collision shape to the right.
-		$MuzzleMarker.position = Vector2(20, 8) # Face enemy muzzle to the right.
-		$MuzzleMarker.rotation_degrees = 180 # Sets the enemy muzzle to a rotation of 180 degrees.
 	else:
 		$TestSprite2D.flip_h = false
-		$DetectionArea2D/DetectCollisionShape.position = Vector2(-108, -12) # Moves detection collision shape to the left.
-		$MuzzleMarker.position = Vector2(-20, 8) # Face enemy muzzle to the left.
-		$MuzzleMarker.rotation_degrees = 0 # Sets the enemy muzzle to a rotation of 180 degrees.
 
 
 func move() -> void:
@@ -92,21 +76,15 @@ func _on_direction_timer_timeout() -> void:
 
 
 func _on_jumping_timer_timeout() -> void:
-	instinct_to_jump = false # Loses the instinct to jump.
-	if current_state == State.ROAM: # Enemy only jumps if not roaming.
-		current_state = State.JUMP
+	current_state = State.JUMP
 
 
 func shoot() -> void:
-	for burst_fire in range(3):
-		await get_tree().create_timer(0.2).timeout
-		create_bullet()
-
-
-func create_bullet() -> void:
-	var b = bullet.instantiate()
-	get_owner().call_deferred("add_child", b)
-	b.transform = $MuzzleMarker.global_transform
+	# TODO: Cooldown on shoot.
+	if target: # If target exists:
+		var b = bullet.instantiate()
+		owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
+		b.transform = $MuzzleMarker.global_transform
 
 
 func take_damage(damage) -> void:
@@ -136,19 +114,17 @@ func take_damage(damage) -> void:
 
 func _on_detection_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
-		$AttentionLabel.visible = true
-		current_state = State.IDLE
-		velocity = Vector2(0, 0) # Stops enemy movement. BUG: Enemy falls down slower if caught in middle of jump.
-		await get_tree().create_timer(1).timeout
-		$AttentionLabel.visible = false
-		current_state = State.SHOOT
-		# target = body # Sets the enemy's target.
-		print("Enemy detected Player.")
-
-# BUG: If player exits detection during shoot(), then enemy never returns to ROAM state.
-# May need to use a loop for checking for body overlapping.
-func _on_detection_area_2d_body_exited(body: Node2D) -> void:
-	if body is Player:
-		current_state = State.ROAM
-		$DirectionTimer.wait_time = 5
-		print("Enemy lost sight of Player.")
+		# TODO: Hook it up to enemy states.
+		target = body # Assigns the body (in this case the Player) to "target".
+		var distance_to_player: Vector2
+		
+		# Gets the distance by taking the target's position vectors and subtracting the enemy's position vectors.
+		distance_to_player = target.global_position - global_position
+		
+		# Normalizes the vector so that only the direction to the target remains.
+		var direction_normal: Vector2 = distance_to_player.normalized()
+		print(direction_normal)
+		if direction_normal.x < -0.707: # If target is detected on the left.
+			pass # TODO: Hook it up to shoot.
+		if direction_normal.x > 0.707: # If target is detected on the right.
+			pass

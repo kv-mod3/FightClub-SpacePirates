@@ -1,7 +1,7 @@
 extends Area2D
 
 
-const SPEED: float = 650
+const SPEED: float = 300
 const DAMAGE: float = 10
 
 
@@ -10,7 +10,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	position += transform.x * SPEED * delta
+	# Bullet moves right by default.
+	position -= transform.x * SPEED * delta
 
 
 # Deletes the bullet a few seconds after it exits the screen.

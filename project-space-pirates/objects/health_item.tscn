@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://dej7s7gmiss13"]
+
+[ext_resource type="Script" uid="uid://5c37xl6jpk3w" path="res://objects/health_item.gd" id="1_ssjt5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nkiqf"]
+size = Vector2(32, 16)
+
+[node name="HealthItem" type="CharacterBody2D"]
+collision_layer = 16
+script = ExtResource("1_ssjt5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_nkiqf")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.7, 0, 0, 1)
+polygon = PackedVector2Array(16, 8, 16, -8, -16, -8, -16, 8)
+
+[node name="Polygon2D" type="Polygon2D" parent="Polygon2D"]
+position = Vector2(2, -1)
+polygon = PackedVector2Array(-8, -2, -6, -4, -4, -4, -2, -2, 0, -4, 2, -4, 4, -2, 4, 1, 1, 4, -2, 6, -5, 4, -8, 1)
+
+[node name="Line2D" type="Line2D" parent="Polygon2D"]
+points = PackedVector2Array(-16, -3, 16, -3)
+width = 1.0
+default_color = Color(0.4, 0, 0, 0.521569)

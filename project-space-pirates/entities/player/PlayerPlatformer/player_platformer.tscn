@@ -25,11 +25,18 @@ shape = SubResource("RectangleShape2D_4y5so")
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
 
-[node name="Muzzle" type="Marker2D" parent="."]
+[node name="MuzzleMarker" type="Marker2D" parent="."]
 position = Vector2(18, 2)
 
 [node name="ShootCooldownTimer" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
 
-[connection signal="timeout" from="ShootCooldownTimer" to="." method="_on_shoot_cooldown_timer_timeout"]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HealthLabel" type="Label" parent="CanvasLayer"]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 64.0
+offset_bottom = 47.0
+text = "HP: 000"
