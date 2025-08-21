@@ -65,7 +65,7 @@ func state_controller() -> void:
 				if $DetectionArea2D.has_overlapping_bodies():
 					shoot()
 					print("Enemy sees you and shoots.")
-				else:
+				else: # Else change direction to shoot the Player.
 					direction = (target.global_position - global_position).normalized()
 					face_direction()
 		State.MOVE:
@@ -172,13 +172,14 @@ func take_damage(damage: float) -> void:
 
 func _on_detection_area_2d_body_entered(body: Node2D) -> void:
 	# TODO: Check the following "if" statement to see if it even makes sense.
+	# NOTE: Stationary enemies are already in idle and will shoot immediately.
 	if body is Player and not target: # If Player detected, and the enemy had no target:
 		print("Enemy detected Player.")
-		target = body # Sets Player as the target.
 		if mode == EnemyMode.ROAMING: # If enemy is roamer, stop movement immediately. BUG: Enemy falls down slower if caught in middle of jump.
 			velocity = Vector2(0, 0)
+			current_state = State.IDLE
 		await status_indicator("!", Color(1, 0, 0))
-		current_state = State.IDLE
+		target = body # Sets Player as the target.
 
 
 func _on_detection_area_2d_body_exited(body: Node2D) -> void:
@@ -186,7 +187,7 @@ func _on_detection_area_2d_body_exited(body: Node2D) -> void:
 	if body is Player:
 		print("Player has left the detection range, but the enemy is aware that they are still there.")
 		await status_indicator("?", Color(0.95, 0.8, 0))
-		# BUG: Currently broken, needs to be after the enemy loses sight of player.
+		# BUG: Enemy can sometimes be moving in the wrong direction.
 		if mode == EnemyMode.ROAMING: # NOTE: Bug may be related to targeting note clearing instead, actually.
 			$DirectionTimer.wait_time = 5
 			current_state = State.MOVE
