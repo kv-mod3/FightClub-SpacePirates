@@ -1,4 +1,4 @@
-extends StaticBody2D
+extends CharacterBody2D
 
 var is_opening: bool = false
 
