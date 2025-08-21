@@ -3,23 +3,27 @@ extends CharacterBody2D
 
 enum State {
 	IDLE,
-	ROAM,
+	MOVE,
 	JUMP,
 	SHOOT
 }
+enum InitialDirection {LEFT, RIGHT}
+@export var initial_direction := InitialDirection.LEFT # Allows choosing initial direction within the editor.
+enum EnemyMode {
+	STATIONARY, ## Enemy stands still and shoots if player is detected.
+	ROAMING ## Enemy moves back and forth, stops to shoot if player is detected, then resumes roaming.
+}
+@export var mode := EnemyMode.STATIONARY
 
-enum InitialDirection {Left, Right}
-@export var initial_direction := InitialDirection.Left # Allows choosing initial direction within the editor.
+var health: float = 25
+var move_speed: float = 30
+var acceleration: float = 5 # How quickly the node accelerates to target velocity.
+var jump_velocity: float = -400
 
-@export var health: float = 25
-@export var move_speed: float = 30
-@export var acceleration: float = 5 # How quickly the node accelerates to target velocity.
-@export var jump_velocity: float = -400
+var bullet: PackedScene = preload("res://objects/enemies/PirateEnemy/pirate_bullet.tscn")
 
-var bullet: PackedScene = preload("res://entities/enemies/PirateEnemy/pirate_bullet.tscn")
-
-var current_state := State.ROAM
-var shuffling_states: Array = [State.IDLE, State.ROAM]
+var current_state := State.MOVE
+var shuffling_states: Array = [State.IDLE, State.MOVE]
 var direction: Vector2
 var instinct_to_jump: bool = false
 var target: Node2D # Starts with a value of null on load. Currently unused.
@@ -29,35 +33,45 @@ var taking_damage: bool = false
 func _ready() -> void:
 	# Initial direction on scene load.
 	match initial_direction:
-		InitialDirection.Left:
+		InitialDirection.LEFT:
 			direction = Vector2.LEFT
-			animate()
-		InitialDirection.Right:
+			face_direction()
+		InitialDirection.RIGHT:
 			direction = Vector2.RIGHT
-			animate()
+			face_direction()
+	# Sets whether the enemy is stationary or roaming.
+	match mode:
+		EnemyMode.STATIONARY:
+			current_state = State.IDLE
+		EnemyMode.ROAMING:
+			current_state = State.MOVE
 
 
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
+	# Player affected by gravity if not on floor.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	if is_on_floor():
-		match current_state:
-			State.ROAM:
-				move()
-				if instinct_to_jump == false:
-					instinct_to_jump = true # The instinctual need to jump becomes true.
-					$JumpingTimer.start(range(5, 10).pick_random()) # Picks a time between 5-10 seconds, until jump.
-			State.JUMP:
-				jump()
-				current_state = State.ROAM
-			State.SHOOT:
-				await shoot()
-				current_state = State.IDLE
+		state_controller()
 	move_and_slide()
 
 
-func animate() -> void:
+func state_controller() -> void:
+	match current_state:
+		State.MOVE:
+			move()
+			if instinct_to_jump == false:
+				instinct_to_jump = true # The instinctual need to jump becomes true.
+				$JumpingTimer.start(range(5, 10).pick_random()) # Picks a time between 5-10 seconds, until jump.
+		State.JUMP:
+			jump()
+			current_state = State.MOVE
+		State.SHOOT:
+			shoot(3)
+			current_state = State.IDLE
+
+
+func face_direction() -> void:
 	if direction == Vector2.RIGHT:
 		$TestSprite2D.flip_h = true
 		$DetectionArea2D/DetectCollisionShape.position = Vector2(108, -12) # Moves detection collision shape to the right.
@@ -86,30 +100,26 @@ func choose(array): # Not given a static type (Vector2) to ensure the function r
 
 func _on_direction_timer_timeout() -> void:
 	$DirectionTimer.wait_time = range(2, 5).pick_random()
-	if current_state == State.ROAM:
+	if current_state == State.MOVE:
 		direction = choose([Vector2.LEFT, Vector2.RIGHT])
-		animate()
+		face_direction()
 
 
 func _on_jumping_timer_timeout() -> void:
 	instinct_to_jump = false # Loses the instinct to jump.
-	if current_state == State.ROAM: # Enemy only jumps if not roaming.
+	if current_state == State.MOVE: # Enemy only jumps if not moving.
 		current_state = State.JUMP
 
 
-func shoot() -> void:
-	for burst_fire in range(3):
+func shoot(bullet_amount: int) -> void:
+	for number in range(bullet_amount):
 		await get_tree().create_timer(0.2).timeout
-		create_bullet()
+		var b = bullet.instantiate()
+		get_owner().call_deferred("add_child", b)
+		b.transform = $MuzzleMarker.global_transform
 
 
-func create_bullet() -> void:
-	var b = bullet.instantiate()
-	get_owner().call_deferred("add_child", b)
-	b.transform = $MuzzleMarker.global_transform
-
-
-func take_damage(damage) -> void:
+func take_damage(damage: float) -> void:
 	if taking_damage == false: # Prevents the enemy from taking too many instances of damage while the code runs.
 		taking_damage = true
 		health -= damage
@@ -145,10 +155,12 @@ func _on_detection_area_2d_body_entered(body: Node2D) -> void:
 		# target = body # Sets the enemy's target.
 		print("Enemy detected Player.")
 
-# BUG: If player exits detection during shoot(), then enemy never returns to ROAM state.
+# BUG: If player exits detection during shoot(), then enemy never returns to MOVE state.
 # May need to use a loop for checking for body overlapping.
 func _on_detection_area_2d_body_exited(body: Node2D) -> void:
 	if body is Player:
-		current_state = State.ROAM
-		$DirectionTimer.wait_time = 5
 		print("Enemy lost sight of Player.")
+		# TODO: Check if there's anything that could be done for stationary enemies.
+		if mode == EnemyMode.ROAMING:
+			$DirectionTimer.wait_time = 5
+			current_state = State.MOVE

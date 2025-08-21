@@ -1,3 +1,4 @@
+class_name Pickup
 extends CharacterBody2D
 
 const HEALTH: float = 60

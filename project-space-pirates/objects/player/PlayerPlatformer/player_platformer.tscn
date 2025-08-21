@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c1vwxu07abuus"]
 
-[ext_resource type="Script" uid="uid://b0jyw622gwwpt" path="res://entities/player/PlayerPlatformer/player_platformer.gd" id="1_qgnnd"]
+[ext_resource type="Script" uid="uid://b0jyw622gwwpt" path="res://objects/player/PlayerPlatformer/player_platformer.gd" id="1_qgnnd"]
 [ext_resource type="Texture2D" uid="uid://cw0k2qagu3gtg" path="res://assets/concepts/GJ_-_Alien_ideas_01.png" id="2_qgnnd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5442t"]

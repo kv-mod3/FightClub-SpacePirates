@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bxpfai6vxerrc"]
 
-[ext_resource type="Script" uid="uid://b7kriy2olk63u" path="res://entities/player/PlayerShip/player_ship.gd" id="1_0xplt"]
+[ext_resource type="Script" uid="uid://b7kriy2olk63u" path="res://objects/player/PlayerShip/player_ship.gd" id="1_0xplt"]
 
 [node name="PlayerShip" type="CharacterBody2D"]
 script = ExtResource("1_0xplt")
