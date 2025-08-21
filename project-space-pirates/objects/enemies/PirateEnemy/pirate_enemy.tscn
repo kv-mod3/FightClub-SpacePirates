@@ -47,14 +47,15 @@ shape = SubResource("RectangleShape2D_5t8oi")
 [node name="MuzzleMarker" type="Marker2D" parent="."]
 position = Vector2(-20, 8)
 
-[node name="AttentionLabel" type="Label" parent="."]
+[node name="StatusLabel" type="Label" parent="."]
 visible = false
-offset_left = 16.0
+offset_left = -8.0
 offset_top = -56.0
-offset_right = 24.0
+offset_right = 8.0
 offset_bottom = -24.0
 text = "!"
 label_settings = SubResource("LabelSettings_5t8oi")
+horizontal_alignment = 1
 
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]
 [connection signal="timeout" from="JumpingTimer" to="." method="_on_jumping_timer_timeout"]
