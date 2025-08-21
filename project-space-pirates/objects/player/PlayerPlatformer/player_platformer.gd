@@ -7,8 +7,6 @@ extends CharacterBody2D
 @export var jump_velocity: float = -400.0
 var bullet: PackedScene = preload("res://objects/player/PlayerPlatformer/player_bullet.tscn")
 
-var test_var: bool = false
-
 
 func _ready() -> void:
 	# Grabs the health in player_variables and replaces the placeholder in string (and formats it into an floored int).
@@ -16,8 +14,6 @@ func _ready() -> void:
 	
 	# Alternative with same result:
 	# $CanvasLayer/HealthLabel.text = "HP: " + str(int(PlayerVariables.health))
-	return
-	print("I still printed despite the return.")
 
 
 func _physics_process(delta: float) -> void:

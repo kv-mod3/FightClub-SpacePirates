@@ -47,7 +47,7 @@ shape = SubResource("RectangleShape2D_5t8oi")
 [node name="MuzzleMarker" type="Marker2D" parent="."]
 position = Vector2(-20, 8)
 
-[node name="AttentionLabel" type="Label" parent="."]
+[node name="StatusLabel" type="Label" parent="."]
 visible = false
 offset_left = -8.0
 offset_top = -56.0
