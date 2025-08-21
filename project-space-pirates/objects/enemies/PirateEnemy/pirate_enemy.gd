@@ -139,7 +139,6 @@ func create_bullet(amount: int) -> void:
 		var b = bullet.instantiate()
 		get_owner().call_deferred("add_child", b)
 		b.transform = $MuzzleMarker.global_transform
-		print("Bullet #", index)
 
 
 func take_damage(damage: float) -> void:
@@ -185,7 +184,7 @@ func _on_detection_area_2d_body_entered(body: Node2D) -> void:
 func _on_detection_area_2d_body_exited(body: Node2D) -> void:
 # TODO: Check if there's anything that could be done for stationary enemies.
 	if body is Player:
-		print("Player has left the detection range, but the enemy still knows they are there.")
+		print("Player has left the detection range, but the enemy is aware that they are still there.")
 		await status_indicator("?", Color(0.95, 0.8, 0))
 		# BUG: Currently broken, needs to be after the enemy loses sight of player.
 		if mode == EnemyMode.ROAMING: # NOTE: Bug may be related to targeting note clearing instead, actually.
