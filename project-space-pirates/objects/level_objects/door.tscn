@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvstcalgkhvp6"]
+
+[ext_resource type="Script" uid="uid://da68h068bisy3" path="res://objects/level_objects/door.gd" id="1_jdpod"]
+
+[node name="Door" type="StaticBody2D"]
+collision_mask = 6
+script = ExtResource("1_jdpod")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(8, -48, 8, -16, 16, -8, 16, 8, 8, 16, 8, 48, -8, 48, -8, 16, -16, 8, -16, -8, -8, -16, -8, -48)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(1, 1, 0.26, 1)
+polygon = PackedVector2Array(8, -48, 8, 48, -8, 48, -8, -48)
+
+[node name="SensorRight" type="Polygon2D" parent="Polygon2D"]
+color = Color(1, 0.26, 0.26, 1)
+polygon = PackedVector2Array(8, -16, 16, -8, 16, 8, 8, 16)
+
+[node name="SensorLeft" type="Polygon2D" parent="Polygon2D"]
+position = Vector2(-24, 0)
+color = Color(1, 0.26, 0.26, 1)
+polygon = PackedVector2Array(8, -8, 16, -16, 16, 16, 8, 8)

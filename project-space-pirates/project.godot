@@ -17,8 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-PlayerVariables="*res://common/player_variables.gd"
-SceneManager="*res://common/scene_manager.gd"
+PlayerVariables="*res://global_scripts/player_variables.gd"
+SceneManager="*res://global_scripts/scene_manager.gd"
 
 [display]
 
@@ -28,10 +28,10 @@ window/stretch/mode="canvas_items"
 
 folder_colors={
 "res://assets/": "orange",
-"res://common/": "teal",
-"res://entities/": "yellow",
+"res://global_scripts/": "teal",
 "res://levels/": "blue",
-"res://objects/": "green"
+"res://objects/": "yellow",
+"res://objects/level_objects/": "yellow"
 }
 
 [global_group]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dkc7n6xag5por"]
 
-[ext_resource type="Script" uid="uid://byyr2k7trv3q0" path="res://entities/enemies/PirateEnemy/pirate_enemy.gd" id="1_dw1y7"]
+[ext_resource type="Script" uid="uid://byyr2k7trv3q0" path="res://objects/enemies/PirateEnemy/pirate_enemy.gd" id="1_dw1y7"]
 [ext_resource type="Texture2D" uid="uid://cw0k2qagu3gtg" path="res://assets/concepts/GJ_-_Alien_ideas_01.png" id="2_aqd2k"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ke628"]

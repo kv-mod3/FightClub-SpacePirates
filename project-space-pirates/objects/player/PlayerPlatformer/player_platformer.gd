@@ -5,7 +5,7 @@ extends CharacterBody2D
 
 @export var move_speed: float = 200.0
 @export var jump_velocity: float = -400.0
-var bullet: PackedScene = preload("res://entities/player/PlayerPlatformer/player_bullet.tscn")
+var bullet: PackedScene = preload("res://objects/player/PlayerPlatformer/player_bullet.tscn")
 
 
 func _ready() -> void:
@@ -59,7 +59,7 @@ func shoot() -> void:
 		b.transform = $MuzzleMarker.global_transform
 
 
-func take_damage(damage) -> void:
+func take_damage(damage: float) -> void:
 	# TODO: Add sound effects.
 	PlayerVariables.health -= damage
 	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
