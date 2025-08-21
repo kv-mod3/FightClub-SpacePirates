@@ -67,8 +67,8 @@ func take_damage(damage: float) -> void:
 	# TODO: Add sound effects.
 	PlayerVariables.health -= damage
 	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
-	print("Player took %d damage!" % damage)
-	print("Current Player HP: ", PlayerVariables.health)
+	print("Player took %d damage!" % damage, " Current HP: ", PlayerVariables.health)
+	# TODO Add death function on this line.
 
 
 func restore_health(health) -> void:

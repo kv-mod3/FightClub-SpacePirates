@@ -27,6 +27,7 @@ var shuffling_states: Array = [State.IDLE, State.MOVE]
 var direction: Vector2
 var instinct_to_jump: bool = false
 var target: Node2D # Starts with a value of null on load. Currently unused.
+var is_shooting: bool = false
 var taking_damage: bool = false
 
 
@@ -58,6 +59,10 @@ func _physics_process(delta: float) -> void:
 
 func state_controller() -> void:
 	match current_state:
+		State.IDLE:
+			pass
+			# if target and not is_shooting:
+				# current_state = State.SHOOT
 		State.MOVE:
 			move()
 			if instinct_to_jump == false:
@@ -67,7 +72,8 @@ func state_controller() -> void:
 			jump()
 			current_state = State.MOVE
 		State.SHOOT:
-			shoot(3)
+			is_shooting = true
+			shoot()
 			current_state = State.IDLE
 
 
@@ -110,16 +116,22 @@ func _on_jumping_timer_timeout() -> void:
 	if current_state == State.MOVE: # Enemy only jumps if not moving.
 		current_state = State.JUMP
 
+func shoot() -> void:
+	await bullet_create(3)
+	print("Burst fire ended.")
 
-func shoot(bullet_amount: int) -> void:
-	for number in range(bullet_amount):
+
+func bullet_create(amount: int) -> void:
+	for index in range(amount):
 		await get_tree().create_timer(0.2).timeout
 		var b = bullet.instantiate()
 		get_owner().call_deferred("add_child", b)
 		b.transform = $MuzzleMarker.global_transform
+		print("Bullet #", index)
 
 
 func take_damage(damage: float) -> void:
+	# TODO: Have enemy move forward if shot.
 	if taking_damage == false: # Prevents the enemy from taking too many instances of damage while the code runs.
 		taking_damage = true
 		health -= damage
@@ -145,22 +157,31 @@ func take_damage(damage: float) -> void:
 
 
 func _on_detection_area_2d_body_entered(body: Node2D) -> void:
-	if body is Player:
+	if body is Player and not target: # If Player detected, and the enemy had no target:
+		target = body # Sets Player as the target.
+		$AttentionLabel.text = "!"
+		$AttentionLabel.label_settings.font_color = Color(1, 0, 0)
 		$AttentionLabel.visible = true
 		current_state = State.IDLE
 		velocity = Vector2(0, 0) # Stops enemy movement. BUG: Enemy falls down slower if caught in middle of jump.
+		print("Enemy detected Player.")
 		await get_tree().create_timer(1).timeout
 		$AttentionLabel.visible = false
 		current_state = State.SHOOT
-		# target = body # Sets the enemy's target.
-		print("Enemy detected Player.")
+
 
 # BUG: If player exits detection during shoot(), then enemy never returns to MOVE state.
 # May need to use a loop for checking for body overlapping.
 func _on_detection_area_2d_body_exited(body: Node2D) -> void:
 	if body is Player:
+		target = null
 		print("Enemy lost sight of Player.")
 		# TODO: Check if there's anything that could be done for stationary enemies.
+		$AttentionLabel.text = "?"
+		$AttentionLabel.label_settings.font_color = Color(0.95, 0.8, 0)
+		$AttentionLabel.visible = true
+		await get_tree().create_timer(1).timeout
+		$AttentionLabel.visible = false
 		if mode == EnemyMode.ROAMING:
 			$DirectionTimer.wait_time = 5
 			current_state = State.MOVE
