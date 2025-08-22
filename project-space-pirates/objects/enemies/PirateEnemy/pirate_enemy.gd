@@ -83,18 +83,20 @@ func state_controller() -> void:
 				print("Finished shooting and moving to IDLE state.")
 				current_state = State.IDLE
 
-# Faces enemy depending on which direction it is looking at.
+# Faces enemy's sprite and gun depending on the direction it is in.
 func face_direction() -> void:
+	# Face left.
 	if direction.x > 0:
-		$TestSprite2D.flip_h = true
-		$DetectionArea2D/DetectCollisionShape.position = Vector2(108, 0) # Moves detection collision shape to the right.
-		$MuzzleMarker.position = Vector2(20, 8) # Face enemy muzzle to the right.
-		$MuzzleMarker.rotation_degrees = 180 # Sets the enemy muzzle to a rotation of 180 degrees.
+		$TestSprite2D.flip_h = true # Flips sprite horizontally.
+		$DetectionArea2D/DetectCollisionShape.position = Vector2(108, 0) # Moves detection collision shape.
+		$MuzzleMarker.position = Vector2(20, 8) # Moves enemy muzzle.
+		$MuzzleMarker.rotation_degrees = 180 # Rotates enemy muzzle to 180 degrees.
+	# Face right.
 	if direction.x < 0:
 		$TestSprite2D.flip_h = false
-		$DetectionArea2D/DetectCollisionShape.position = Vector2(-108, 0) # Moves detection collision shape to the left.
-		$MuzzleMarker.position = Vector2(-20, 8) # Face enemy muzzle to the left.
-		$MuzzleMarker.rotation_degrees = 0 # Sets the enemy muzzle to a rotation of 180 degrees.
+		$DetectionArea2D/DetectCollisionShape.position = Vector2(-108, 0)
+		$MuzzleMarker.position = Vector2(-20, 8)
+		$MuzzleMarker.rotation_degrees = 0 # Rotates enemy muzzle to 0 degrees.
 
 
 func move() -> void:
@@ -141,11 +143,9 @@ func create_bullet(amount: int) -> void:
 		b.transform = $MuzzleMarker.global_transform
 
 
-func take_damage(damage: float) -> void:
-	# TODO: Have enemy move forward if shot.
+func take_damage(damage: float, bullet_direction: String) -> void:
 	if not target:
-		# target = 
-		print("Your bullet hit the enemy before he could see you.")
+		status_indicator("?!", "yellow")
 	if taking_damage == false: # Prevents the enemy from taking too many instances of damage while the code runs.
 		taking_damage = true
 		health -= damage
@@ -168,7 +168,22 @@ func take_damage(damage: float) -> void:
 		modulate = original_color
 		
 		taking_damage = false
+	# NOTE: This sequence of code is at the bottom to give the enemy a moment to understand it got hurt.
+	if not target:
+		# Faces enemy towards the direction of the Player's bullets.
+		status_indicator("?", "white")
+		if bullet_direction == "left" and direction.x < 0:
+			direction = Vector2.RIGHT
+			face_direction()
+		if bullet_direction == "right" and direction.x > 0:
+			direction = Vector2.LEFT
+			face_direction()
 
+func surprise_attack() -> void:
+	pass
+
+func forget_about_it() -> void:
+	pass
 
 func _on_detection_area_2d_body_entered(body: Node2D) -> void:
 	# TODO: Check the following "if" statement to see if it even makes sense.
@@ -178,7 +193,7 @@ func _on_detection_area_2d_body_entered(body: Node2D) -> void:
 		if mode == EnemyMode.ROAMING: # If enemy is roamer, stop movement immediately. BUG: Enemy falls down slower if caught in middle of jump.
 			velocity = Vector2(0, 0)
 			current_state = State.IDLE
-		await status_indicator("!", Color(1, 0, 0))
+		await status_indicator("!", "red")
 		target = body # Sets Player as the target.
 
 
@@ -186,16 +201,21 @@ func _on_detection_area_2d_body_exited(body: Node2D) -> void:
 # TODO: Check if there's anything that could be done for stationary enemies.
 	if body is Player:
 		print("Player has left the detection range, but the enemy is aware that they are still there.")
-		await status_indicator("?", Color(0.95, 0.8, 0))
+		await status_indicator("?", "white")
 		# BUG: Enemy can sometimes be moving in the wrong direction.
 		if mode == EnemyMode.ROAMING: # NOTE: Bug may be related to targeting note clearing instead, actually.
 			$DirectionTimer.wait_time = 5
 			current_state = State.MOVE
 
 
-func status_indicator(text: String, color: Color) -> void:
+func status_indicator(text: String, color: String) -> void:
 	$StatusLabel.text = text
-	$StatusLabel.label_settings.font_color = color
+	if color == "red":
+		$StatusLabel.label_settings.font_color = Color(1, 0, 0)
+	if color == "yellow":
+		$StatusLabel.label_settings.font_color = Color(0.95, 0.8, 0)
+	if color == "white":
+		$StatusLabel.label_settings.font_color = Color(1, 1, 1)
 	$StatusLabel.visible = true
 	await get_tree().create_timer(1).timeout
 	$StatusLabel.visible = false
