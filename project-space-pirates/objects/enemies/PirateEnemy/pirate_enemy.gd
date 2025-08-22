@@ -96,11 +96,11 @@ func choose(array): # Not given a static type (Vector2) to ensure the function r
 
 
 func _on_direction_timer_timeout() -> void:
-	# For enemies in roaming-mode:
+	# If enemy is a roamer:
 	if mode == EnemyMode.ROAMING:
 		$DirectionTimer.wait_time = range(2, 5).pick_random()
 		
-		# Change direction if moving.
+		# Change direction only if moving.
 		if current_state == State.MOVE:
 			direction = choose([Vector2.LEFT, Vector2.RIGHT])
 			face_direction()
@@ -137,8 +137,8 @@ func _on_jumping_timer_timeout() -> void:
 
 func shoot() -> void:
 	is_shooting = true
+	await get_tree().create_timer(0.5).timeout # Windup before firing.
 	await create_bullet(3)
-	print("Enemy's gun is on cooldown.")
 	await get_tree().create_timer(3).timeout # Cooldown after firing. Affects how long until enemy does next action.
 	is_shooting = false
 	print("Enemy is ready to fire again.")
@@ -155,6 +155,13 @@ func create_bullet(amount: int) -> void:
 func take_damage(damage: float, bullet_direction: String) -> void:
 	if not target:
 		status_indicator("?!", "yellow")
+	# Roaming enemies will stop.
+	if mode == EnemyMode.ROAMING:
+		current_state = State.IDLE
+	# If ForgetTimer is still going, refresh the time.
+	if not $ForgetTimer.is_stopped():
+		$ForgetTimer.start()
+		print("Forget Timer has been refreshed.")
 	if taking_damage == false: # Prevents the enemy from taking too many instances of damage while the code runs.
 		taking_damage = true
 		# health -= damage
@@ -178,18 +185,18 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 		
 		taking_damage = false
 	# NOTE: The following code is here at the bottom to give the enemy a moment to understand it got hurt.
-	if not target:
-		# Roaming enemies will stop for a period of time.
-		if mode == EnemyMode.ROAMING:
-			current_state = State.IDLE
-			$DirectionTimer.wait_time = 3
-		# Faces enemy towards the direction of the Player's bullets.
-		if bullet_direction == "left" and direction.x < 0:
-			direction = Vector2.RIGHT
-			face_direction()
-		if bullet_direction == "right" and direction.x > 0:
-			direction = Vector2.LEFT
-			face_direction()
+	# Faces enemy towards the direction of the Player's bullets.
+	if bullet_direction == "left" and direction.x < 0:
+		direction = Vector2.RIGHT
+		face_direction()
+	if bullet_direction == "right" and direction.x > 0:
+		direction = Vector2.LEFT
+		face_direction()
+	# Gives the illusion that the enemies are checking out things in that direction.
+	if mode == EnemyMode.ROAMING:
+		current_state = State.MOVE
+		$DirectionTimer.start(30)
+		print("time: ",$DirectionTimer.get_wait_time())
 
 
 func surprise_attack() -> void:
@@ -200,32 +207,31 @@ func forget_about_it() -> void:
 
 
 func _on_detection_area_2d_body_entered(body: Node2D) -> void:
-	# Checks if the enemy's forget timer has begun, if it has, stop the timer before it times out.
-	if not $ForgetTimer.is_stopped():
-		$ForgetTimer.stop()
-		print("Timer was forcefully stopped.")
-	# TODO: Check the following "if" statement to see if it even makes sense.
-	if body is Player and not target: # If Player detected, and the enemy had no target:
-		target = body # Sets Player as the target.
-		status_indicator("!", "red")
-		print("Enemy detected Player.")
-		if mode == EnemyMode.ROAMING: # If enemy is roamer, stop movement immediately.
-			current_state = State.IDLE
+	if body is Player:
+		if not target: # If the enemy had no target:
+			target = body # Sets Player as the target.
+			status_indicator("!", "red")
+			print("Enemy detected Player.")
+			if mode == EnemyMode.ROAMING: # If enemy is roamer, stop movement immediately.
+				current_state = State.IDLE
+		# Checks if the enemy's forget timer has begun, if it has, stop the timer before it times out.
+		if not $ForgetTimer.is_stopped():
+			$ForgetTimer.stop()
+			print("Timer was forcefully stopped.")
 
 
 func _on_detection_area_2d_body_exited(body: Node2D) -> void:
-# TODO: Check if there's anything that could be done for stationary enemies.
 	if body is Player:
-		print("Player has left the detection range. Timer has begun.")
+		target = null
 		$ForgetTimer.start()
+		print("Player has left the detection range. Timer has begun.")
 
 
 func _on_forget_timer_timeout() -> void:
-	print("Timer has timed out! Enemy has lost memory!")
+	print("Timer has timed out, and enemy is returning to its original behavior.")
 	status_indicator("?", "white")
-	target = null
+	# Roamers begin moving again.
 	if mode == EnemyMode.ROAMING:
-		$DirectionTimer.wait_time = 3
 		current_state = State.MOVE
 
 
