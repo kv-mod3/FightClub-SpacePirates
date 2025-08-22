@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1vwxu07abuus"]
+[gd_scene load_steps=8 format=3 uid="uid://c1vwxu07abuus"]
 
 [ext_resource type="Script" uid="uid://b0jyw622gwwpt" path="res://objects/player/PlayerPlatformer/player_platformer.gd" id="1_qgnnd"]
 [ext_resource type="Texture2D" uid="uid://cw0k2qagu3gtg" path="res://assets/concepts/GJ_-_Alien_ideas_01.png" id="2_qgnnd"]
@@ -9,6 +9,16 @@ region = Rect2(128, 448, 832, 1088)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4y5so"]
 size = Vector2(16, 32)
+
+[sub_resource type="LabelSettings" id="LabelSettings_r7f4e"]
+shadow_color = Color(0, 0, 0, 0.313726)
+
+[sub_resource type="LabelSettings" id="LabelSettings_y3hdj"]
+shadow_color = Color(0, 0, 0, 0.314)
+
+[sub_resource type="LabelSettings" id="LabelSettings_e3i7r"]
+font_color = Color(0, 1, 0, 1)
+shadow_color = Color(0, 0, 0, 0.313726)
 
 [node name="PlayerPlatformer" type="CharacterBody2D"]
 collision_layer = 4
@@ -32,11 +42,35 @@ position = Vector2(18, 2)
 wait_time = 0.2
 one_shot = true
 
+[node name="RechargeTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HealthLabel" type="Label" parent="CanvasLayer"]
 offset_left = 24.0
 offset_top = 24.0
-offset_right = 64.0
+offset_right = 88.0
 offset_bottom = 47.0
 text = "HP: 000"
+label_settings = SubResource("LabelSettings_r7f4e")
+
+[node name="AmmoLabel" type="Label" parent="CanvasLayer"]
+offset_left = 24.0
+offset_top = 48.0
+offset_right = 104.0
+offset_bottom = 71.0
+text = "Ammo: 3"
+label_settings = SubResource("LabelSettings_y3hdj")
+
+[node name="ReloadingLabel" type="Label" parent="CanvasLayer"]
+visible = false
+offset_left = 24.0
+offset_top = 72.0
+offset_right = 176.0
+offset_bottom = 95.0
+text = "Recharging... 100%"
+label_settings = SubResource("LabelSettings_e3i7r")
+
+[connection signal="timeout" from="RechargeTimer" to="." method="_on_recharge_timer_timeout"]

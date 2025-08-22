@@ -54,9 +54,6 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		state_controller()
 	move_and_slide()
-	# NOTE: Following is test code.
-	if Input.is_action_just_pressed("up"):
-		print("Target :", target)
 
 
 func state_controller() -> void:
@@ -162,7 +159,7 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 		print("Forget Timer has been refreshed.")
 	if taking_damage == false: # Prevents the enemy from taking too many instances of damage while the code runs.
 		taking_damage = true
-		# health -= damage
+		health -= damage
 		print("Enemy current health: ", health)
 	
 		# Enemy flashes red on hit.
@@ -183,6 +180,7 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 		
 		taking_damage = false
 	# NOTE: The following code is here at the bottom to give the enemy a moment to understand it got hurt.
+	# TODO: Might want to move it into the nested block above though.
 	# Faces enemy towards the direction of the Player's bullets.
 	if bullet_direction == "left" and direction.x < 0:
 		direction = Vector2.RIGHT
@@ -190,11 +188,6 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 	if bullet_direction == "right" and direction.x > 0:
 		direction = Vector2.LEFT
 		face_direction()
-	# Gives the illusion that the enemies are checking out things in that direction.
-	if mode == EnemyMode.ROAMING:
-		current_state = State.MOVE
-		$DirectionTimer.start(30)
-		print("time: ",$DirectionTimer.get_wait_time())
 
 
 func surprise_attack() -> void:
@@ -222,11 +215,11 @@ func _on_detection_area_2d_body_exited(body: Node2D) -> void:
 	if body is Player:
 		target = null
 		$ForgetTimer.start()
-		print("Player has left the detection range. Timer has begun.")
+		print("Player has left the detection range. Enemy is beginning to forget.")
 
 
 func _on_forget_timer_timeout() -> void:
-	print("Timer has timed out, and enemy is returning to its original behavior.")
+	print("Enemy has forgotten and is now returning to its original behavior.")
 	status_indicator("?", "white")
 	# Roamers begin moving again.
 	if mode == EnemyMode.ROAMING:

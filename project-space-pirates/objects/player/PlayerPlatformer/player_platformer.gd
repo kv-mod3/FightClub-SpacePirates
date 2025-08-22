@@ -34,9 +34,21 @@ func _physics_process(delta: float) -> void:
 		velocity.x = direction * move_speed
 	else:
 		velocity.x = move_toward(velocity.x, 0, move_speed) # Moves toward a destination speed before stopping.
-
+	
+	# Movement.
 	face_direction()
 	move_and_slide()
+	
+	# Ammo reloading state.
+	if PlayerVariables.is_reloading == true:
+		if PlayerVariables.ammo < 3:
+			$CanvasLayer/ReloadingLabel.visible = true
+			reloading(delta) # Reloads roughly one bullet per second.
+			if PlayerVariables.ammo >= 3:
+				# TODO: Uncomment the following line once debug is finished.
+				$CanvasLayer/ReloadingLabel.visible = false
+				PlayerVariables.reloading_progress = 0
+				PlayerVariables.is_reloading = false
 
 
 # Animate Player
@@ -52,11 +64,24 @@ func face_direction() -> void:
 
 
 func shoot() -> void:
-	if $ShootCooldownTimer.is_stopped():
-		$ShootCooldownTimer.start()
+	if $ShootCooldownTimer.is_stopped() and PlayerVariables.ammo >= 1:
+		$ShootCooldownTimer.start() # Cooldown timer between shots.
+		red_text_blink($CanvasLayer/AmmoLabel)
+		PlayerVariables.ammo -= 1
+		$CanvasLayer/AmmoLabel.text = "Ammo: %d" % PlayerVariables.ammo
 		var b = bullet.instantiate()
 		owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
 		b.transform = $MuzzleMarker.global_transform
+		
+		# Activate recharge timer.
+		$RechargeTimer.start() # Refreshes the timer if it is running, otherwise starts it.
+		# Stops reloading if it is already occurring.
+		if PlayerVariables.is_reloading == true:
+			PlayerVariables.is_reloading = false
+			$CanvasLayer/ReloadingLabel.visible = false
+			PlayerVariables.reloading_progress = 0
+			# TODO: Maybe delete the line below.
+			$CanvasLayer/ReloadingLabel.text = "Recharging... %d%%" % PlayerVariables.reloading_progress
 
 
 func take_damage(damage: float) -> void:
@@ -73,3 +98,30 @@ func restore_health(health) -> void:
 	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
 	print("Player HP restored by %d" % health)
 	print("Current Player HP: ", PlayerVariables.health)
+
+
+func reloading(delta) -> void:
+	if PlayerVariables.reloading_progress >= 100:
+		PlayerVariables.ammo += 1
+		$CanvasLayer/AmmoLabel.text = "Ammo: %d" % PlayerVariables.ammo
+		green_text_blink($CanvasLayer/AmmoLabel)
+		PlayerVariables.reloading_progress = 0
+	else:
+		PlayerVariables.reloading_progress += 100 * delta
+		$CanvasLayer/ReloadingLabel.text = "Recharging... %d%%" % PlayerVariables.reloading_progress
+
+
+func _on_recharge_timer_timeout() -> void:
+	PlayerVariables.is_reloading = true
+
+
+func red_text_blink(label: Control) -> void:
+	label.label_settings.font_color = Color(1, 0, 0) # Red font color.
+	await get_tree().create_timer(0.2).timeout
+	label.label_settings.font_color = Color(1, 1, 1) # White font color.
+
+
+func green_text_blink(label: Control) -> void:
+	label.label_settings.font_color = Color(0, 1, 0) # Red font color.
+	await get_tree().create_timer(0.2).timeout
+	label.label_settings.font_color = Color(1, 1, 1) # White font color.

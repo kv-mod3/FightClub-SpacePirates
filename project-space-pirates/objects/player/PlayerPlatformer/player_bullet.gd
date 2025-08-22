@@ -18,7 +18,6 @@ func _physics_process(delta: float) -> void:
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	# await get_tree().create_timer(3).timeout # Waits until timeout, then resumes the rest of the code.
 	queue_free()
-	print("Bullet was deleted off-screen.")
 
 
 func _on_body_entered(body: Node2D) -> void:
