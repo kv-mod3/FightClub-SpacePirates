@@ -138,18 +138,16 @@ func _on_jumping_timer_timeout() -> void:
 func shoot() -> void:
 	is_shooting = true
 	await get_tree().create_timer(0.5).timeout # Windup before firing.
-	await create_bullet(3)
+	create_bullet()
 	await get_tree().create_timer(3).timeout # Cooldown after firing. Affects how long until enemy does next action.
 	is_shooting = false
 	print("Enemy is ready to fire again.")
 
 
-func create_bullet(amount: int) -> void:
-	for index in range(amount):
-		await get_tree().create_timer(0.2).timeout # Cooldown before the next bullet fired.
-		var b = bullet.instantiate()
-		get_owner().call_deferred("add_child", b)
-		b.transform = $MuzzleMarker.global_transform
+func create_bullet() -> void:
+	var b = bullet.instantiate()
+	get_owner().call_deferred("add_child", b)
+	b.transform = $MuzzleMarker.global_transform
 
 
 func take_damage(damage: float, bullet_direction: String) -> void:
