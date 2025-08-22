@@ -14,11 +14,11 @@ func _physics_process(delta: float) -> void:
 	position += transform.x * SPEED * delta
 
 
-# Deletes the bullet a few seconds after it exits the screen.
+# Deletes the bullet after it exits the screen.
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
-	await get_tree().create_timer(3).timeout # Waits until timeout, then resumes the rest of the code.
+	# await get_tree().create_timer(3).timeout # Waits until timeout, then resumes the rest of the code.
 	queue_free()
-	print("Bullet deleted.")
+	print("Bullet was deleted off-screen.")
 
 
 func _on_body_entered(body: Node2D) -> void:
@@ -29,9 +29,7 @@ func _on_body_entered(body: Node2D) -> void:
 			body.take_damage(DAMAGE, "right")
 		if rotation_degrees == -180:
 			body.take_damage(DAMAGE, "left")
-		# TODO: Delete the following else statement when not needed anymore.
-		else:
-			print("Bullet's rotation was in %d degrees." % rotation_degrees)
+			# print("Bullet's rotation was in %d degrees." % rotation_degrees)
 		queue_free() # Deletes bullet on collision.
 	if body.is_in_group("solids"):
 		queue_free()

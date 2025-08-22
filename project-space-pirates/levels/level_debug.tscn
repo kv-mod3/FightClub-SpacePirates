@@ -28,7 +28,7 @@ polygon = PackedVector2Array(-640, 32, 960, 32, 960, -280, 936, -280, 936, -96, 
 [node name="Platforms" type="Node" parent="."]
 
 [node name="Platform" parent="Platforms" instance=ExtResource("4_u2tkn")]
-position = Vector2(-144, -88)
+position = Vector2(-72, -8)
 
 [node name="Platform2" parent="Platforms" instance=ExtResource("4_u2tkn")]
 position = Vector2(96, -136)
@@ -39,7 +39,7 @@ position = Vector2(320, -200)
 [node name="Enemies" type="Node" parent="."]
 
 [node name="PirateEnemy" parent="Enemies" instance=ExtResource("2_03qpd")]
-position = Vector2(128, 0)
+position = Vector2(-72, -56)
 initial_direction = 1
 
 [node name="PirateEnemy2" parent="Enemies" instance=ExtResource("2_03qpd")]

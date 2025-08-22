@@ -39,7 +39,7 @@ func _ready() -> void:
 		InitialDirection.RIGHT:
 			direction = Vector2.RIGHT
 			face_direction()
-	# Sets whether the enemy is stationary or roaming.
+	# Sets the starting state of the enemy depending on what behavior they are set to.
 	match mode:
 		EnemyMode.STATIONARY:
 			current_state = State.IDLE
@@ -54,20 +54,21 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		state_controller()
 	move_and_slide()
+	# NOTE: Following is test code.
+	if Input.is_action_just_pressed("up"):
+		print("Target :", target)
 
 
 func state_controller() -> void:
 	match current_state:
 		State.IDLE:
+			if mode == EnemyMode.ROAMING: # Stops movement of enemies when entering IDLE.
+				velocity = Vector2(0, 0) # BUG: Enemy falls down slower if caught in middle of jump.
+			# If target exists AND enemy is not shooting AND is in within detection area, then shoot.
 			if target and not is_shooting:
-				# TODO: Fix the overlapping method to only include the Player.
-				# Currently it detects if ANY body is overlapping the enemy's detection radius.
-				if $DetectionArea2D.has_overlapping_bodies():
+				if $DetectionArea2D.has_overlapping_bodies(): # TODO: Change the overlapping method to only include the Player.
 					shoot()
 					print("Enemy sees you and shoots.")
-				else: # Else change direction to shoot the Player.
-					direction = (target.global_position - global_position).normalized()
-					face_direction()
 		State.MOVE:
 			move()
 			if instinct_to_jump == false:
@@ -82,6 +83,31 @@ func state_controller() -> void:
 				await shoot()
 				print("Finished shooting and moving to IDLE state.")
 				current_state = State.IDLE
+
+
+func move() -> void:
+	# velocity = velocity.move_toward(direction * move_speed, acceleration)
+	velocity = direction * move_speed
+
+
+func choose(array): # Not given a static type (Vector2) to ensure the function remains flexible for arrays too.
+	array.shuffle()
+	return array.front() # Chooses the first element in the array and returns it.
+
+
+func _on_direction_timer_timeout() -> void:
+	# For enemies in roaming-mode:
+	if mode == EnemyMode.ROAMING:
+		$DirectionTimer.wait_time = range(2, 5).pick_random()
+		
+		# Change direction if moving.
+		if current_state == State.MOVE:
+			direction = choose([Vector2.LEFT, Vector2.RIGHT])
+			face_direction()
+		# If they were stopped and there is no target in sight, then move again.
+		if current_state == State.IDLE and not target:
+			current_state = State.MOVE
+
 
 # Faces enemy's sprite and gun depending on the direction it is in.
 func face_direction() -> void:
@@ -99,25 +125,8 @@ func face_direction() -> void:
 		$MuzzleMarker.rotation_degrees = 0 # Rotates enemy muzzle to 0 degrees.
 
 
-func move() -> void:
-	# velocity = velocity.move_toward(direction * move_speed, acceleration)
-	velocity = direction * move_speed
-
-
 func jump() -> void:
 	velocity.y = jump_velocity
-
-
-func choose(array): # Not given a static type (Vector2) to ensure the function remains flexible for arrays too.
-	array.shuffle()
-	return array.front() # Chooses the first element in the array and returns it.
-
-
-func _on_direction_timer_timeout() -> void:
-	$DirectionTimer.wait_time = range(2, 5).pick_random()
-	if current_state == State.MOVE:
-		direction = choose([Vector2.LEFT, Vector2.RIGHT])
-		face_direction()
 
 
 func _on_jumping_timer_timeout() -> void:
@@ -148,7 +157,7 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 		status_indicator("?!", "yellow")
 	if taking_damage == false: # Prevents the enemy from taking too many instances of damage while the code runs.
 		taking_damage = true
-		health -= damage
+		# health -= damage
 		print("Enemy current health: ", health)
 	
 		# Enemy flashes red on hit.
@@ -168,10 +177,13 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 		modulate = original_color
 		
 		taking_damage = false
-	# NOTE: This sequence of code is at the bottom to give the enemy a moment to understand it got hurt.
+	# NOTE: The following code is here at the bottom to give the enemy a moment to understand it got hurt.
 	if not target:
+		# Roaming enemies will stop for a period of time.
+		if mode == EnemyMode.ROAMING:
+			current_state = State.IDLE
+			$DirectionTimer.wait_time = 3
 		# Faces enemy towards the direction of the Player's bullets.
-		status_indicator("?", "white")
 		if bullet_direction == "left" and direction.x < 0:
 			direction = Vector2.RIGHT
 			face_direction()
@@ -179,33 +191,42 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 			direction = Vector2.LEFT
 			face_direction()
 
+
 func surprise_attack() -> void:
 	pass
 
 func forget_about_it() -> void:
-	pass
+	target = null
+
 
 func _on_detection_area_2d_body_entered(body: Node2D) -> void:
+	# Checks if the enemy's forget timer has begun, if it has, stop the timer before it times out.
+	if not $ForgetTimer.is_stopped():
+		$ForgetTimer.stop()
+		print("Timer was forcefully stopped.")
 	# TODO: Check the following "if" statement to see if it even makes sense.
-	# NOTE: Stationary enemies are already in idle and will shoot immediately.
 	if body is Player and not target: # If Player detected, and the enemy had no target:
-		print("Enemy detected Player.")
-		if mode == EnemyMode.ROAMING: # If enemy is roamer, stop movement immediately. BUG: Enemy falls down slower if caught in middle of jump.
-			velocity = Vector2(0, 0)
-			current_state = State.IDLE
-		await status_indicator("!", "red")
 		target = body # Sets Player as the target.
+		status_indicator("!", "red")
+		print("Enemy detected Player.")
+		if mode == EnemyMode.ROAMING: # If enemy is roamer, stop movement immediately.
+			current_state = State.IDLE
 
 
 func _on_detection_area_2d_body_exited(body: Node2D) -> void:
 # TODO: Check if there's anything that could be done for stationary enemies.
 	if body is Player:
-		print("Player has left the detection range, but the enemy is aware that they are still there.")
-		await status_indicator("?", "white")
-		# BUG: Enemy can sometimes be moving in the wrong direction.
-		if mode == EnemyMode.ROAMING: # NOTE: Bug may be related to targeting note clearing instead, actually.
-			$DirectionTimer.wait_time = 5
-			current_state = State.MOVE
+		print("Player has left the detection range. Timer has begun.")
+		$ForgetTimer.start()
+
+
+func _on_forget_timer_timeout() -> void:
+	print("Timer has timed out! Enemy has lost memory!")
+	status_indicator("?", "white")
+	target = null
+	if mode == EnemyMode.ROAMING:
+		$DirectionTimer.wait_time = 3
+		current_state = State.MOVE
 
 
 func status_indicator(text: String, color: String) -> void:
