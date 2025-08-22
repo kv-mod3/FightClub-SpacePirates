@@ -24,7 +24,7 @@ polygon = PackedVector2Array(704, 443, 757.9, 410.643, 805, 381, 835, 354, 1045,
 [node name="Ship Background" type="Polygon2D" parent="."]
 position = Vector2(6, 2)
 color = Color(0.416016, 0.414308, 0.385424, 1)
-polygon = PackedVector2Array(1863, 370, 1866, 294, 2016, 244, 2276, 197, 2645, 181, 3233, 235, 3450, 397, 3558, 397, 3569, 273, 4321, 275, 4330, 1048, 4535, 1077, 4589, 1534, 4601, 1795, 5466, 1806, 6262, 2157, 6750, 2588, 7156, 2854, 7833, 2833, 7950, 2822, 8044, 2868, 8046, 3037, 8048, 3879, 7929, 4344, 7013, 4442, 6569, 4767, 5954, 5063, 4710, 5189, 2770, 5167, 1519, 4818, -28, 3910, -7, 1344, 84, 742, 837, 636, 1397, 593, 1901, 594, 1869, 533)
+polygon = PackedVector2Array(1863, 370, 1870, 306, 2023, 256, 2279, 205, 2649, 204, 3233, 235, 3450, 397, 3558, 397, 3569, 273, 4321, 275, 4330, 1048, 4535, 1077, 4589, 1534, 4601, 1795, 5466, 1806, 6262, 2157, 6750, 2588, 7156, 2854, 7833, 2833, 7950, 2822, 8044, 2868, 8046, 3037, 8048, 3879, 7929, 4344, 7013, 4442, 6569, 4767, 5954, 5063, 4710, 5189, 2770, 5167, 1519, 4818, -28, 3910, -7, 1344, 84, 742, 837, 636, 1397, 593, 1901, 594, 1869, 533)
 
 [node name="Floor" type="StaticBody2D" parent="."]
 
@@ -189,11 +189,12 @@ polygon = PackedVector2Array(3131, 3778, 3131, 3778, 3118, 4241, 3285, 4622, 373
 [node name="Bridge Collision" type="StaticBody2D" parent="SpaceShip"]
 
 [node name="Bridge" type="Polygon2D" parent="SpaceShip/Bridge Collision"]
-polygon = PackedVector2Array(5877, 3773, 6768, 3775, 6753, 3835, 5879, 3828)
+position = Vector2(0, -3)
+polygon = PackedVector2Array(5875, 3769, 6768, 3775, 6753, 3835, 5879, 3828)
 
 [node name="Bridge Collisions" type="CollisionPolygon2D" parent="SpaceShip/Bridge Collision"]
 position = Vector2(-1, 0)
-polygon = PackedVector2Array(5877, 3773, 6768, 3775, 6753, 3835, 5879, 3828)
+polygon = PackedVector2Array(5876, 3766, 6769, 3772, 6753, 3835, 5879, 3828)
 
 [node name="Platforms" type="Node" parent="."]
 
@@ -326,7 +327,7 @@ polygon = PackedVector2Array(495, 1700, 1155, 1700, 1184, 1731, 497, 1732)
 color = Color(0.631373, 0.176471, 0.0823529, 1)
 polygon = PackedVector2Array(2823, 3802, 1885, 3798, 1888, 3818, 2824, 3817)
 
-[node name="Polygon2D" type="Polygon2D" parent="Kill Floor"]
+[node name="Kill Floor 5" type="Polygon2D" parent="Kill Floor"]
 position = Vector2(0, 10)
 color = Color(0.631373, 0.176471, 0.0823529, 1)
 polygon = PackedVector2Array(3271, 3792, 4065, 3798, 4063, 3842, 3271, 3829)
