@@ -56,21 +56,21 @@ polygon = PackedVector2Array(4704, 5206, 4692, 4923, 4586, 4792, 4565, 4539, 464
 
 [node name="Wall 1" type="Polygon2D" parent="Level 2 start/Wall"]
 position = Vector2(57, 359)
-polygon = PackedVector2Array(6478, 3506, 6554, 3654, 6478, 3823, 6706, 3860, 7001, 3867, 7279, 3867, 7271, 3434, 6699, 3141, 7001, 2306, 7064, 1832, 6080, 1664, 5771, 1311, 5495, 1265, 5273, 1073, 5271, 1024, 5267, 918, 5263, 737, 5050, 758, 5035.44, 763.47, 4730, 799, 4513, 787, 4442, 888, 4254, 918, 4066, 927, 3914, 1024, 3661, 1068, 3609, 1120, 3642, 1174, 3815, 1168, 3961, 1114, 4204, 1128, 4496, 1063, 4752, 1366, 5007, 1413, 5310, 1642, 5554, 2027, 5314, 2211, 5239, 2386, 5028, 2396, 4938, 2478, 4831, 2534, 4731, 2541, 4652, 2620, 4507, 2648, 4298, 2661, 4213, 2717, 4247, 2770, 4501, 2850, 4825, 2693, 4979, 2785, 5088, 2888, 5804, 3107, 6037, 3287)
+polygon = PackedVector2Array(6478, 3506, 6554, 3654, 6478, 3823, 6706, 3860, 7001, 3867, 7279, 3867, 7271, 3434, 6699, 3141, 7001, 2306, 7064, 1832, 6080, 1664, 5771, 1311, 5495, 1265, 5273, 1073, 5271, 1024, 5267, 918, 5263, 737, 5050, 758, 5035.44, 763.47, 4730, 799, 4563, 824, 4442, 888, 4254, 918, 4066, 927, 3914, 1024, 3661, 1068, 3609, 1120, 3642, 1174, 3815, 1168, 3961, 1114, 4204, 1128, 4496, 1063, 4752, 1366, 5007, 1413, 5310, 1642, 5554, 2027, 5314, 2211, 5239, 2386, 5028, 2396, 4938, 2478, 4831, 2534, 4731, 2541, 4652, 2620, 4507, 2648, 4298, 2661, 4213, 2717, 4247, 2770, 4501, 2850, 4825, 2693, 4979, 2785, 5088, 2888, 5804, 3107, 6037, 3287)
 
 [node name="Wall 1 Collisions" type="CollisionPolygon2D" parent="Level 2 start/Wall"]
 position = Vector2(57, 359)
-polygon = PackedVector2Array(6478, 3506, 6554, 3654, 6478, 3823, 6706, 3860, 7001, 3867, 7279, 3867, 7271, 3434, 6699, 3141, 7001, 2306, 7064, 1832, 6080, 1664, 5771, 1311, 5495, 1265, 5273, 1073, 5271, 1024, 5267, 918, 5263, 737, 5050, 758, 5035.44, 763.47, 4730, 799, 4513, 787, 4442, 888, 4254, 918, 4066, 927, 3914, 1024, 3661, 1068, 3609, 1120, 3642, 1174, 3815, 1168, 3961, 1114, 4204, 1128, 4496, 1063, 4752, 1366, 5007, 1413, 5310, 1642, 5554, 2027, 5314, 2211, 5239, 2386, 5028, 2396, 4938, 2478, 4831, 2534, 4731, 2541, 4652, 2620, 4507, 2648, 4298, 2661, 4213, 2717, 4247, 2770, 4501, 2850, 4825, 2693, 4979, 2785, 5088, 2888, 5804, 3107, 6037, 3287)
+polygon = PackedVector2Array(6478, 3506, 6554, 3654, 6478, 3823, 6706, 3860, 7001, 3867, 7279, 3867, 7271, 3434, 6699, 3141, 7001, 2306, 7064, 1832, 6080, 1664, 5771, 1311, 5495, 1265, 5273, 1073, 5271, 1024, 5267, 918, 5263, 737, 5050, 758, 5035.44, 763.47, 4730, 799, 4563, 824, 4442, 888, 4254, 918, 4066, 927, 3914, 1024, 3661, 1068, 3609, 1120, 3642, 1174, 3815, 1168, 3961, 1114, 4204, 1128, 4496, 1063, 4752, 1366, 5007, 1413, 5310, 1642, 5554, 2027, 5314, 2211, 5239, 2386, 5028, 2396, 4938, 2478, 4831, 2534, 4731, 2541, 4652, 2620, 4507, 2648, 4298, 2661, 4213, 2717, 4247, 2770, 4501, 2850, 4825, 2693, 4979, 2785, 5088, 2888, 5804, 3107, 6037, 3287)
 
 [node name="Just There" type="StaticBody2D" parent="Level 2 start"]
 
 [node name="Just There" type="Polygon2D" parent="Level 2 start/Just There"]
 position = Vector2(-377, -2542)
-polygon = PackedVector2Array(4555, 4868, 4666, 4782, 4722, 4696, 4565, 4539, 4594, 4385, 4301, 4323, 3812, 4180, 3750, 4293, 3792, 4380, 3872, 4403, 3969, 4595, 4156, 4747, 4388, 4853)
+polygon = PackedVector2Array(4555, 4868, 4666, 4782, 4722, 4696, 4565, 4539, 4529, 4460, 4301, 4323, 3812, 4180, 3750, 4293, 3792, 4380, 3872, 4403, 3969, 4595, 4156, 4747, 4388, 4853)
 
 [node name="Just There Collisions" type="CollisionPolygon2D" parent="Level 2 start/Just There"]
 position = Vector2(-377, -2542)
-polygon = PackedVector2Array(4555, 4868, 4666, 4782, 4722, 4696, 4565, 4539, 4594, 4385, 4301, 4323, 3812, 4180, 3750, 4293, 3792, 4380, 3872, 4403, 3969, 4595, 4156, 4747, 4388, 4853)
+polygon = PackedVector2Array(4555, 4868, 4666, 4782, 4722, 4696, 4565, 4539, 4529, 4460, 4301, 4323, 3812, 4180, 3750, 4293, 3792, 4380, 3872, 4403, 3969, 4595, 4156, 4747, 4388, 4853)
 
 [node name="StaticBody2D3" type="StaticBody2D" parent="Level 2 start"]
 
@@ -95,23 +95,22 @@ polygon = PackedVector2Array(7482, 1220, 7338, 1231, 7338, 1195, 7356, 1180, 741
 [node name="Platforms" type="Node" parent="."]
 
 [node name="Platform" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4898, 2673)
+position = Vector2(4923, 2699)
 
 [node name="Platform4" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(3568, 1476)
-scale = Vector2(1, 2)
+position = Vector2(3583, 1519)
 
 [node name="Platform6" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(3390, 1584)
-scale = Vector2(0.5, 3)
+position = Vector2(3405, 1607)
+scale = Vector2(0.5, 2)
 
 [node name="Platform14" parent="Platforms" instance=ExtResource("1_mi4ay")]
 position = Vector2(3950, 3702)
 scale = Vector2(0.2, 2)
 
 [node name="Platform5" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4569, 2156)
-scale = Vector2(0.5, 5)
+position = Vector2(4330, 2053)
+scale = Vector2(0.5, 1)
 
 [node name="Platform11" parent="Platforms" instance=ExtResource("1_mi4ay")]
 position = Vector2(3334, 4039)
@@ -126,17 +125,16 @@ position = Vector2(3874, 3636)
 scale = Vector2(0.5, 1)
 
 [node name="Platform13" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4367, 1900)
-scale = Vector2(1, 5)
+position = Vector2(4505, 2123)
 
 [node name="Platform17" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4014, 3208)
+position = Vector2(3987, 3224)
 
 [node name="Platform28" parent="Platforms" instance=ExtResource("1_mi4ay")]
 position = Vector2(3725, 3853)
 
 [node name="Platform29" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(820, 1398)
+position = Vector2(4436, 2282)
 scale = Vector2(0.5, 2)
 
 [node name="Platform15" parent="Platforms" instance=ExtResource("1_mi4ay")]
@@ -144,20 +142,22 @@ position = Vector2(3530, 3934)
 scale = Vector2(1, 2)
 
 [node name="Platform16" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(929, 1348)
+position = Vector2(4504, 2248)
 scale = Vector2(0.5, 2)
 
 [node name="Platform2" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4392, 2497)
+position = Vector2(4449, 2568)
 
 [node name="Platform3" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4204, 3108)
+position = Vector2(4196, 3145)
 
 [node name="Platform7" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4641, 2604)
+position = Vector2(4675, 2650)
+scale = Vector2(1.2, 1)
 
 [node name="Platform8" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(3729, 3254)
+position = Vector2(3731, 3282)
+scale = Vector2(1.2, 1)
 
 [node name="Platform18" parent="Platforms" instance=ExtResource("1_mi4ay")]
 position = Vector2(3465, 4051)
@@ -171,6 +171,7 @@ position = Vector2(5070, 4358)
 
 [node name="Platform24" parent="Platforms" instance=ExtResource("1_mi4ay")]
 position = Vector2(5373, 4233)
+scale = Vector2(1.2, 1)
 
 [node name="Platform25" parent="Platforms" instance=ExtResource("1_mi4ay")]
 position = Vector2(5993, 4306)
@@ -189,16 +190,20 @@ position = Vector2(4819, 4329)
 position = Vector2(3667, 4130)
 
 [node name="Platform9" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4597, 2350)
+position = Vector2(4613, 2486)
 
 [node name="Platform26" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4414, 2211)
+position = Vector2(4434, 2402)
 
 [node name="Platform27" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4737, 2055)
+position = Vector2(4293, 2334)
 
 [node name="Platform10" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4501, 1963)
+position = Vector2(4377, 2181)
+scale = Vector2(0.5, 1)
+
+[node name="Platform33" parent="Platforms" instance=ExtResource("1_mi4ay")]
+position = Vector2(4224, 1977)
 scale = Vector2(0.5, 1)
 
 [node name="Platform22" parent="Platforms" instance=ExtResource("1_mi4ay")]
