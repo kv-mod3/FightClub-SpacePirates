@@ -2,4 +2,4 @@ extends Node
 
 # NOTE: Used for managing scenes.
 
-var current_checkpoint: String
+var respawn_location: Vector2

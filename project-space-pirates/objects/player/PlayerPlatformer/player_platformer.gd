@@ -3,8 +3,6 @@ extends CharacterBody2D
 
 # INFO: This is the player with platformer controls.
 
-signal died
-
 @export var move_speed: float = 200.0
 @export var jump_velocity: float = -400.0
 var bullet: PackedScene = preload("res://objects/player/PlayerPlatformer/player_bullet.tscn")
@@ -14,17 +12,22 @@ var is_dying: bool = false
 func _ready() -> void:
 	# Grabs the health in player_variables and replaces the placeholder in string (and formats it into an floored int).
 	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
-	
 	# Alternative with same result:
 	# $CanvasLayer/HealthLabel.text = "HP: " + str(int(PlayerVariables.health))
+	
+	SceneManager.respawn_location = global_position
+	print("SceneManager: Set initial respawn point to ", SceneManager.respawn_location)
 
 
 func _physics_process(delta: float) -> void:
-	if is_dying == true:
-		return
+	if is_dying == true: # Locks Player controls (including gravity).
+		return #Do not run any further code if true.
+	
 	# NOTE: Remove debug control below.
 	if Input.is_action_just_pressed("up"):
 		PlayerVariables.health = 0
+		take_damage(0)
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -100,13 +103,14 @@ func take_damage(damage: float) -> void:
 	# TODO Add knockback function here.
 	if PlayerVariables.health <= 0 and not is_dying:
 		death()
-		print("Player is dying.")
+		print("Player is playing dying animations.")
 
 
 func restore_health(health) -> void:
 	# TODO: Add sound effects.
 	PlayerVariables.health += health
 	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
+	green_text_blink($CanvasLayer/HealthLabel)
 	print("Player HP restored by %d" % health)
 	print("Current Player HP: ", PlayerVariables.health)
 
@@ -137,10 +141,20 @@ func green_text_blink(label: Control) -> void:
 	await get_tree().create_timer(0.2).timeout
 	label.label_settings.font_color = Color(1, 1, 1) # White font color.
 
+
 func death() -> void:
 	is_dying = true
 	# TODO: insert animations on this very line.
 	await get_tree().create_timer(3).timeout
-	died.emit() # Signals the checkpoint to respawn player.
+	global_position = SceneManager.respawn_location # Sets Player position to respawn location.
+	
+	# Resets health and ammo.
+	PlayerVariables.health = 100
+	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
+	green_text_blink($CanvasLayer/HealthLabel)
+	PlayerVariables.ammo = 3
+	$CanvasLayer/AmmoLabel.text = "Ammo: %d" % PlayerVariables.ammo
+	green_text_blink($CanvasLayer/AmmoLabel)
+	
 	print("Player has died.")
 	is_dying = false

@@ -63,13 +63,23 @@ position = Vector2(-248, -80)
 [node name="HealthItem2" parent="Objects" instance=ExtResource("4_ppha6")]
 position = Vector2(-584, -200)
 
+[node name="HealthItem3" parent="Objects" instance=ExtResource("4_ppha6")]
+position = Vector2(-568, 32)
+
+[node name="HealthItem4" parent="Objects" instance=ExtResource("4_ppha6")]
+position = Vector2(-448, 32)
+
+[node name="HealthItem5" parent="Objects" instance=ExtResource("4_ppha6")]
+position = Vector2(864, -80)
+
 [node name="Door" parent="Objects" instance=ExtResource("5_y1fpr")]
 position = Vector2(-504, 0)
 
 [node name="PlayerPlatformer" parent="." instance=ExtResource("1_75gwh")]
-position = Vector2(-160, 24)
+position = Vector2(-528, -176)
 
 [node name="CheckpointArea" parent="." instance=ExtResource("7_mywi7")]
 position = Vector2(-432, -176)
 
-[connection signal="died" from="PlayerPlatformer" to="CheckpointArea" method="_on_player_platformer_died"]
+[node name="CheckpointArea2" parent="." instance=ExtResource("7_mywi7")]
+position = Vector2(168, 16)
