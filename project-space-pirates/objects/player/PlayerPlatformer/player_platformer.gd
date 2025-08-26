@@ -23,8 +23,8 @@ func _physics_process(delta: float) -> void:
 	if is_dying == true: # Locks Player controls (including gravity).
 		return #Do not run any further code if true.
 	
-	# NOTE: Remove debug control below.
-	if Input.is_action_just_pressed("up"):
+	# NOTE: Debug "K" key sets player health to 0. For debugging death-related events.
+	if Input.is_action_just_pressed("debug"):
 		PlayerVariables.health = 0
 		take_damage(0)
 	
