@@ -63,9 +63,9 @@ func state_controller() -> void:
 				velocity = Vector2(0, 0) # BUG: Enemy falls down slower if caught in middle of jump.
 			# If target exists AND enemy is not shooting AND is in within detection area, then shoot.
 			if target and not is_shooting:
-				if $DetectionArea2D.has_overlapping_bodies(): # TODO: Change the overlapping method to only include the Player.
-					shoot()
-					print("Enemy sees you and shoots.")
+				# if $DetectionArea2D.has_overlapping_bodies(): # TODO: Change the overlapping method to only include the Player.
+				shoot()
+				print("Enemy sees you and shoots.")
 		State.MOVE:
 			move()
 			if instinct_to_jump == false:
@@ -101,6 +101,7 @@ func _on_direction_timer_timeout() -> void:
 		if current_state == State.MOVE:
 			direction = choose([Vector2.LEFT, Vector2.RIGHT])
 			face_direction()
+		
 		# If they were stopped and there is no target in sight, then move again.
 		if current_state == State.IDLE and not target:
 			current_state = State.MOVE
@@ -148,24 +149,28 @@ func create_bullet() -> void:
 
 
 func take_damage(damage: float, bullet_direction: String) -> void:
+	# A reaction to surprise attacks.
 	if not target:
 		status_indicator("?!", "yellow")
+	
 	# Roaming enemies will stop.
 	if mode == EnemyMode.ROAMING:
 		current_state = State.IDLE
+	
 	# If ForgetTimer is still going, refresh the time.
 	if not $ForgetTimer.is_stopped():
 		$ForgetTimer.start()
-		print("Forget Timer has been refreshed.")
+		print("ForgetTimer has been refreshed.")
+	
 	if taking_damage == false: # Prevents the enemy from taking too many instances of damage while the code runs.
 		taking_damage = true
 		health -= damage
 		print("Enemy current health: ", health)
-	
+		
 		# Enemy flashes red on hit.
 		var flash_red_color: Color = Color(50, 0.5, 0.5)
 		modulate = flash_red_color
-	
+		
 		# Awaits the timeout of a timer of 0.2 seconds, created within the SceneTree, before continuing the code.
 		await get_tree().create_timer(0.2).timeout
 		
@@ -173,12 +178,13 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 		if health <= 0:
 			queue_free()
 			print("Enemy died.")
-	
+		
 		# Enemy returns to original color.
 		var original_color: Color = Color(1, 1, 1)
 		modulate = original_color
 		
 		taking_damage = false
+		
 	# NOTE: The following code is here at the bottom to give the enemy a moment to understand it got hurt.
 	# TODO: Might want to move it into the nested block above though.
 	# Faces enemy towards the direction of the Player's bullets.
@@ -188,13 +194,6 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 	if bullet_direction == "right" and direction.x > 0:
 		direction = Vector2.LEFT
 		face_direction()
-
-
-func surprise_attack() -> void:
-	pass
-
-func forget_about_it() -> void:
-	target = null
 
 
 func _on_detection_area_2d_body_entered(body: Node2D) -> void:
@@ -208,7 +207,7 @@ func _on_detection_area_2d_body_entered(body: Node2D) -> void:
 		# Checks if the enemy's forget timer has begun, if it has, stop the timer before it times out.
 		if not $ForgetTimer.is_stopped():
 			$ForgetTimer.stop()
-			print("Timer was forcefully stopped.")
+			print("ForgetTimer was forcefully stopped.")
 
 
 func _on_detection_area_2d_body_exited(body: Node2D) -> void:

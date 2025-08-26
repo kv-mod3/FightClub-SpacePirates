@@ -75,6 +75,7 @@ func face_direction() -> void:
 
 
 func shoot() -> void:
+	# Creates bullet and shoots it out of muzzle.
 	if $ShootCooldownTimer.is_stopped() and PlayerVariables.ammo >= 1:
 		$ShootCooldownTimer.start() # Cooldown timer between shots.
 		red_text_blink($CanvasLayer/AmmoLabel)
@@ -84,8 +85,8 @@ func shoot() -> void:
 		owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
 		b.transform = $MuzzleMarker.global_transform
 		
-		# Activate recharge timer.
-		$RechargeTimer.start() # Refreshes the timer if it is running, otherwise starts it.
+		$RechargeTimer.start() # Refreshes the recharge timer if it is running, otherwise starts it.
+		
 		# Stops reloading if it is already occurring.
 		if PlayerVariables.is_reloading == true:
 			PlayerVariables.is_reloading = false
