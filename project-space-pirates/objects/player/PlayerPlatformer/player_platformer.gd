@@ -3,9 +3,12 @@ extends CharacterBody2D
 
 # INFO: This is the player with platformer controls.
 
+signal died
+
 @export var move_speed: float = 200.0
 @export var jump_velocity: float = -400.0
 var bullet: PackedScene = preload("res://objects/player/PlayerPlatformer/player_bullet.tscn")
+var is_dying: bool = false
 
 
 func _ready() -> void:
@@ -17,6 +20,11 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if is_dying == true:
+		return
+	# NOTE: Remove debug control below.
+	if Input.is_action_just_pressed("up"):
+		PlayerVariables.health = 0
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -80,7 +88,7 @@ func shoot() -> void:
 			PlayerVariables.is_reloading = false
 			$CanvasLayer/ReloadingLabel.visible = false
 			PlayerVariables.reloading_progress = 0
-			# TODO: Maybe delete the line below.
+			# TODO: The line below might be redundant and unnecessary.
 			$CanvasLayer/ReloadingLabel.text = "Recharging... %d%%" % PlayerVariables.reloading_progress
 
 
@@ -89,7 +97,10 @@ func take_damage(damage: float) -> void:
 	PlayerVariables.health -= damage
 	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
 	print("Player took %d damage!" % damage, " Current HP: ", PlayerVariables.health)
-	# TODO Add death function on this line.
+	# TODO Add knockback function here.
+	if PlayerVariables.health <= 0 and not is_dying:
+		death()
+		print("Player is dying.")
 
 
 func restore_health(health) -> void:
@@ -125,3 +136,11 @@ func green_text_blink(label: Control) -> void:
 	label.label_settings.font_color = Color(0, 1, 0) # Red font color.
 	await get_tree().create_timer(0.2).timeout
 	label.label_settings.font_color = Color(1, 1, 1) # White font color.
+
+func death() -> void:
+	is_dying = true
+	# TODO: insert animations on this very line.
+	await get_tree().create_timer(3).timeout
+	died.emit() # Signals the checkpoint to respawn player.
+	print("Player has died.")
+	is_dying = false

@@ -1,3 +1,5 @@
 extends Node
 
-# TODO: Use for managing scenes.
+# NOTE: Used for managing scenes.
+
+var current_checkpoint: String
