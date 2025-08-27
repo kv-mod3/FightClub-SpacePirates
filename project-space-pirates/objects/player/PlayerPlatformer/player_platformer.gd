@@ -7,6 +7,8 @@ extends CharacterBody2D
 @export var jump_velocity: float = -400.0
 var bullet: PackedScene = preload("res://objects/player/PlayerPlatformer/player_bullet.tscn")
 var is_dying: bool = false
+var is_invincible: bool = false
+var is_knocked_back: bool = false
 
 
 func _ready() -> void:
@@ -26,8 +28,9 @@ func _physics_process(delta: float) -> void:
 	
 	# NOTE: Debug "K" key sets player health to 0. For debugging death-related events.
 	if Input.is_action_just_pressed("debug"):
-		PlayerVariables.health = 0
-		take_damage(0)
+		knockback()
+		# PlayerVariables.health = 0
+		# take_damage(0)
 	
 	# Add the gravity.
 	if not is_on_floor():
@@ -98,14 +101,31 @@ func shoot() -> void:
 
 
 func take_damage(damage: float) -> void:
-	# TODO: Add sound effects.
-	PlayerVariables.health -= damage
-	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
-	print("Player took %d damage!" % damage, " Current HP: ", PlayerVariables.health)
-	# TODO Add knockback function here.
-	if PlayerVariables.health <= 0 and not is_dying:
-		death()
-		print("Player is playing dying animations.")
+	if not is_invincible:
+		i_frames(3) # Invincibility frames for x seconds.
+		knockback()
+		# TODO: Add sound effects.
+		# TODO: Add animations.
+		PlayerVariables.health -= damage
+		$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
+		print("Player took %d damage!" % damage, " Current HP: ", PlayerVariables.health)
+		if PlayerVariables.health <= 0 and not is_dying:
+			death()
+			print("Player is playing dying animations.")
+
+
+func knockback() -> void:
+	var knockback_direction: Vector2 = Vector2(-4, -1)
+	var knockback_strength: float = 200
+	# Targets the player's velocity and pushes them back in a direction multiplied by strength.
+	velocity += knockback_direction * knockback_strength
+
+
+# Invincibility period after taking damage.
+func i_frames(duration) -> void:
+	is_invincible = true
+	await get_tree().create_timer(duration).timeout
+	is_invincible = false
 
 
 func restore_health(health) -> void:

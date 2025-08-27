@@ -78,6 +78,7 @@ position = Vector2(168, 16)
 
 [node name="SceneEntrance" parent="Objects" instance=ExtResource("8_kuxa7")]
 position = Vector2(-568, 0)
+next_scene = "res://levels/level_1.tscn"
 
 [node name="PlayerPlatformer" parent="." instance=ExtResource("1_75gwh")]
-position = Vector2(-528, -176)
+position = Vector2(496, -80)
