@@ -70,14 +70,14 @@ position = Vector2(864, -80)
 [node name="Door" parent="Objects" instance=ExtResource("5_y1fpr")]
 position = Vector2(-504, 112)
 
-[node name="PlayerPlatformer" parent="." instance=ExtResource("1_75gwh")]
-position = Vector2(-528, -176)
-
-[node name="CheckpointArea" parent="." instance=ExtResource("7_mywi7")]
+[node name="CheckpointArea" parent="Objects" instance=ExtResource("7_mywi7")]
 position = Vector2(-432, -176)
 
-[node name="CheckpointArea2" parent="." instance=ExtResource("7_mywi7")]
+[node name="CheckpointArea2" parent="Objects" instance=ExtResource("7_mywi7")]
 position = Vector2(168, 16)
 
-[node name="SceneEntrance" parent="." instance=ExtResource("8_kuxa7")]
+[node name="SceneEntrance" parent="Objects" instance=ExtResource("8_kuxa7")]
 position = Vector2(-568, 0)
+
+[node name="PlayerPlatformer" parent="." instance=ExtResource("1_75gwh")]
+position = Vector2(-528, -176)
