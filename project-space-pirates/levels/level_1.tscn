@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dubu7ix63wqvm"]
+[gd_scene load_steps=7 format=3 uid="uid://dubu7ix63wqvm"]
 
 [ext_resource type="PackedScene" uid="uid://dej7s7gmiss13" path="res://objects/pickup_items/health_item.tscn" id="1_kx6l7"]
 [ext_resource type="PackedScene" uid="uid://bvstcalgkhvp6" path="res://objects/level_objects/door.tscn" id="2_n46q3"]
 [ext_resource type="PackedScene" uid="uid://c1vwxu07abuus" path="res://objects/player/PlayerPlatformer/player_platformer.tscn" id="3_btoec"]
 [ext_resource type="PackedScene" uid="uid://dkc7n6xag5por" path="res://objects/enemies/PirateEnemy/pirate_enemy.tscn" id="4_gwceb"]
 [ext_resource type="PackedScene" uid="uid://bacqw7l3u02n6" path="res://objects/level_objects/platform.tscn" id="5_n46q3"]
+[ext_resource type="PackedScene" uid="uid://dc87e8bajv67w" path="res://objects/level_objects/checkpoint_area.tscn" id="6_btoec"]
 
 [node name="Level 1" type="Node2D"]
 
@@ -331,3 +332,16 @@ polygon = PackedVector2Array(2823, 3802, 1885, 3798, 1888, 3818, 2824, 3817)
 position = Vector2(0, 10)
 color = Color(0.631373, 0.176471, 0.0823529, 1)
 polygon = PackedVector2Array(3271, 3792, 4065, 3798, 4063, 3842, 3271, 3829)
+
+[node name="Checkpoints" type="Node" parent="."]
+
+[node name="CheckpointArea" parent="Checkpoints" instance=ExtResource("6_btoec")]
+position = Vector2(3520, 1008)
+
+[node name="CollisionShape2D" parent="Checkpoints/CheckpointArea" index="0"]
+position = Vector2(0, -44)
+
+[node name="CheckpointArea2" parent="Checkpoints" instance=ExtResource("6_btoec")]
+position = Vector2(400, 1064)
+
+[editable path="Checkpoints/CheckpointArea"]

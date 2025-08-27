@@ -52,10 +52,10 @@ func _physics_process(delta: float) -> void:
 	
 	# Ammo reloading state.
 	if PlayerVariables.is_reloading == true:
-		if PlayerVariables.ammo < 3:
+		if PlayerVariables.ammo < 6:
 			$CanvasLayer/ReloadingLabel.visible = true
 			reloading(delta) # Reloads roughly one bullet per second.
-			if PlayerVariables.ammo >= 3:
+			if PlayerVariables.ammo >= 6:
 				# TODO: Uncomment the following line once debug is finished.
 				$CanvasLayer/ReloadingLabel.visible = false
 				PlayerVariables.reloading_progress = 0
@@ -118,7 +118,8 @@ func restore_health(health) -> void:
 
 func reloading(delta) -> void:
 	if PlayerVariables.reloading_progress >= 100:
-		PlayerVariables.ammo += 1
+		PlayerVariables.ammo += 3
+		PlayerVariables.ammo = clampi(PlayerVariables.ammo, 0, 6)
 		$CanvasLayer/AmmoLabel.text = "Ammo: %d" % PlayerVariables.ammo
 		green_text_blink($CanvasLayer/AmmoLabel)
 		PlayerVariables.reloading_progress = 0
