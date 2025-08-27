@@ -11,6 +11,6 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_touch_area_body_entered(body: Node2D) -> void:
-	if body is Player:
+	if body is Player and PlayerVariables.health < 100:
 		body.restore_health(HEALTH)
 		queue_free()

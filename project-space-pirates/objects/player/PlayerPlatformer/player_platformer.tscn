@@ -61,9 +61,9 @@ label_settings = SubResource("LabelSettings_r7f4e")
 [node name="AmmoLabel" type="Label" parent="CanvasLayer"]
 offset_left = 24.0
 offset_top = 48.0
-offset_right = 104.0
+offset_right = 112.0
 offset_bottom = 71.0
-text = "Ammo: 3"
+text = "Ammo: 000"
 label_settings = SubResource("LabelSettings_y3hdj")
 
 [node name="ReloadingLabel" type="Label" parent="CanvasLayer"]

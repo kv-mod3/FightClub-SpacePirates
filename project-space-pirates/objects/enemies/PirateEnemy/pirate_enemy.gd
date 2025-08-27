@@ -1,6 +1,5 @@
 extends CharacterBody2D
 
-
 enum State {
 	IDLE,
 	MOVE,

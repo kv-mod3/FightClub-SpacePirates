@@ -14,6 +14,7 @@ func _ready() -> void:
 	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
 	# Alternative with same result:
 	# $CanvasLayer/HealthLabel.text = "HP: " + str(int(PlayerVariables.health))
+	$CanvasLayer/AmmoLabel.text = "HP: %d" % PlayerVariables.ammo
 	
 	SceneManager.respawn_location = global_position
 	print("SceneManager: Set initial respawn point to ", SceneManager.respawn_location)

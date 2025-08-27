@@ -1,6 +1,5 @@
 extends Area2D
 
-
 var is_activated: bool = false
 
 

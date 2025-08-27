@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://e1h2ictdyujb"]
+[gd_scene load_steps=9 format=3 uid="uid://e1h2ictdyujb"]
 
 [ext_resource type="PackedScene" uid="uid://c1vwxu07abuus" path="res://objects/player/PlayerPlatformer/player_platformer.tscn" id="1_75gwh"]
 [ext_resource type="Script" uid="uid://be8efiufn4g0p" path="res://levels/level_debug.gd" id="1_tlh8j"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bacqw7l3u02n6" path="res://objects/level_objects/platform.tscn" id="4_u2tkn"]
 [ext_resource type="PackedScene" uid="uid://bvstcalgkhvp6" path="res://objects/level_objects/door.tscn" id="5_y1fpr"]
 [ext_resource type="PackedScene" uid="uid://dc87e8bajv67w" path="res://objects/level_objects/checkpoint_area.tscn" id="7_mywi7"]
+[ext_resource type="PackedScene" uid="uid://d0amyb102xm7k" path="res://objects/level_objects/scene_entrance.tscn" id="8_kuxa7"]
 
 [node name="DebugRoom" type="Node2D"]
 script = ExtResource("1_tlh8j")
@@ -57,14 +58,8 @@ mode = 1
 
 [node name="Objects" type="Node" parent="."]
 
-[node name="HealthItem" parent="Objects" instance=ExtResource("4_ppha6")]
-position = Vector2(-248, -80)
-
 [node name="HealthItem2" parent="Objects" instance=ExtResource("4_ppha6")]
 position = Vector2(-584, -200)
-
-[node name="HealthItem3" parent="Objects" instance=ExtResource("4_ppha6")]
-position = Vector2(-568, 32)
 
 [node name="HealthItem4" parent="Objects" instance=ExtResource("4_ppha6")]
 position = Vector2(-448, 32)
@@ -73,7 +68,7 @@ position = Vector2(-448, 32)
 position = Vector2(864, -80)
 
 [node name="Door" parent="Objects" instance=ExtResource("5_y1fpr")]
-position = Vector2(-504, 0)
+position = Vector2(-504, 112)
 
 [node name="PlayerPlatformer" parent="." instance=ExtResource("1_75gwh")]
 position = Vector2(-528, -176)
@@ -83,3 +78,6 @@ position = Vector2(-432, -176)
 
 [node name="CheckpointArea2" parent="." instance=ExtResource("7_mywi7")]
 position = Vector2(168, 16)
+
+[node name="SceneEntrance" parent="." instance=ExtResource("8_kuxa7")]
+position = Vector2(-568, 0)
