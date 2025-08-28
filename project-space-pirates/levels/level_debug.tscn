@@ -41,7 +41,7 @@ position = Vector2(320, -200)
 [node name="Enemies" type="Node" parent="."]
 
 [node name="PirateEnemy" parent="Enemies" instance=ExtResource("2_03qpd")]
-position = Vector2(-200, 16)
+position = Vector2(-72, -48)
 initial_direction = 1
 
 [node name="PirateEnemy2" parent="Enemies" instance=ExtResource("2_03qpd")]
@@ -67,9 +67,6 @@ position = Vector2(-448, 32)
 [node name="HealthItem5" parent="Objects" instance=ExtResource("4_ppha6")]
 position = Vector2(864, -80)
 
-[node name="Door" parent="Objects" instance=ExtResource("5_y1fpr")]
-position = Vector2(-512, 0)
-
 [node name="CheckpointArea" parent="Objects" instance=ExtResource("7_mywi7")]
 position = Vector2(-432, -176)
 
@@ -79,6 +76,9 @@ position = Vector2(168, 16)
 [node name="SceneEntrance" parent="Objects" instance=ExtResource("8_kuxa7")]
 position = Vector2(-568, 0)
 next_scene = "res://levels/level_1.tscn"
+
+[node name="Door" parent="Objects" instance=ExtResource("5_y1fpr")]
+position = Vector2(-504, 0)
 
 [node name="PlayerPlatformer" parent="." instance=ExtResource("1_75gwh")]
 position = Vector2(496, -80)

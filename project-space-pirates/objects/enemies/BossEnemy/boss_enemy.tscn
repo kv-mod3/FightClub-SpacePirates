@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5o3173tmhfnp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_or7ns"]
+
+[node name="BossEnemy" type="CharacterBody2D"]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_or7ns")
