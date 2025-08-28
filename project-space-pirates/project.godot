@@ -22,7 +22,7 @@ SceneManager="*res://global_scripts/scene_manager.gd"
 
 [display]
 
-window/stretch/mode="canvas_items"
+window/stretch/mode="viewport"
 
 [file_customization]
 
@@ -39,6 +39,7 @@ folder_colors={
 enemies=""
 solids="Includes solid terrain or impenetrable objects."
 destructibles="Destructible objects that can receive damage until they break."
+doors=""
 
 [input]
 
@@ -88,5 +89,6 @@ debug={
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

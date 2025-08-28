@@ -11,9 +11,11 @@ region = Rect2(128, 448, 832, 1088)
 size = Vector2(16, 32)
 
 [sub_resource type="LabelSettings" id="LabelSettings_r7f4e"]
+font_size = 24
 shadow_color = Color(0, 0, 0, 0.313726)
 
 [sub_resource type="LabelSettings" id="LabelSettings_y3hdj"]
+font_size = 24
 shadow_color = Color(0, 0, 0, 0.314)
 
 [sub_resource type="LabelSettings" id="LabelSettings_e3i7r"]
@@ -53,25 +55,27 @@ one_shot = true
 [node name="HealthLabel" type="Label" parent="CanvasLayer"]
 offset_left = 24.0
 offset_top = 24.0
-offset_right = 88.0
-offset_bottom = 47.0
+offset_right = 120.0
+offset_bottom = 64.0
 text = "HP: 000"
 label_settings = SubResource("LabelSettings_r7f4e")
+vertical_alignment = 1
 
 [node name="AmmoLabel" type="Label" parent="CanvasLayer"]
 offset_left = 24.0
-offset_top = 48.0
-offset_right = 112.0
-offset_bottom = 71.0
+offset_top = 64.0
+offset_right = 160.0
+offset_bottom = 104.0
 text = "Ammo: 000"
 label_settings = SubResource("LabelSettings_y3hdj")
+vertical_alignment = 1
 
 [node name="ReloadingLabel" type="Label" parent="CanvasLayer"]
 visible = false
-offset_left = 24.0
+offset_left = 160.0
 offset_top = 72.0
-offset_right = 176.0
-offset_bottom = 95.0
+offset_right = 312.0
+offset_bottom = 96.0
 text = "Recharging... 100%"
 label_settings = SubResource("LabelSettings_e3i7r")
 

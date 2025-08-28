@@ -41,7 +41,7 @@ position = Vector2(320, -200)
 [node name="Enemies" type="Node" parent="."]
 
 [node name="PirateEnemy" parent="Enemies" instance=ExtResource("2_03qpd")]
-position = Vector2(-72, -56)
+position = Vector2(-200, 16)
 initial_direction = 1
 
 [node name="PirateEnemy2" parent="Enemies" instance=ExtResource("2_03qpd")]
@@ -68,7 +68,7 @@ position = Vector2(-448, 32)
 position = Vector2(864, -80)
 
 [node name="Door" parent="Objects" instance=ExtResource("5_y1fpr")]
-position = Vector2(-504, 112)
+position = Vector2(-512, 0)
 
 [node name="CheckpointArea" parent="Objects" instance=ExtResource("7_mywi7")]
 position = Vector2(-432, -176)

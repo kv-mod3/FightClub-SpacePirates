@@ -32,3 +32,6 @@ func _on_body_entered(body: Node2D) -> void:
 		queue_free() # Deletes bullet on collision.
 	if body.is_in_group("solids"):
 		queue_free()
+	if body.is_in_group("doors"):
+		body.open()
+		queue_free()

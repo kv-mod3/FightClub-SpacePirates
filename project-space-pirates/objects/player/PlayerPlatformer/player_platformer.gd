@@ -16,10 +16,19 @@ func _ready() -> void:
 	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
 	# Alternative with same result:
 	# $CanvasLayer/HealthLabel.text = "HP: " + str(int(PlayerVariables.health))
-	$CanvasLayer/AmmoLabel.text = "HP: %d" % PlayerVariables.ammo
+	$CanvasLayer/AmmoLabel.text = "Ammo: %d" % PlayerVariables.ammo
 	
 	SceneManager.respawn_location = global_position
 	print("SceneManager: Set initial respawn point to ", SceneManager.respawn_location)
+	
+	# TEST
+	var noomalize_left: Vector2 = Vector2.LEFT
+	noomalize_left = noomalize_left.normalized()
+	print(noomalize_left)
+	
+	var noomalize_right: Vector2 = Vector2.RIGHT
+	noomalize_right = noomalize_right.normalized()
+	print(noomalize_right)
 
 
 func _physics_process(delta: float) -> void:
@@ -28,9 +37,7 @@ func _physics_process(delta: float) -> void:
 	
 	# NOTE: Debug "K" key sets player health to 0. For debugging death-related events.
 	if Input.is_action_just_pressed("debug"):
-		knockback()
-		# PlayerVariables.health = 0
-		# take_damage(0)
+		take_damage(100)
 	
 	# Add the gravity.
 	if not is_on_floor():
@@ -40,27 +47,27 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
 	
-	if Input.is_action_just_pressed("shoot"):
+	# Shoots if not knocked back.
+	if Input.is_action_just_pressed("shoot") and not is_knocked_back:
 		shoot()
 
 	# Get the input direction and handle the movement/deceleration.
 	var direction := Input.get_axis("left", "right")
 	if direction:
 		velocity.x = direction * move_speed
+		face_direction() # Is placed here to prevent knockback from turning Player around.
 	else:
 		velocity.x = move_toward(velocity.x, 0, move_speed) # Moves toward a destination speed before stopping.
 	
 	# Movement.
-	face_direction()
 	move_and_slide()
 	
-	# Ammo reloading state.
+	# Ammo reloading conditions.
 	if PlayerVariables.is_reloading == true:
 		if PlayerVariables.ammo < 6:
 			$CanvasLayer/ReloadingLabel.visible = true
 			reloading(delta) # Reloads roughly one bullet per second.
 			if PlayerVariables.ammo >= 6:
-				# TODO: Uncomment the following line once debug is finished.
 				$CanvasLayer/ReloadingLabel.visible = false
 				PlayerVariables.reloading_progress = 0
 				PlayerVariables.is_reloading = false
@@ -103,7 +110,6 @@ func shoot() -> void:
 func take_damage(damage: float) -> void:
 	if not is_invincible:
 		i_frames(3) # Invincibility frames for x seconds.
-		knockback()
 		# TODO: Add sound effects.
 		# TODO: Add animations.
 		PlayerVariables.health -= damage
@@ -114,11 +120,25 @@ func take_damage(damage: float) -> void:
 			print("Player is playing dying animations.")
 
 
-func knockback() -> void:
-	var knockback_direction: Vector2 = Vector2(-4, -1)
-	var knockback_strength: float = 200
-	# Targets the player's velocity and pushes them back in a direction multiplied by strength.
-	velocity += knockback_direction * knockback_strength
+func knockback(bullet_position) -> void:
+	if not is_knocked_back:
+		var knockback_direction: Vector2 = global_position - bullet_position
+		var knockback_strength: float = 200
+
+		print("Bullet direction: ", knockback_direction)
+		is_knocked_back = true
+		if knockback_direction.x < 0:
+			knockback_direction = Vector2(-800, -200)
+			# knockback_direction = Vector2(-2, -0.707107)
+		if knockback_direction.x > 0:
+			knockback_direction = Vector2(800, -200)
+			# knockback_direction = Vector2(2, -0.707107)
+		# Targets the player's velocity and pushes them back in a direction multiplied by strength.
+		velocity = knockback_direction
+		print("Velocity from hit: ", velocity)
+		# TODO: Clamp velocity.
+		await get_tree().create_timer(0.3).timeout
+		is_knocked_back = false
 
 
 # Invincibility period after taking damage.

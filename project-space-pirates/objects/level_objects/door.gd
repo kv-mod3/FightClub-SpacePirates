@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 var is_opening: bool = false
+var is_opened: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -14,4 +15,5 @@ func _process(delta: float) -> void:
 
 # Opens door upon being hit by Player bullet.
 func open() -> void:
-	pass
+	$Polygon2D/SensorLeft.color = Color(0.26, 1, 0.26)
+	$Polygon2D/SensorRight.color = Color(0.26, 1, 0.26)

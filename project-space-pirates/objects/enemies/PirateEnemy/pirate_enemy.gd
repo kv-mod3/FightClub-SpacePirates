@@ -186,7 +186,7 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 		
 	# NOTE: The following code is here at the bottom to give the enemy a moment to understand it got hurt.
 	# TODO: Might want to move it into the nested block above though.
-	# Faces enemy towards the direction of the Player's bullets.
+	# Faces enemy towards the direction of the Player's bullets, but only if the enemy was facing away from bullet direction.
 	if bullet_direction == "left" and direction.x < 0:
 		direction = Vector2.RIGHT
 		face_direction()
