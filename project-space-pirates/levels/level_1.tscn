@@ -1,17 +1,27 @@
-[gd_scene load_steps=9 format=3 uid="uid://dubu7ix63wqvm"]
+[gd_scene load_steps=14 format=3 uid="uid://dubu7ix63wqvm"]
 
+[ext_resource type="Script" uid="uid://dh51ho4g2xpe1" path="res://levels/level_1.gd" id="1_3sk1a"]
 [ext_resource type="PackedScene" uid="uid://dej7s7gmiss13" path="res://objects/pickup_items/health_item.tscn" id="1_kx6l7"]
 [ext_resource type="PackedScene" uid="uid://bvstcalgkhvp6" path="res://objects/level_objects/door.tscn" id="2_n46q3"]
 [ext_resource type="PackedScene" uid="uid://c1vwxu07abuus" path="res://objects/player/PlayerPlatformer/player_platformer.tscn" id="3_btoec"]
 [ext_resource type="PackedScene" uid="uid://dkc7n6xag5por" path="res://objects/enemies/PirateEnemy/pirate_enemy.tscn" id="4_gwceb"]
+[ext_resource type="PackedScene" uid="uid://b5o3173tmhfnp" path="res://objects/enemies/BossEnemy/boss_enemy.tscn" id="5_l53as"]
 [ext_resource type="PackedScene" uid="uid://bacqw7l3u02n6" path="res://objects/level_objects/platform.tscn" id="5_n46q3"]
 [ext_resource type="PackedScene" uid="uid://dc87e8bajv67w" path="res://objects/level_objects/checkpoint_area.tscn" id="6_btoec"]
 [ext_resource type="PackedScene" uid="uid://d0amyb102xm7k" path="res://objects/level_objects/scene_entrance.tscn" id="7_gwceb"]
+[ext_resource type="PackedScene" uid="uid://pj60a1uxovhp" path="res://objects/level_objects/kill_area.tscn" id="8_08mmt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ot28"]
+size = Vector2(3952, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_08mmt"]
+size = Vector2(2184, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gwceb"]
 size = Vector2(40, 528)
 
 [node name="Level 1" type="Node2D"]
+script = ExtResource("1_3sk1a")
 
 [node name="Space Background" type="Polygon2D" parent="."]
 position = Vector2(6, 2)
@@ -55,16 +65,13 @@ position = Vector2(1288, 1102)
 position = Vector2(3191, 3771)
 
 [node name="Door" parent="Objects" instance=ExtResource("2_n46q3")]
-position = Vector2(1212, 974)
+position = Vector2(1216, 1016)
 
 [node name="Door3" parent="Objects" instance=ExtResource("2_n46q3")]
-position = Vector2(352, 1022)
+position = Vector2(352, 1064)
 
 [node name="Door2" parent="Objects" instance=ExtResource("2_n46q3")]
-position = Vector2(1875, 391)
-
-[node name="PlayerPlatformer" parent="." instance=ExtResource("3_btoec")]
-position = Vector2(688, 466)
+position = Vector2(1880, 433)
 
 [node name="Enemies" type="Node" parent="."]
 
@@ -113,6 +120,9 @@ mode = 1
 
 [node name="PirateEnemy4" parent="Enemies" instance=ExtResource("4_gwceb")]
 position = Vector2(2887, 457)
+
+[node name="BossEnemy" parent="Enemies" instance=ExtResource("5_l53as")]
+position = Vector2(4952, 3728)
 
 [node name="SpaceShip" type="Node2D" parent="."]
 
@@ -316,6 +326,20 @@ scale = Vector2(0.5, 1)
 
 [node name="Kill Floor" type="Node2D" parent="."]
 
+[node name="KillArea" parent="Kill Floor" instance=ExtResource("8_08mmt")]
+position = Vector2(3456, 1720)
+
+[node name="CollisionShape2D" parent="Kill Floor/KillArea" index="0"]
+position = Vector2(-992, 12)
+shape = SubResource("RectangleShape2D_5ot28")
+
+[node name="KillArea2" parent="Kill Floor" instance=ExtResource("8_08mmt")]
+position = Vector2(2384, 3840)
+
+[node name="CollisionShape2D" parent="Kill Floor/KillArea2" index="0"]
+position = Vector2(596, 0)
+shape = SubResource("RectangleShape2D_08mmt")
+
 [node name="Kill Floor 1" type="Polygon2D" parent="Kill Floor"]
 color = Color(0.631373, 0.176471, 0.0823529, 1)
 polygon = PackedVector2Array(2795, 1693, 4433, 1703, 4431, 1659, 2796, 1661)
@@ -356,4 +380,59 @@ next_scene = "res://levels/level_2.tscn"
 position = Vector2(28, -200)
 shape = SubResource("RectangleShape2D_gwceb")
 
+[node name="DoorSign" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1672.0
+offset_top = 336.0
+offset_right = 1712.0
+offset_bottom = 376.0
+
+[node name="Panel" type="Panel" parent="DoorSign"]
+layout_mode = 0
+offset_right = 176.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="DoorSign"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 165.0
+offset_bottom = 31.0
+text = "Shoot doors to open"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ControlsSign" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 944.0
+offset_top = 304.0
+offset_right = 984.0
+offset_bottom = 344.0
+
+[node name="Panel" type="Panel" parent="ControlsSign"]
+layout_mode = 0
+offset_right = 176.0
+offset_bottom = 144.0
+
+[node name="Label" type="Label" parent="ControlsSign"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 165.0
+offset_bottom = 31.0
+text = "Controls:
+A = Left
+D = Right
+Space = Jump
+Enter = Shoot"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerPlatformer" parent="." instance=ExtResource("3_btoec")]
+position = Vector2(664, 456)
+
+[editable path="Kill Floor/KillArea"]
+[editable path="Kill Floor/KillArea2"]
 [editable path="SceneEntrance"]

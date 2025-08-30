@@ -1,9 +1,97 @@
-[gd_scene load_steps=2 format=3 uid="uid://b5o3173tmhfnp"]
+[gd_scene load_steps=11 format=3 uid="uid://b5o3173tmhfnp"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_or7ns"]
+[ext_resource type="Script" uid="uid://dr44kb8ahe6pu" path="res://objects/enemies/BossEnemy/boss_enemy.gd" id="1_3vdqm"]
+[ext_resource type="Texture2D" uid="uid://ci5o7vxxr023a" path="res://assets/sprites/boss_72x.png" id="1_bg26o"]
 
-[node name="BossEnemy" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_3vdqm"]
+radius = 32.249
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h3843"]
+radius = 384.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gtotk"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(0, 72, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yonik"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(72, 72, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6idkp"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(0, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3vdqm"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(0, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h3843"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(72, 0, 72, 72)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6idkp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gtotk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yonik")
+}],
+"loop": true,
+"name": &"charge",
+"speed": 10.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6idkp")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3vdqm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h3843")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[node name="BossEnemy" type="CharacterBody2D" groups=["enemies"]]
 collision_layer = 2
+script = ExtResource("1_3vdqm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_or7ns")
+position = Vector2(0, 4)
+shape = SubResource("CircleShape2D_3vdqm")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_h3843")
+debug_color = Color(0.997788, 0, 0.158, 0.42)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_6idkp")
+animation = &"charge"
+autoplay = "idle"
+frame_progress = 0.332418
+
+[node name="MuzzleMarker" type="Marker2D" parent="."]
+position = Vector2(0, 4)
+
+[node name="DecisionTimer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]

@@ -1,15 +1,34 @@
-[gd_scene load_steps=7 format=3 uid="uid://cdmp8ry4bd76d"]
+[gd_scene load_steps=14 format=3 uid="uid://cdmp8ry4bd76d"]
 
+[ext_resource type="Script" uid="uid://stju4lg1eawp" path="res://levels/level_2.gd" id="1_ep78u"]
 [ext_resource type="PackedScene" uid="uid://bacqw7l3u02n6" path="res://objects/level_objects/platform.tscn" id="1_mi4ay"]
 [ext_resource type="PackedScene" uid="uid://bvstcalgkhvp6" path="res://objects/level_objects/door.tscn" id="2_0srwa"]
 [ext_resource type="PackedScene" uid="uid://c6apj1qu862c2" path="res://objects/level_objects/player_ship_actor.tscn" id="3_5722l"]
 [ext_resource type="PackedScene" uid="uid://c1vwxu07abuus" path="res://objects/player/PlayerPlatformer/player_platformer.tscn" id="3_v5uil"]
+[ext_resource type="PackedScene" uid="uid://pj60a1uxovhp" path="res://objects/level_objects/kill_area.tscn" id="4_dfjjl"]
 [ext_resource type="PackedScene" uid="uid://d0amyb102xm7k" path="res://objects/level_objects/scene_entrance.tscn" id="5_ilhis"]
+[ext_resource type="PackedScene" uid="uid://dc87e8bajv67w" path="res://objects/level_objects/checkpoint_area.tscn" id="6_ilhis"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_at1ld"]
+size = Vector2(1944, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sd18g"]
+size = Vector2(1016, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5722l"]
 size = Vector2(128, 128)
 
+[sub_resource type="LabelSettings" id="LabelSettings_ep78u"]
+font_size = 36
+shadow_color = Color(0, 0, 0, 0.313726)
+
+[sub_resource type="LabelSettings" id="LabelSettings_dfjjl"]
+font_size = 36
+font_color = Color(0.890196, 1, 0.121569, 1)
+shadow_color = Color(0, 0, 0, 0.313726)
+
 [node name="Level 2" type="Node2D"]
+script = ExtResource("1_ep78u")
 
 [node name="Ship Background" type="Polygon2D" parent="."]
 position = Vector2(6, 2)
@@ -242,6 +261,20 @@ position = Vector2(-238, 433)
 color = Color(0.631373, 0.176471, 0.0823529, 1)
 polygon = PackedVector2Array(3076, 3781, 4060, 3797, 4068, 3818, 3073, 3812)
 
+[node name="KillArea" parent="Kill Floor" instance=ExtResource("4_dfjjl")]
+position = Vector2(5576, 4464)
+
+[node name="CollisionShape2D" parent="Kill Floor/KillArea" index="0"]
+position = Vector2(-28, 0)
+shape = SubResource("RectangleShape2D_at1ld")
+
+[node name="KillArea2" parent="Kill Floor" instance=ExtResource("4_dfjjl")]
+position = Vector2(3384, 4264)
+
+[node name="CollisionShape2D" parent="Kill Floor/KillArea2" index="0"]
+position = Vector2(-52, 0)
+shape = SubResource("RectangleShape2D_sd18g")
+
 [node name="PlayerShipActor" parent="." instance=ExtResource("3_5722l")]
 position = Vector2(6182, 1441)
 
@@ -255,4 +288,61 @@ next_scene = "res://levels/level_3_escaped.tscn"
 [node name="CollisionShape2D" parent="SceneEntrance" index="0"]
 shape = SubResource("RectangleShape2D_5722l")
 
+[node name="Checkpoints" type="Node" parent="."]
+
+[node name="CheckpointArea" parent="Checkpoints" instance=ExtResource("6_ilhis")]
+position = Vector2(6520, 4264)
+
+[node name="CheckpointArea2" parent="Checkpoints" instance=ExtResource("6_ilhis")]
+position = Vector2(4600, 4288)
+
+[node name="CheckpointArea3" parent="Checkpoints" instance=ExtResource("6_ilhis")]
+position = Vector2(3784, 3496)
+
+[node name="CheckpointArea4" parent="Checkpoints" instance=ExtResource("6_ilhis")]
+position = Vector2(4416, 2984)
+
+[node name="CheckpointArea5" parent="Checkpoints" instance=ExtResource("6_ilhis")]
+position = Vector2(4216, 1792)
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Control"]
+
+[node name="Panel" type="Panel" parent="Control/CanvasLayer"]
+offset_left = 456.0
+offset_top = 16.0
+offset_right = 704.0
+offset_bottom = 152.0
+
+[node name="TimerLabel" type="Label" parent="Control/CanvasLayer"]
+offset_left = 472.0
+offset_top = 80.0
+offset_right = 688.0
+offset_bottom = 144.0
+text = "Time left: 00"
+label_settings = SubResource("LabelSettings_ep78u")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EscapeLabel" type="Label" parent="Control/CanvasLayer"]
+offset_left = 496.0
+offset_top = 16.0
+offset_right = 656.0
+offset_bottom = 80.0
+text = "Escape!"
+label_settings = SubResource("LabelSettings_dfjjl")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+
+[editable path="Kill Floor/KillArea"]
+[editable path="Kill Floor/KillArea2"]
 [editable path="SceneEntrance"]

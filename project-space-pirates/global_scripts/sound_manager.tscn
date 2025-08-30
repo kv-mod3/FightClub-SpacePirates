@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://c82mgfqlu6j5g"]
+
+[ext_resource type="AudioStream" uid="uid://c1t6tohhctf3u" path="res://assets/music/Level Abandoned Ship Song.wav" id="1_dxxam"]
+[ext_resource type="Script" uid="uid://cj0w4qditumau" path="res://global_scripts/sound_manager.gd" id="1_eaiyj"]
+[ext_resource type="AudioStream" uid="uid://c5hdp7ex12hct" path="res://assets/music/The Great Escape Level 2.wav" id="2_eaiyj"]
+
+[node name="SoundManager" type="Node"]
+script = ExtResource("1_eaiyj")
+
+[node name="Level1BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_dxxam")
+
+[node name="Level2BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_eaiyj")
+
+[node name="Level3BGM" type="AudioStreamPlayer" parent="."]

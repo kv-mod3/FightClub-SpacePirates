@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 PlayerVariables="*res://global_scripts/player_variables.gd"
 SceneManager="*res://global_scripts/scene_manager.gd"
+SoundManager="*res://global_scripts/sound_manager.tscn"
 
 [display]
 

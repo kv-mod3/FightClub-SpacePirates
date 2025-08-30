@@ -112,14 +112,15 @@ func shoot() -> void:
 func take_damage(damage: float) -> void:
 	if not is_invincible:
 		i_frames(3) # Invincibility frames for x seconds.
-		$Sounds/Hurt.play()
 		# TODO: Add animations.
 		PlayerVariables.health -= damage
 		$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
-		print("Player took %d damage!" % damage, " Current HP: ", PlayerVariables.health)
 		if PlayerVariables.health <= 0 and not is_dying:
 			death()
 			print("Player is playing dying animations.")
+		else:
+			$Sounds/Hurt.play()
+		print("Player took %d damage!" % damage, " Current HP: ", PlayerVariables.health)
 
 
 func knockback(bullet_position) -> void:
@@ -189,6 +190,7 @@ func green_text_blink(label: Control) -> void:
 
 func death() -> void:
 	is_dying = true
+	$Sounds/Death.play()
 	# TODO: insert animations on this very line.
 	await get_tree().create_timer(3).timeout
 	global_position = SceneManager.respawn_location # Sets Player position to respawn location.
