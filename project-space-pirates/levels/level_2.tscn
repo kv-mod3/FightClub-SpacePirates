@@ -1,8 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://cdmp8ry4bd76d"]
+[gd_scene load_steps=7 format=3 uid="uid://cdmp8ry4bd76d"]
 
 [ext_resource type="PackedScene" uid="uid://bacqw7l3u02n6" path="res://objects/level_objects/platform.tscn" id="1_mi4ay"]
 [ext_resource type="PackedScene" uid="uid://bvstcalgkhvp6" path="res://objects/level_objects/door.tscn" id="2_0srwa"]
+[ext_resource type="PackedScene" uid="uid://c6apj1qu862c2" path="res://objects/level_objects/player_ship_actor.tscn" id="3_5722l"]
 [ext_resource type="PackedScene" uid="uid://c1vwxu07abuus" path="res://objects/player/PlayerPlatformer/player_platformer.tscn" id="3_v5uil"]
+[ext_resource type="PackedScene" uid="uid://d0amyb102xm7k" path="res://objects/level_objects/scene_entrance.tscn" id="5_ilhis"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5722l"]
+size = Vector2(128, 128)
 
 [node name="Level 2" type="Node2D"]
 
@@ -237,5 +242,17 @@ position = Vector2(-238, 433)
 color = Color(0.631373, 0.176471, 0.0823529, 1)
 polygon = PackedVector2Array(3076, 3781, 4060, 3797, 4068, 3818, 3073, 3812)
 
+[node name="PlayerShipActor" parent="." instance=ExtResource("3_5722l")]
+position = Vector2(6182, 1441)
+
 [node name="PlayerPlatformer" parent="." instance=ExtResource("3_v5uil")]
 position = Vector2(6573, 4284)
+
+[node name="SceneEntrance" parent="." instance=ExtResource("5_ilhis")]
+position = Vector2(6176, 1504)
+next_scene = "res://levels/level_3_escaped.tscn"
+
+[node name="CollisionShape2D" parent="SceneEntrance" index="0"]
+shape = SubResource("RectangleShape2D_5722l")
+
+[editable path="SceneEntrance"]

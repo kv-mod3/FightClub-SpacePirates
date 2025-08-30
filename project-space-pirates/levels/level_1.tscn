@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dubu7ix63wqvm"]
+[gd_scene load_steps=9 format=3 uid="uid://dubu7ix63wqvm"]
 
 [ext_resource type="PackedScene" uid="uid://dej7s7gmiss13" path="res://objects/pickup_items/health_item.tscn" id="1_kx6l7"]
 [ext_resource type="PackedScene" uid="uid://bvstcalgkhvp6" path="res://objects/level_objects/door.tscn" id="2_n46q3"]
@@ -6,6 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://dkc7n6xag5por" path="res://objects/enemies/PirateEnemy/pirate_enemy.tscn" id="4_gwceb"]
 [ext_resource type="PackedScene" uid="uid://bacqw7l3u02n6" path="res://objects/level_objects/platform.tscn" id="5_n46q3"]
 [ext_resource type="PackedScene" uid="uid://dc87e8bajv67w" path="res://objects/level_objects/checkpoint_area.tscn" id="6_btoec"]
+[ext_resource type="PackedScene" uid="uid://d0amyb102xm7k" path="res://objects/level_objects/scene_entrance.tscn" id="7_gwceb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gwceb"]
+size = Vector2(40, 528)
 
 [node name="Level 1" type="Node2D"]
 
@@ -336,12 +340,20 @@ polygon = PackedVector2Array(3271, 3792, 4065, 3798, 4063, 3842, 3271, 3829)
 [node name="Checkpoints" type="Node" parent="."]
 
 [node name="CheckpointArea" parent="Checkpoints" instance=ExtResource("6_btoec")]
-position = Vector2(3520, 1008)
-
-[node name="CollisionShape2D" parent="Checkpoints/CheckpointArea" index="0"]
-position = Vector2(0, -44)
+position = Vector2(3504, 1008)
 
 [node name="CheckpointArea2" parent="Checkpoints" instance=ExtResource("6_btoec")]
-position = Vector2(400, 1064)
+position = Vector2(400, 1080)
 
-[editable path="Checkpoints/CheckpointArea"]
+[node name="CheckpointArea3" parent="Checkpoints" instance=ExtResource("6_btoec")]
+position = Vector2(4112, 3736)
+
+[node name="SceneEntrance" parent="." instance=ExtResource("7_gwceb")]
+position = Vector2(7632, 3704)
+next_scene = "res://levels/level_2.tscn"
+
+[node name="CollisionShape2D" parent="SceneEntrance" index="0"]
+position = Vector2(28, -200)
+shape = SubResource("RectangleShape2D_gwceb")
+
+[editable path="SceneEntrance"]

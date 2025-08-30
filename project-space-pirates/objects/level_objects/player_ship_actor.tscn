@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6apj1qu862c2"]
+
+[ext_resource type="Script" uid="uid://bia1tuesalyml" path="res://objects/level_objects/player_ship_actor.gd" id="1_kxes3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vdqnk"]
+
+[node name="PlayerShipActor" type="CharacterBody2D"]
+collision_layer = 4
+motion_mode = 1
+script = ExtResource("1_kxes3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("CircleShape2D_vdqnk")
+disabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

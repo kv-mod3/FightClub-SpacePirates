@@ -35,7 +35,7 @@ func _physics_process(delta: float) -> void:
 	if is_dying == true: # Locks Player controls (including gravity).
 		return #Do not run any further code if true.
 	
-	# NOTE: Debug "K" key sets player health to 0. For debugging death-related events.
+	# TESTING: Debug "K" key sets player health to 0. For debugging death-related events.
 	if Input.is_action_just_pressed("debug"):
 		take_damage(100)
 	
@@ -46,6 +46,7 @@ func _physics_process(delta: float) -> void:
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
+		$Sounds/Jump.play()
 	
 	# Shoots if not knocked back.
 	if Input.is_action_just_pressed("shoot") and not is_knocked_back:
@@ -95,6 +96,7 @@ func shoot() -> void:
 		var b = bullet.instantiate()
 		owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
 		b.transform = $MuzzleMarker.global_transform
+		$Sounds/Shoot.play()
 		
 		$RechargeTimer.start() # Refreshes the recharge timer if it is running, otherwise starts it.
 		
@@ -110,7 +112,7 @@ func shoot() -> void:
 func take_damage(damage: float) -> void:
 	if not is_invincible:
 		i_frames(3) # Invincibility frames for x seconds.
-		# TODO: Add sound effects.
+		$Sounds/Hurt.play()
 		# TODO: Add animations.
 		PlayerVariables.health -= damage
 		$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
@@ -195,7 +197,7 @@ func death() -> void:
 	PlayerVariables.health = 100
 	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
 	green_text_blink($CanvasLayer/HealthLabel)
-	PlayerVariables.ammo = 3
+	PlayerVariables.ammo = 6
 	$CanvasLayer/AmmoLabel.text = "Ammo: %d" % PlayerVariables.ammo
 	green_text_blink($CanvasLayer/AmmoLabel)
 	

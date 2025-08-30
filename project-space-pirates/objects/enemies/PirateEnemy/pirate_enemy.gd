@@ -136,6 +136,7 @@ func shoot() -> void:
 	is_shooting = true
 	await get_tree().create_timer(0.5).timeout # Windup before firing.
 	create_bullet()
+	$Sounds/Shoot.play()
 	await get_tree().create_timer(3).timeout # Cooldown after firing. Affects how long until enemy does next action.
 	is_shooting = false
 	print("Enemy is ready to fire again.")

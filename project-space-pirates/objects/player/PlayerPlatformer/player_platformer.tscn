@@ -1,7 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://c1vwxu07abuus"]
+[gd_scene load_steps=12 format=3 uid="uid://c1vwxu07abuus"]
 
 [ext_resource type="Script" uid="uid://b0jyw622gwwpt" path="res://objects/player/PlayerPlatformer/player_platformer.gd" id="1_qgnnd"]
 [ext_resource type="Texture2D" uid="uid://cw0k2qagu3gtg" path="res://assets/concepts/GJ_-_Alien_ideas_01.png" id="2_qgnnd"]
+[ext_resource type="AudioStream" uid="uid://bhts5tpvpiv20" path="res://assets/sounds/death.wav" id="3_c223f"]
+[ext_resource type="AudioStream" uid="uid://b18jur2ggrd7m" path="res://assets/sounds/player_shoot.wav" id="4_p8b3x"]
+[ext_resource type="AudioStream" uid="uid://bt6c5inpy04m3" path="res://assets/sounds/jump.wav" id="5_8ho1c"]
+[ext_resource type="AudioStream" uid="uid://d2a2umq143akn" path="res://assets/sounds/hurt.wav" id="6_p8b3x"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5442t"]
 atlas = ExtResource("2_qgnnd")
@@ -81,5 +85,19 @@ label_settings = SubResource("LabelSettings_e3i7r")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 visible = false
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Death" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("3_c223f")
+
+[node name="Shoot" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("4_p8b3x")
+
+[node name="Jump" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("5_8ho1c")
+
+[node name="Hurt" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("6_p8b3x")
 
 [connection signal="timeout" from="RechargeTimer" to="." method="_on_recharge_timer_timeout"]
