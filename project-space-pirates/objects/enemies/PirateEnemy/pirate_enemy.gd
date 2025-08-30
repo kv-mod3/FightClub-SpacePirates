@@ -1,6 +1,5 @@
 extends CharacterBody2D
 
-
 enum State {
 	IDLE,
 	MOVE,
@@ -39,7 +38,7 @@ func _ready() -> void:
 		InitialDirection.RIGHT:
 			direction = Vector2.RIGHT
 			face_direction()
-	# Sets whether the enemy is stationary or roaming.
+	# Sets the starting state of the enemy depending on what behavior they are set to.
 	match mode:
 		EnemyMode.STATIONARY:
 			current_state = State.IDLE
@@ -59,15 +58,13 @@ func _physics_process(delta: float) -> void:
 func state_controller() -> void:
 	match current_state:
 		State.IDLE:
+			if mode == EnemyMode.ROAMING: # Stops movement of enemies when entering IDLE.
+				velocity = Vector2(0, 0) # BUG: Enemy falls down slower if caught in middle of jump.
+			# If target exists AND enemy is not shooting AND is in within detection area, then shoot.
 			if target and not is_shooting:
-				# TODO: Fix the overlapping method to only include the Player.
-				# Currently it detects if ANY body is overlapping the enemy's detection radius.
-				if $DetectionArea2D.has_overlapping_bodies():
-					shoot()
-					print("Enemy sees you and shoots.")
-				else: # Else change direction to shoot the Player.
-					direction = (target.global_position - global_position).normalized()
-					face_direction()
+				# if $DetectionArea2D.has_overlapping_bodies(): # TODO: Change the overlapping method to only include the Player.
+				shoot()
+				print("Enemy sees you and shoots.")
 		State.MOVE:
 			move()
 			if instinct_to_jump == false:
@@ -83,27 +80,10 @@ func state_controller() -> void:
 				print("Finished shooting and moving to IDLE state.")
 				current_state = State.IDLE
 
-# Faces enemy depending on which direction it is looking at.
-func face_direction() -> void:
-	if direction.x > 0:
-		$TestSprite2D.flip_h = true
-		$DetectionArea2D/DetectCollisionShape.position = Vector2(108, 0) # Moves detection collision shape to the right.
-		$MuzzleMarker.position = Vector2(20, 8) # Face enemy muzzle to the right.
-		$MuzzleMarker.rotation_degrees = 180 # Sets the enemy muzzle to a rotation of 180 degrees.
-	if direction.x < 0:
-		$TestSprite2D.flip_h = false
-		$DetectionArea2D/DetectCollisionShape.position = Vector2(-108, 0) # Moves detection collision shape to the left.
-		$MuzzleMarker.position = Vector2(-20, 8) # Face enemy muzzle to the left.
-		$MuzzleMarker.rotation_degrees = 0 # Sets the enemy muzzle to a rotation of 180 degrees.
-
 
 func move() -> void:
 	# velocity = velocity.move_toward(direction * move_speed, acceleration)
 	velocity = direction * move_speed
-
-
-func jump() -> void:
-	velocity.y = jump_velocity
 
 
 func choose(array): # Not given a static type (Vector2) to ensure the function remains flexible for arrays too.
@@ -112,10 +92,38 @@ func choose(array): # Not given a static type (Vector2) to ensure the function r
 
 
 func _on_direction_timer_timeout() -> void:
-	$DirectionTimer.wait_time = range(2, 5).pick_random()
-	if current_state == State.MOVE:
-		direction = choose([Vector2.LEFT, Vector2.RIGHT])
-		face_direction()
+	# If enemy is a roamer:
+	if mode == EnemyMode.ROAMING:
+		$DirectionTimer.wait_time = range(2, 5).pick_random()
+		
+		# Change direction only if moving.
+		if current_state == State.MOVE:
+			direction = choose([Vector2.LEFT, Vector2.RIGHT])
+			face_direction()
+		
+		# If they were stopped and there is no target in sight, then move again.
+		if current_state == State.IDLE and not target:
+			current_state = State.MOVE
+
+
+# Faces enemy's sprite and gun depending on the direction it is in.
+func face_direction() -> void:
+	# Face left.
+	if direction.x > 0:
+		$TestSprite2D.flip_h = true # Flips sprite horizontally.
+		$DetectionArea2D/DetectCollisionShape.position = Vector2(108, 0) # Moves detection collision shape.
+		$MuzzleMarker.position = Vector2(20, 8) # Moves enemy muzzle.
+		$MuzzleMarker.rotation_degrees = 180 # Rotates enemy muzzle to 180 degrees.
+	# Face right.
+	if direction.x < 0:
+		$TestSprite2D.flip_h = false
+		$DetectionArea2D/DetectCollisionShape.position = Vector2(-108, 0)
+		$MuzzleMarker.position = Vector2(-20, 8)
+		$MuzzleMarker.rotation_degrees = 0 # Rotates enemy muzzle to 0 degrees.
+
+
+func jump() -> void:
+	velocity.y = jump_velocity
 
 
 func _on_jumping_timer_timeout() -> void:
@@ -126,35 +134,43 @@ func _on_jumping_timer_timeout() -> void:
 
 func shoot() -> void:
 	is_shooting = true
-	await create_bullet(3)
-	print("Enemy's gun is on cooldown.")
+	await get_tree().create_timer(0.5).timeout # Windup before firing.
+	create_bullet()
+	$Sounds/Shoot.play()
 	await get_tree().create_timer(3).timeout # Cooldown after firing. Affects how long until enemy does next action.
 	is_shooting = false
 	print("Enemy is ready to fire again.")
 
 
-func create_bullet(amount: int) -> void:
-	for index in range(amount):
-		await get_tree().create_timer(0.2).timeout # Cooldown before the next bullet fired.
-		var b = bullet.instantiate()
-		get_owner().call_deferred("add_child", b)
-		b.transform = $MuzzleMarker.global_transform
+func create_bullet() -> void:
+	var b = bullet.instantiate()
+	get_owner().call_deferred("add_child", b)
+	b.transform = $MuzzleMarker.global_transform
 
 
-func take_damage(damage: float) -> void:
-	# TODO: Have enemy move forward if shot.
+func take_damage(damage: float, bullet_direction: String) -> void:
+	# A reaction to surprise attacks.
 	if not target:
-		# target = 
-		print("Your bullet hit the enemy before he could see you.")
+		status_indicator("?!", "yellow")
+	
+	# Roaming enemies will stop.
+	if mode == EnemyMode.ROAMING:
+		current_state = State.IDLE
+	
+	# If ForgetTimer is still going, refresh the time.
+	if not $ForgetTimer.is_stopped():
+		$ForgetTimer.start()
+		print("ForgetTimer has been refreshed.")
+	
 	if taking_damage == false: # Prevents the enemy from taking too many instances of damage while the code runs.
 		taking_damage = true
 		health -= damage
 		print("Enemy current health: ", health)
-	
+		
 		# Enemy flashes red on hit.
 		var flash_red_color: Color = Color(50, 0.5, 0.5)
 		modulate = flash_red_color
-	
+		
 		# Awaits the timeout of a timer of 0.2 seconds, created within the SceneTree, before continuing the code.
 		await get_tree().create_timer(0.2).timeout
 		
@@ -162,40 +178,61 @@ func take_damage(damage: float) -> void:
 		if health <= 0:
 			queue_free()
 			print("Enemy died.")
-	
+		
 		# Enemy returns to original color.
 		var original_color: Color = Color(1, 1, 1)
 		modulate = original_color
 		
 		taking_damage = false
+		
+	# NOTE: The following code is here at the bottom to give the enemy a moment to understand it got hurt.
+	# TODO: Might want to move it into the nested block above though.
+	# Faces enemy towards the direction of the Player's bullets, but only if the enemy was facing away from bullet direction.
+	if bullet_direction == "left" and direction.x < 0:
+		direction = Vector2.RIGHT
+		face_direction()
+	if bullet_direction == "right" and direction.x > 0:
+		direction = Vector2.LEFT
+		face_direction()
 
 
 func _on_detection_area_2d_body_entered(body: Node2D) -> void:
-	# TODO: Check the following "if" statement to see if it even makes sense.
-	# NOTE: Stationary enemies are already in idle and will shoot immediately.
-	if body is Player and not target: # If Player detected, and the enemy had no target:
-		print("Enemy detected Player.")
-		if mode == EnemyMode.ROAMING: # If enemy is roamer, stop movement immediately. BUG: Enemy falls down slower if caught in middle of jump.
-			velocity = Vector2(0, 0)
-			current_state = State.IDLE
-		await status_indicator("!", Color(1, 0, 0))
-		target = body # Sets Player as the target.
+	if body is Player:
+		if not target: # If the enemy had no target:
+			target = body # Sets Player as the target.
+			status_indicator("!", "red")
+			print("Enemy detected Player.")
+			if mode == EnemyMode.ROAMING: # If enemy is roamer, stop movement immediately.
+				current_state = State.IDLE
+		# Checks if the enemy's forget timer has begun, if it has, stop the timer before it times out.
+		if not $ForgetTimer.is_stopped():
+			$ForgetTimer.stop()
+			print("ForgetTimer was forcefully stopped.")
 
 
 func _on_detection_area_2d_body_exited(body: Node2D) -> void:
-# TODO: Check if there's anything that could be done for stationary enemies.
 	if body is Player:
-		print("Player has left the detection range, but the enemy is aware that they are still there.")
-		await status_indicator("?", Color(0.95, 0.8, 0))
-		# BUG: Enemy can sometimes be moving in the wrong direction.
-		if mode == EnemyMode.ROAMING: # NOTE: Bug may be related to targeting note clearing instead, actually.
-			$DirectionTimer.wait_time = 5
-			current_state = State.MOVE
+		target = null
+		$ForgetTimer.start()
+		print("Player has left the detection range. Enemy is beginning to forget.")
 
 
-func status_indicator(text: String, color: Color) -> void:
+func _on_forget_timer_timeout() -> void:
+	print("Enemy has forgotten and is now returning to its original behavior.")
+	status_indicator("?", "white")
+	# Roamers begin moving again.
+	if mode == EnemyMode.ROAMING:
+		current_state = State.MOVE
+
+
+func status_indicator(text: String, color: String) -> void:
 	$StatusLabel.text = text
-	$StatusLabel.label_settings.font_color = color
+	if color == "red":
+		$StatusLabel.label_settings.font_color = Color(1, 0, 0)
+	if color == "yellow":
+		$StatusLabel.label_settings.font_color = Color(0.95, 0.8, 0)
+	if color == "white":
+		$StatusLabel.label_settings.font_color = Color(1, 1, 1)
 	$StatusLabel.visible = true
 	await get_tree().create_timer(1).timeout
 	$StatusLabel.visible = false

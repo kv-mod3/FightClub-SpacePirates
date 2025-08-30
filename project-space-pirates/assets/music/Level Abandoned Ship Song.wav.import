@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://c1t6tohhctf3u"
+path="res://.godot/imported/Level Abandoned Ship Song.wav-5d9245bd640152c937e2de2c88e8e9ae.sample"
+
+[deps]
+
+source_file="res://assets/music/Level Abandoned Ship Song.wav"
+dest_files=["res://.godot/imported/Level Abandoned Ship Song.wav-5d9245bd640152c937e2de2c88e8e9ae.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

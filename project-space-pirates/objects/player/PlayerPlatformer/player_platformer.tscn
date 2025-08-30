@@ -1,14 +1,53 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1vwxu07abuus"]
+[gd_scene load_steps=13 format=3 uid="uid://c1vwxu07abuus"]
 
 [ext_resource type="Script" uid="uid://b0jyw622gwwpt" path="res://objects/player/PlayerPlatformer/player_platformer.gd" id="1_qgnnd"]
 [ext_resource type="Texture2D" uid="uid://cw0k2qagu3gtg" path="res://assets/concepts/GJ_-_Alien_ideas_01.png" id="2_qgnnd"]
+[ext_resource type="AudioStream" uid="uid://bhts5tpvpiv20" path="res://assets/sounds/death.wav" id="3_c223f"]
+[ext_resource type="AudioStream" uid="uid://b18jur2ggrd7m" path="res://assets/sounds/player_shoot.wav" id="4_p8b3x"]
+[ext_resource type="AudioStream" uid="uid://bt6c5inpy04m3" path="res://assets/sounds/jump.wav" id="5_8ho1c"]
+[ext_resource type="AudioStream" uid="uid://d2a2umq143akn" path="res://assets/sounds/hurt.wav" id="6_p8b3x"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5442t"]
 atlas = ExtResource("2_qgnnd")
 region = Rect2(128, 448, 832, 1088)
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_p8b3x"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"shoot",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4y5so"]
 size = Vector2(16, 32)
+
+[sub_resource type="LabelSettings" id="LabelSettings_r7f4e"]
+font_size = 24
+shadow_color = Color(0, 0, 0, 0.313726)
+
+[sub_resource type="LabelSettings" id="LabelSettings_y3hdj"]
+font_size = 24
+shadow_color = Color(0, 0, 0, 0.314)
+
+[sub_resource type="LabelSettings" id="LabelSettings_e3i7r"]
+font_color = Color(0, 1, 0, 1)
+shadow_color = Color(0, 0, 0, 0.313726)
 
 [node name="PlayerPlatformer" type="CharacterBody2D"]
 collision_layer = 4
@@ -18,6 +57,11 @@ script = ExtResource("1_qgnnd")
 position = Vector2(0, -9.53674e-07)
 scale = Vector2(0.0384615, 0.0384615)
 texture = SubResource("AtlasTexture_5442t")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_p8b3x")
+animation = &"hurt"
+autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_4y5so")
@@ -32,11 +76,60 @@ position = Vector2(18, 2)
 wait_time = 0.2
 one_shot = true
 
+[node name="RechargeTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 192.0
+offset_bottom = 136.0
+
 [node name="HealthLabel" type="Label" parent="CanvasLayer"]
-offset_left = 24.0
+offset_left = 32.0
 offset_top = 24.0
-offset_right = 64.0
-offset_bottom = 47.0
+offset_right = 128.0
+offset_bottom = 64.0
 text = "HP: 000"
+label_settings = SubResource("LabelSettings_r7f4e")
+vertical_alignment = 1
+
+[node name="AmmoLabel" type="Label" parent="CanvasLayer"]
+offset_left = 32.0
+offset_top = 64.0
+offset_right = 168.0
+offset_bottom = 104.0
+text = "Ammo: 000"
+label_settings = SubResource("LabelSettings_y3hdj")
+vertical_alignment = 1
+
+[node name="ReloadingLabel" type="Label" parent="CanvasLayer"]
+visible = false
+offset_left = 32.0
+offset_top = 96.0
+offset_right = 184.0
+offset_bottom = 120.0
+text = "Recharging... 100%"
+label_settings = SubResource("LabelSettings_e3i7r")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+visible = false
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="Death" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("3_c223f")
+
+[node name="Shoot" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("4_p8b3x")
+
+[node name="Jump" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("5_8ho1c")
+
+[node name="Hurt" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("6_p8b3x")
+
+[connection signal="timeout" from="RechargeTimer" to="." method="_on_recharge_timer_timeout"]
