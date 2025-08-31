@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://hpyf7d8gtky3"
-path="res://.godot/imported/GJ_-_Alien_Pirate_Boss.png-4f0d0cadc6adf869c1279805d2299ed1.ctex"
+uid="uid://cdtnrmrctonan"
+path="res://.godot/imported/GJ_-_Alien_Protag_9.PNG-2bc036b6c0b279ecff9f278f0abf8b08.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/art/GJ_-_Alien_Pirate_Boss.png"
-dest_files=["res://.godot/imported/GJ_-_Alien_Pirate_Boss.png-4f0d0cadc6adf869c1279805d2299ed1.ctex"]
+source_file="res://assets/concepts/GJ_-_Alien_Protag_9.PNG"
+dest_files=["res://.godot/imported/GJ_-_Alien_Protag_9.PNG-2bc036b6c0b279ecff9f278f0abf8b08.ctex"]
 
 [params]
 

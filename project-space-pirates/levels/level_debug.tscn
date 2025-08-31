@@ -32,12 +32,16 @@ offset_bottom = 64.0
 texture = ExtResource("2_uf4fm")
 stretch_mode = 1
 
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0, 0.25098, 0.25098, 1)
+polygon = PackedVector2Array(-616, -64, -408, -64, -408, 0, -288, 0, -288, 48, -616, 48)
+
 [node name="Floor" type="StaticBody2D" parent="." groups=["solids"]]
 position = Vector2(0, 32)
 
 [node name="Polygon2D" type="Polygon2D" parent="Floor"]
 scale = Vector2(1.25, 1)
-color = Color(0.254902, 0.313726, 0.494118, 1)
+color = Color(0.537255, 0.556863, 0.572549, 1)
 polygon = PackedVector2Array(768, 32, 768, -280, 748.8, -280, 748.8, -96, 512, -96, 326.4, -56, 230.4, 16, -492.8, 16, -492.8, -96, -326.4, -96, -326.4, -32, -230.4, -32, -230.4, -56, -262.4, -56, -262.4, -112, -307.2, -112, -307.2, -176, -512, -176, -512, 32)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Floor"]
