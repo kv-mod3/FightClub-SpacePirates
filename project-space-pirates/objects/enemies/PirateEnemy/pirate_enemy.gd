@@ -166,6 +166,7 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 		taking_damage = true
 		health -= damage
 		print("Enemy current health: ", health)
+		$Sounds/Hurt.play()
 		
 		# Enemy flashes red on hit.
 		var flash_red_color: Color = Color(50, 0.5, 0.5)

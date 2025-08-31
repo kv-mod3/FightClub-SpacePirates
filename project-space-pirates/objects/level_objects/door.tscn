@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bvstcalgkhvp6"]
+[gd_scene load_steps=6 format=3 uid="uid://bvstcalgkhvp6"]
 
 [ext_resource type="Script" uid="uid://da68h068bisy3" path="res://objects/level_objects/door.gd" id="1_jdpod"]
+[ext_resource type="AudioStream" uid="uid://oduk8l8t57nr" path="res://assets/sounds/door open.wav" id="2_jshtq"]
 
 [sub_resource type="Animation" id="Animation_jshtq"]
 length = 0.001
@@ -57,3 +58,6 @@ polygon = PackedVector2Array(8, -16, 16, -8, 16, 8, 8, 16, -8, 16, -16, 8, -16, 
 [node name="DoorFrame" type="Polygon2D" parent="DoorSensors"]
 color = Color(1, 1, 0.26, 1)
 polygon = PackedVector2Array(8, -48, 8, 48, -8, 48, -8, -48)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_jshtq")

@@ -166,6 +166,7 @@ func reloading(delta) -> void:
 		PlayerVariables.ammo = clampi(PlayerVariables.ammo, 0, 6)
 		$CanvasLayer/AmmoLabel.text = "Ammo: %d" % PlayerVariables.ammo
 		green_text_blink($CanvasLayer/AmmoLabel)
+		$Sounds/FinishRecharge.play()
 		PlayerVariables.reloading_progress = 0
 	else:
 		PlayerVariables.reloading_progress += 100 * delta
@@ -174,6 +175,7 @@ func reloading(delta) -> void:
 
 func _on_recharge_timer_timeout() -> void:
 	PlayerVariables.is_reloading = true
+	$Sounds/Recharging.play()
 
 
 func red_text_blink(label: Control) -> void:

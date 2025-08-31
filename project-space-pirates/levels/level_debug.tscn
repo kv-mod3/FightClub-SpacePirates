@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://e1h2ictdyujb"]
+[gd_scene load_steps=10 format=3 uid="uid://e1h2ictdyujb"]
 
 [ext_resource type="PackedScene" uid="uid://c1vwxu07abuus" path="res://objects/player/PlayerPlatformer/player_platformer.tscn" id="1_75gwh"]
 [ext_resource type="Script" uid="uid://be8efiufn4g0p" path="res://levels/level_debug.gd" id="1_tlh8j"]
 [ext_resource type="PackedScene" uid="uid://dkc7n6xag5por" path="res://objects/enemies/PirateEnemy/pirate_enemy.tscn" id="2_03qpd"]
+[ext_resource type="Texture2D" uid="uid://blivnaon5dwu5" path="res://assets/textures/space_background.png" id="2_uf4fm"]
 [ext_resource type="PackedScene" uid="uid://dej7s7gmiss13" path="res://objects/pickup_items/health_item.tscn" id="4_ppha6"]
 [ext_resource type="PackedScene" uid="uid://bacqw7l3u02n6" path="res://objects/level_objects/platform.tscn" id="4_u2tkn"]
 [ext_resource type="PackedScene" uid="uid://bvstcalgkhvp6" path="res://objects/level_objects/door.tscn" id="5_y1fpr"]
@@ -15,6 +16,21 @@ script = ExtResource("1_tlh8j")
 [node name="Background" type="Polygon2D" parent="."]
 color = Color(0.0156863, 0.00392157, 0.317647, 1)
 polygon = PackedVector2Array(-640, 64, 960, 64, 960, -384, -640, -384)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 0
+offset_left = -640.0
+offset_top = -384.0
+offset_right = 960.0
+offset_bottom = 64.0
+texture = ExtResource("2_uf4fm")
+stretch_mode = 1
 
 [node name="Floor" type="StaticBody2D" parent="." groups=["solids"]]
 position = Vector2(0, 32)

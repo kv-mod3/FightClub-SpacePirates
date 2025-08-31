@@ -53,16 +53,16 @@ polygon = PackedVector2Array(4, 195, 98, 107, 199, 88, 274, 167, 263, 289, 263, 
 [node name="Objects" type="Node" parent="."]
 
 [node name="HealthItem" parent="Objects" instance=ExtResource("1_kx6l7")]
-position = Vector2(4078, 582)
+position = Vector2(4072, 568)
 
 [node name="HealthItem2" parent="Objects" instance=ExtResource("1_kx6l7")]
-position = Vector2(522, 1215)
+position = Vector2(520, 1200)
 
 [node name="HealthItem3" parent="Objects" instance=ExtResource("1_kx6l7")]
-position = Vector2(1288, 1102)
+position = Vector2(1296, 1088)
 
 [node name="HealthItem4" parent="Objects" instance=ExtResource("1_kx6l7")]
-position = Vector2(3191, 3771)
+position = Vector2(3192, 3752)
 
 [node name="Door" parent="Objects" instance=ExtResource("2_n46q3")]
 position = Vector2(1216, 1016)
