@@ -62,7 +62,6 @@ func state_controller() -> void:
 				velocity = Vector2(0, 0) # BUG: Enemy falls down slower if caught in middle of jump.
 			# If target exists AND enemy is not shooting AND is in within detection area, then shoot.
 			if target and not is_shooting:
-				# if $DetectionArea2D.has_overlapping_bodies(): # TODO: Change the overlapping method to only include the Player.
 				shoot()
 				print("Enemy sees you and shoots.")
 		State.MOVE:
@@ -136,7 +135,6 @@ func shoot() -> void:
 	is_shooting = true
 	await get_tree().create_timer(0.5).timeout # Windup before firing.
 	create_bullet()
-	$Sounds/Shoot.play()
 	await get_tree().create_timer(3).timeout # Cooldown after firing. Affects how long until enemy does next action.
 	is_shooting = false
 	print("Enemy is ready to fire again.")
@@ -146,6 +144,7 @@ func create_bullet() -> void:
 	var b = bullet.instantiate()
 	get_owner().call_deferred("add_child", b)
 	b.transform = $MuzzleMarker.global_transform
+	$Sounds/Shoot.play()
 
 
 func take_damage(damage: float, bullet_direction: String) -> void:
@@ -165,8 +164,8 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 	if taking_damage == false: # Prevents the enemy from taking too many instances of damage while the code runs.
 		taking_damage = true
 		health -= damage
-		print("Enemy current health: ", health)
 		$Sounds/Hurt.play()
+		print("Enemy current health: ", health)
 		
 		# Enemy flashes red on hit.
 		var flash_red_color: Color = Color(50, 0.5, 0.5)
