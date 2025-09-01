@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+# NOTE: If you are reviewing this as a reference for movement, see the Boss's script. It is organized a bit better.
+
 enum State {
 	IDLE,
 	MOVE,
@@ -21,7 +23,6 @@ var jump_velocity: float = -400
 var bullet: PackedScene = preload("res://objects/enemies/PirateEnemy/pirate_bullet.tscn")
 
 var current_state := State.MOVE
-var shuffling_states: Array = [State.IDLE, State.MOVE]
 var direction: Vector2
 var instinct_to_jump: bool = false
 var target: Node2D # Starts with a value of null on load. Currently unused.
@@ -123,6 +124,7 @@ func face_direction() -> void:
 
 func jump() -> void:
 	velocity.y = jump_velocity
+	$Sounds/Jump.play()
 
 
 func _on_jumping_timer_timeout() -> void:

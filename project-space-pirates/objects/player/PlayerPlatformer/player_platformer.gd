@@ -20,15 +20,6 @@ func _ready() -> void:
 	
 	SceneManager.respawn_location = global_position
 	print("SceneManager: Set initial respawn point to ", SceneManager.respawn_location)
-	
-	# TEST
-	var noomalize_left: Vector2 = Vector2.LEFT
-	noomalize_left = noomalize_left.normalized()
-	print(noomalize_left)
-	
-	var noomalize_right: Vector2 = Vector2.RIGHT
-	noomalize_right = noomalize_right.normalized()
-	print(noomalize_right)
 
 
 func _physics_process(delta: float) -> void:

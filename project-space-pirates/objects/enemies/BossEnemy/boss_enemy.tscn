@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=3 uid="uid://b5o3173tmhfnp"]
+[gd_scene load_steps=26 format=3 uid="uid://b5o3173tmhfnp"]
 
 [ext_resource type="Script" uid="uid://dr44kb8ahe6pu" path="res://objects/enemies/BossEnemy/boss_enemy.gd" id="1_3vdqm"]
 [ext_resource type="Texture2D" uid="uid://ci5o7vxxr023a" path="res://assets/sprites/boss_72x.png" id="1_bg26o"]
 [ext_resource type="Texture2D" uid="uid://dqnhomy3kjh3x" path="res://assets/sprites/boss_death_64x.png" id="3_h3843"]
 [ext_resource type="AudioStream" uid="uid://dws4uf0vdr036" path="res://assets/sounds/enemy_shoot.wav" id="4_gtotk"]
 [ext_resource type="AudioStream" uid="uid://cejpca6og0q3y" path="res://assets/sounds/enemy_hurt.wav" id="5_yonik"]
+[ext_resource type="AudioStream" uid="uid://b31iafnruux3h" path="res://assets/sounds/finish_recharging.wav" id="6_yonik"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vdqm"]
 radius = 32.249
@@ -20,9 +21,33 @@ region = Rect2(0, 72, 72, 72)
 atlas = ExtResource("1_bg26o")
 region = Rect2(72, 72, 72, 72)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_jc358"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(0, 216, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eav67"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(72, 288, 72, 72)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_6idkp"]
 atlas = ExtResource("1_bg26o")
 region = Rect2(0, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dx6ga"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(144, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ipk8a"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(216, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3vdqm"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(0, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h3843"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(72, 0, 72, 72)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3qntf"]
 atlas = ExtResource("1_bg26o")
@@ -32,13 +57,9 @@ region = Rect2(0, 144, 72, 72)
 atlas = ExtResource("1_bg26o")
 region = Rect2(72, 144, 72, 72)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3vdqm"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ky8t"]
 atlas = ExtResource("1_bg26o")
 region = Rect2(0, 0, 72, 72)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_h3843"]
-atlas = ExtResource("1_bg26o")
-region = Rect2(72, 0, 72, 72)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6idkp"]
 animations = [{
@@ -55,6 +76,17 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_jc358")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eav67")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_6idkp")
 }],
 "loop": true,
@@ -63,14 +95,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3qntf")
+"texture": SubResource("AtlasTexture_dx6ga")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_kx77c")
+"texture": SubResource("AtlasTexture_ipk8a")
 }],
-"loop": false,
-"name": &"shoot",
-"speed": 5.0
+"loop": true,
+"name": &"jump",
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -80,8 +112,22 @@ animations = [{
 "texture": SubResource("AtlasTexture_h3843")
 }],
 "loop": true,
-"name": &"walk",
+"name": &"moving",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3qntf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kx77c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ky8t")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 8.0
 }]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_k3ejj"]
@@ -110,7 +156,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"death",
-"speed": 5.0
+"speed": 6.0
 }]
 
 [node name="BossEnemy" type="CharacterBody2D" groups=["enemies"]]
@@ -131,29 +177,40 @@ debug_color = Color(0.997788, 0, 0.158, 0.42)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_6idkp")
-animation = &"shoot"
+animation = &"hurt"
 autoplay = "idle"
-frame = 1
-frame_progress = 1.0
+frame_progress = 0.198518
 
 [node name="DeathAnimation" type="AnimatedSprite2D" parent="."]
 visible = false
 position = Vector2(0, 4)
+scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_3qntf")
 animation = &"death"
+frame = 2
+frame_progress = 1.0
 
 [node name="MuzzleMarker" type="Marker2D" parent="."]
 position = Vector2(0, 4)
 
 [node name="DecisionTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
 
 [node name="Sounds" type="Node2D" parent="."]
 
 [node name="Shoot" type="AudioStreamPlayer2D" parent="Sounds"]
 stream = ExtResource("4_gtotk")
+volume_db = 5.0
 
 [node name="Hurt" type="AudioStreamPlayer2D" parent="Sounds"]
 stream = ExtResource("5_yonik")
+volume_db = 5.0
+
+[node name="Charging" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("6_yonik")
+pitch_scale = 0.5
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="animation_finished" from="DeathAnimation" to="." method="_on_death_animation_animation_finished"]
+[connection signal="timeout" from="DecisionTimer" to="." method="_on_decision_timer_timeout"]

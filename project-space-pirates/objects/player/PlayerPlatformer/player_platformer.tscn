@@ -69,6 +69,7 @@ autoplay = "idle"
 shape = SubResource("RectangleShape2D_4y5so")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -48)
 zoom = Vector2(2, 2)
 
 [node name="MuzzleMarker" type="Marker2D" parent="."]

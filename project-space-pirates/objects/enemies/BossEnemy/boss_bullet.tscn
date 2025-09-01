@@ -39,6 +39,7 @@ scale = Vector2(2, 2)
 rect = Rect2(0, 0, 4, 4)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_5aj87")
 autoplay = "default"
 frame_progress = 0.854801
