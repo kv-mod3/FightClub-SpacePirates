@@ -15,17 +15,18 @@ var jump_velocity: float = -400 # The boss will adjust jump velocity depending o
 var bullet: PackedScene = preload("res://objects/enemies/BossEnemy/boss_bullet.tscn")
 
 var current_state := State.INACTIVE
-var possible_states: Array = [State.CHASE, State.JUMP]
+var attack_choices: Array[String] = ["Jump Attack", "Charged Attack"]
 var direction: Vector2
 var target: Node2D # Starts with a value of null on load. Currently unused.
 var is_shooting: bool = false
 var is_hovering: bool = false
 var taking_damage: bool = false
-var is_invincible: bool = true # Is invincible at the start to prevent cheese.
+var is_invincible: bool = false
 
 
 func _ready() -> void:
-	pass
+	attack_choices = shuffle_choices(attack_choices)
+	print("Starting attack choices: ", attack_choices)
 
 
 func _physics_process(delta: float) -> void:
@@ -46,24 +47,25 @@ func state_controller() -> void:
 		State.CHASE:
 			move()
 			face_target()
-		State.JUMP:
-			jump_attack()
-			current_state = State.CHASE
+			# NOTE: jump_attack() is using this state for moving and sprite direction.
 		State.SHOOT:
 			face_target()
 			if not is_shooting:
+				is_shooting = true
 				await charging_shot()
+				is_shooting = false
 				$AnimatedSprite2D.play("moving")
+				$DecisionTimer.start() # Begins waiting for its next move.
 				current_state = State.CHASE
 
 
 func move() -> void:
-	# velocity = velocity.move_toward(direction * move_speed, acceleration)
 	if current_state == State.CHASE:
 		var dir_to_player = position.direction_to(target.position) * move_speed
 		velocity.x = dir_to_player.x
 
 
+# NOTE: Not currently used.
 func jump() -> void:
 	jump_velocity = -400
 	velocity.y = jump_velocity
@@ -71,6 +73,7 @@ func jump() -> void:
 
 func jump_attack() -> void:
 	is_invincible = true
+	
 	# Jumps.
 	$AnimatedSprite2D.play("jump")
 	jump_velocity = -800
@@ -80,6 +83,7 @@ func jump_attack() -> void:
 	await get_tree().create_timer(0.25).timeout
 	is_hovering = true
 	velocity.y = 0 # Stops velocity.
+	$AnimationPlayer.play("hover")
 	
 	# Chases target for a few seconds. Boss's move speed is increased.
 	current_state = State.CHASE
@@ -93,21 +97,22 @@ func jump_attack() -> void:
 	await get_tree().create_timer(1).timeout
 
 	# Stops hovering and slams into floor.
+	$AnimationPlayer.play("RESET")
 	$AnimatedSprite2D.play("idle")
 	is_hovering = false
 	velocity.y += 800
-	is_invincible = false
+	is_invincible = false # Gives player a momentary window to attack.
 	
-	# Stays on the ground for 3 seconds before moving again. If take_damage() activates, may enter chase earlier.
-	await get_tree().create_timer(3).timeout
+	# Stays on the ground for X seconds before moving again. If take_damage() activates, may enter chase earlier.
+	await get_tree().create_timer(2.5).timeout
 	$AnimatedSprite2D.play("moving")
 	current_state = State.CHASE
-	
+	$DecisionTimer.start() # Begins waiting for its next move.
 
 
-func choose(array): # Not given a static type (Vector2) to ensure the function remains flexible for arrays too.
+func shuffle_choices(array): # Not given a static type (Vector2) to ensure the function remains flexible for arrays too.
 	array.shuffle()
-	return array.front() # Chooses the first element in the array and returns it.
+	return array
 
 
 func face_target() -> void:
@@ -137,24 +142,15 @@ func face_direction() -> void:
 
 
 func charging_shot() -> void:
-	if not is_invincible:
-		is_shooting = true
-		is_invincible = true
-		# TODO: Add lower-pitched charging sound.
-		$AnimatedSprite2D.play("charge")
-		$Sounds/Charging.play()
-		print("Enemy is charging!")
-		await get_tree().create_timer(3).timeout
-		await shoot()
-		is_shooting = false
-		is_invincible = false
-
-
-func shoot() -> void:
-	await get_tree().create_timer(0.5).timeout # Windup before firing.
-	create_bullet(3)
-	await get_tree().create_timer(3).timeout # Cooldown after firing. Affects how long until enemy does next action.
-	print("Boss has finished firing volley.")
+	is_invincible = true
+		
+	velocity = Vector2.ZERO # Stops any movement.
+	$AnimatedSprite2D.play("charge")
+	$Sounds/Charging.play()
+	await get_tree().create_timer(3).timeout
+	await create_bullet(3)
+	
+	is_invincible = false
 
 
 func create_bullet(amount: int) -> void:
@@ -199,16 +195,18 @@ func take_damage(damage: float, _bullet_direction: String) -> void:
 
 
 func _on_decision_timer_timeout() -> void:
-	if current_state == State.CHASE and not is_invincible:
-		var attack_choices: Array[String] = ["Jump Attack", "Charged Attack"]
-		var choice: String = choose(attack_choices)
+	$DecisionTimer.wait_time = range(3, 6).pick_random()
+	print("Boss will act in ", $DecisionTimer.get_wait_time(), " seconds.")
+	if current_state == State.CHASE:
+		var choice: String = attack_choices.front()
+		print("Choice: ", choice)
+		attack_choices.reverse()
+		print("New attack order: ", attack_choices)
 		match choice:
 			"Jump Attack":
 				jump_attack()
 			"Charged Attack":
 				current_state = State.SHOOT
-	$DecisionTimer.wait_time = range(3, 6).pick_random()
-	$DecisionTimer.start()
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
@@ -218,7 +216,7 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 		$AnimatedSprite2D.play("moving")
 		$DecisionTimer.wait_time = range(3, 6).pick_random()
 		$DecisionTimer.start()
-		print("DecisionTimer wait times set to: ", $DecisionTimer.get_wait_time())
+		print("Boss will act in ", $DecisionTimer.get_wait_time(), " seconds.")
 			
 		# TODO: If adding an intro, add code below here.
 		current_state = State.CHASE

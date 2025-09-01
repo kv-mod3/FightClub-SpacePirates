@@ -1,6 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://bica2gk1qvap2"]
+[gd_scene load_steps=7 format=3 uid="uid://bica2gk1qvap2"]
 
 [ext_resource type="Script" uid="uid://cnvm6gdpp2wy4" path="res://objects/player/PlayerPlatformer/player_bullet.gd" id="1_32ukc"]
+[ext_resource type="Texture2D" uid="uid://dpkj4g0ebm3u8" path="res://assets/sprites/player_bullet_8x.png" id="2_0mjoo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3lfp3"]
+atlas = ExtResource("2_0mjoo")
+region = Rect2(0, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dutfo"]
+atlas = ExtResource("2_0mjoo")
+region = Rect2(8, 0, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ixg0u"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3lfp3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dutfo")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8afq0"]
 radius = 4.0
@@ -15,9 +38,12 @@ position = Vector2(-4, -4)
 scale = Vector2(2, 2)
 rect = Rect2(0, 0, 4, 4)
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
-color = Color(1, 1, 0, 1)
-polygon = PackedVector2Array(0, -4, 4, 0, 0, 4, -4, 0)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_ixg0u")
+autoplay = "default"
+frame_progress = 0.706092
+offset = Vector2(0, -0.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_8afq0")

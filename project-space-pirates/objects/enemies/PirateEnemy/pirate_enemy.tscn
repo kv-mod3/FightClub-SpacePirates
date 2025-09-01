@@ -78,6 +78,7 @@ volume_db = 5.0
 [node name="Jump" type="AudioStreamPlayer2D" parent="Sounds"]
 stream = ExtResource("5_e7jts")
 pitch_scale = 0.5
+max_distance = 500.0
 
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]
 [connection signal="timeout" from="JumpingTimer" to="." method="_on_jumping_timer_timeout"]
