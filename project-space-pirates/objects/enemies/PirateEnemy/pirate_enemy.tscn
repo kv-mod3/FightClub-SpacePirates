@@ -82,7 +82,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_l4fcb")
 }],
-"loop": true,
+"loop": false,
 "name": &"attention",
 "speed": 5.0
 }, {
@@ -215,7 +215,7 @@ texture = SubResource("AtlasTexture_ke628")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -4)
 sprite_frames = SubResource("SpriteFrames_xs3sf")
-animation = &"attention"
+animation = &"jump"
 autoplay = "idle"
 
 [node name="DeathAnimation" type="AnimatedSprite2D" parent="."]

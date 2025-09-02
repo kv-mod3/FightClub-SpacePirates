@@ -28,6 +28,7 @@ var instinct_to_jump: bool = false
 var target: Node2D # Starts with a value of null on load. Currently unused.
 var is_shooting: bool = false
 var taking_damage: bool = false
+var is_dying: bool = false
 
 
 func _ready() -> void:
@@ -49,6 +50,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if is_dying:
+		return
 	# Player affected by gravity if not on floor.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -171,28 +174,23 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 	if taking_damage == false: # Prevents the enemy from taking too many instances of damage while the code runs.
 		taking_damage = true
 		health -= damage
+		$AnimatedSprite2D.play("hurt")
 		$Sounds/Hurt.play()
 		print("Enemy current health: ", health)
-		
-		# Enemy flashes red on hit.
-		var flash_red_color: Color = Color(50, 0.5, 0.5)
-		modulate = flash_red_color
-		
-		# Awaits the timeout of a timer of 0.2 seconds, created within the SceneTree, before continuing the code.
-		await get_tree().create_timer(0.2).timeout
 		
 		# Plays animation if enemy is dead, otherwise continues running code.
 		# NOTE: Enemy is freed from the scene once DeathAnimation finishes. See func further below.
 		if health <= 0:
+			is_dying = true
+			$CollisionShape2D.set_deferred("disabled", true) # Disables collision shape.
+			await get_tree().create_timer(0.5).timeout # Allows hurt animations to play out before death.
 			$AnimatedSprite2D.visible = false
 			$DeathAnimation.visible = true
 			$DeathAnimation.play("death")
-		
-		# Enemy returns to original color.
-		var original_color: Color = Color(1, 1, 1)
-		modulate = original_color
-		
-		taking_damage = false
+		else:
+			await get_tree().create_timer(0.5).timeout
+			$AnimatedSprite2D.play("idle") # Resets enemy sprite.
+			taking_damage = false
 		
 	# NOTE: The following code is here at the bottom to give the enemy a moment to understand it got hurt.
 	# TODO: Might want to move it into the nested block above though.

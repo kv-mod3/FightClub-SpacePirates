@@ -133,7 +133,7 @@ func shoot() -> void:
 
 func take_damage(damage: float) -> void:
 	if not is_invincible:
-		i_frames(3) # Invincibility frames for x seconds.
+		i_frames(2) # Invincibility frames for x seconds.
 		PlayerVariables.health -= damage
 		$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
 		print("Player took %d damage!" % damage, " Current HP: ", PlayerVariables.health)
@@ -149,7 +149,7 @@ func knockback(bullet_position) -> void:
 	if not is_knocked_back:
 		is_knocked_back = true
 		var knockback_direction: Vector2 = global_position - bullet_position
-		var knockback_strength: float = 200
+		# var knockback_strength: float = 200
 
 		print("Bullet direction: ", knockback_direction)
 		if knockback_direction.x < 0:
@@ -261,9 +261,9 @@ func death() -> void:
 	is_dying = true
 	
 	# Disables collisions
-	$CollisionShape2D.disabled = true
-	$HitboxArea.monitoring = false
-	$HitboxArea.monitorable = false
+	$CollisionShape2D.set_deferred("disabled", true)
+	$HitboxArea.set_deferred("monitoring", false)
+	$HitboxArea.set_deferred("monitorable", false)
 	
 	# Visual effects
 	$Sounds/Death.play()
@@ -288,9 +288,9 @@ func respawn() -> void:
 	green_text_blink($CanvasLayer/AmmoLabel)
 	
 	# Re-enables collisions.
-	$CollisionShape2D.disabled = false
-	$HitboxArea.monitoring = true
-	$HitboxArea.monitorable = true
+	$CollisionShape2D.set_deferred("disabled", false)
+	$HitboxArea.set_deferred("monitoring", true)
+	$HitboxArea.set_deferred("monitorable", true)
 	
 	# Sets Player position to respawn location.
 	$AnimatedSprite2D.visible = true # NOTE: DeathAnimation disables itself once finished.
