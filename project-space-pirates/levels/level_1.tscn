@@ -86,7 +86,7 @@ position = Vector2(1880, 433)
 [node name="Enemies" type="Node" parent="."]
 
 [node name="PirateEnemy" parent="Enemies" instance=ExtResource("4_gwceb")]
-position = Vector2(1715, 476)
+position = Vector2(1712, 464)
 
 [node name="PirateEnemy2" parent="Enemies" instance=ExtResource("4_gwceb")]
 position = Vector2(3817, 565)
@@ -444,7 +444,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PlayerPlatformer" parent="." instance=ExtResource("3_btoec")]
-position = Vector2(7336, 3704)
+position = Vector2(3552, 1016)
 
 [node name="Level1BGM" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("12_aerfg")

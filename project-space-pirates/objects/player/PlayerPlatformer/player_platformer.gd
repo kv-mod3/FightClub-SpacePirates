@@ -36,7 +36,7 @@ func _physics_process(delta: float) -> void:
 	
 	# TESTING: Debug "K" key sets player health to 0. For debugging death-related events.
 	if Input.is_action_just_pressed("debug"):
-		take_damage(100)
+		full_damage()
 	
 	# Add the gravity.
 	if not is_on_floor():
@@ -134,7 +134,6 @@ func shoot() -> void:
 func take_damage(damage: float) -> void:
 	if not is_invincible:
 		i_frames(3) # Invincibility frames for x seconds.
-		# TODO: Add animations.
 		PlayerVariables.health -= damage
 		$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
 		print("Player took %d damage!" % damage, " Current HP: ", PlayerVariables.health)
@@ -247,13 +246,39 @@ func green_text_blink(label: Control) -> void:
 	label.label_settings.font_color = Color(1, 1, 1) # White font color.
 
 
+func full_damage() -> void:
+	PlayerVariables.health -= PlayerVariables.MAX_HEALTH
+	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
+	print("Player took %d damage!" % PlayerVariables.MAX_HEALTH, " Current HP: ", PlayerVariables.health)
+	if PlayerVariables.health <= 0 and not is_dying:
+		death()
+	else:
+		$AnimatedSprite2D.play("hurt")
+		$Sounds/Hurt.play()
+
+
 func death() -> void:
 	is_dying = true
-	$Sounds/Death.play()
-	# TODO: insert animations on this very line.
-	await get_tree().create_timer(3).timeout
-	global_position = SceneManager.respawn_location # Sets Player position to respawn location.
 	
+	# Disables collisions
+	$CollisionShape2D.disabled = true
+	$HitboxArea.monitoring = false
+	$HitboxArea.monitorable = false
+	
+	# Visual effects
+	$Sounds/Death.play()
+	$AnimatedSprite2D.visible = false
+	$DeathAnimation.visible = true
+	$DeathAnimation.play("death")
+	print("Player has died.")
+	
+	# Time until respawn
+	await get_tree().create_timer(5).timeout
+	respawn()
+
+
+# Respawns the player and resets a values.
+func respawn() -> void:
 	# Resets health and ammo.
 	PlayerVariables.health = 100
 	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
@@ -262,5 +287,17 @@ func death() -> void:
 	$CanvasLayer/AmmoLabel.text = "Ammo: %d" % PlayerVariables.ammo
 	green_text_blink($CanvasLayer/AmmoLabel)
 	
-	print("Player has died.")
+	# Re-enables collisions.
+	$CollisionShape2D.disabled = false
+	$HitboxArea.monitoring = true
+	$HitboxArea.monitorable = true
+	
+	# Sets Player position to respawn location.
+	$AnimatedSprite2D.visible = true # NOTE: DeathAnimation disables itself once finished.
+	global_position = SceneManager.respawn_location
+	print("Player has respawned.")
 	is_dying = false
+
+
+func _on_death_animation_animation_finished() -> void:
+	$DeathAnimation.visible = false

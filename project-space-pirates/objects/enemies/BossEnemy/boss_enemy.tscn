@@ -214,9 +214,8 @@ debug_color = Color(0.997788, 0, 0.158, 0.42)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_6idkp")
-animation = &"idle"
+animation = &"hurt"
 autoplay = "idle"
-frame_progress = 0.664553
 
 [node name="DeathAnimation" type="AnimatedSprite2D" parent="."]
 visible = false

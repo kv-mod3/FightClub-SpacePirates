@@ -101,4 +101,4 @@ next_scene = "res://levels/level_1.tscn"
 position = Vector2(-504, 0)
 
 [node name="PlayerPlatformer" parent="." instance=ExtResource("1_75gwh")]
-position = Vector2(-504, -168)
+position = Vector2(-128, -32)
