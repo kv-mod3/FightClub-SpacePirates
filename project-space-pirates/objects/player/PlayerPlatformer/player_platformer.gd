@@ -210,7 +210,8 @@ func i_frames_effect() -> void:
 func restore_health(health) -> void:
 	PlayerVariables.health += health
 	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
-	$Sounds/Pickup.play()
+	if not is_dying:
+		$Sounds/Pickup.play()
 	green_text_blink($CanvasLayer/HealthLabel)
 	print("Player HP restored by %d" % health)
 	print("Current Player HP: ", PlayerVariables.health)
@@ -280,9 +281,7 @@ func death() -> void:
 # Respawns the player and resets a values.
 func respawn() -> void:
 	# Resets health and ammo.
-	PlayerVariables.health = 100
-	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
-	green_text_blink($CanvasLayer/HealthLabel)
+	restore_health(PlayerVariables.MAX_HEALTH)
 	PlayerVariables.ammo = 6
 	$CanvasLayer/AmmoLabel.text = "Ammo: %d" % PlayerVariables.ammo
 	green_text_blink($CanvasLayer/AmmoLabel)
