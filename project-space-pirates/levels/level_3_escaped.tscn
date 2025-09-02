@@ -1,3 +1,24 @@
-[gd_scene format=3 uid="uid://bvn4lk3ikymfs"]
+[gd_scene load_steps=3 format=3 uid="uid://bvn4lk3ikymfs"]
 
-[node name="AsteroidsLevel" type="Node2D"]
+[ext_resource type="Script" uid="uid://bifowpnx6g283" path="res://levels/level_3_escaped.gd" id="1_esw5h"]
+[ext_resource type="Texture2D" uid="uid://blivnaon5dwu5" path="res://assets/textures/space_background.png" id="1_p85b4"]
+
+[node name="Level 3 Escaped" type="Node2D"]
+script = ExtResource("1_esw5h")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+
+[node name="SpaceBG" type="TextureRect" parent="."]
+offset_left = -296.0
+offset_top = -168.0
+offset_right = 296.0
+offset_bottom = 168.0
+texture = ExtResource("1_p85b4")
+stretch_mode = 1
+
+[node name="VictoryPanel" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0

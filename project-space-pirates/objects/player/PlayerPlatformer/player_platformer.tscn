@@ -1,9 +1,10 @@
-[gd_scene load_steps=30 format=3 uid="uid://c1vwxu07abuus"]
+[gd_scene load_steps=31 format=3 uid="uid://c1vwxu07abuus"]
 
 [ext_resource type="Script" uid="uid://b0jyw622gwwpt" path="res://objects/player/PlayerPlatformer/player_platformer.gd" id="1_qgnnd"]
 [ext_resource type="Texture2D" uid="uid://cw0k2qagu3gtg" path="res://assets/concepts/GJ_-_Alien_ideas_01.png" id="2_qgnnd"]
 [ext_resource type="Texture2D" uid="uid://bj8fmp6fdf61x" path="res://assets/sprites/player_36x.png" id="3_4bss0"]
 [ext_resource type="AudioStream" uid="uid://bhts5tpvpiv20" path="res://assets/sounds/death.wav" id="3_c223f"]
+[ext_resource type="FontFile" uid="uid://bv0ty1gwebkck" path="res://assets/fonts/good timing bd.otf" id="4_a57bp"]
 [ext_resource type="AudioStream" uid="uid://b18jur2ggrd7m" path="res://assets/sounds/player_shoot.wav" id="4_p8b3x"]
 [ext_resource type="AudioStream" uid="uid://bt6c5inpy04m3" path="res://assets/sounds/jump.wav" id="5_8ho1c"]
 [ext_resource type="AudioStream" uid="uid://d2a2umq143akn" path="res://assets/sounds/hurt.wav" id="6_p8b3x"]
@@ -91,7 +92,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_a57bp")
 }],
-"loop": true,
+"loop": false,
 "name": &"idle",
 "speed": 5.0
 }, {
@@ -112,7 +113,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"shoot_air",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -123,7 +124,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"shoot_ground",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -141,14 +142,18 @@ animations = [{
 size = Vector2(16, 32)
 
 [sub_resource type="LabelSettings" id="LabelSettings_r7f4e"]
+font = ExtResource("4_a57bp")
 font_size = 24
+shadow_size = 4
 shadow_color = Color(0, 0, 0, 0.313726)
 
 [sub_resource type="LabelSettings" id="LabelSettings_y3hdj"]
+font = ExtResource("4_a57bp")
 font_size = 24
 shadow_color = Color(0, 0, 0, 0.314)
 
 [sub_resource type="LabelSettings" id="LabelSettings_e3i7r"]
+font = ExtResource("4_a57bp")
 font_color = Color(0, 1, 0, 1)
 shadow_color = Color(0, 0, 0, 0.313726)
 
@@ -168,7 +173,7 @@ texture = SubResource("AtlasTexture_5442t")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_p8b3x")
-animation = &"shoot_ground"
+animation = &"shoot_air"
 autoplay = "idle"
 offset = Vector2(0, -2)
 
@@ -195,13 +200,13 @@ one_shot = true
 [node name="Panel" type="Panel" parent="CanvasLayer"]
 offset_left = 16.0
 offset_top = 16.0
-offset_right = 192.0
+offset_right = 208.0
 offset_bottom = 136.0
 
 [node name="HealthLabel" type="Label" parent="CanvasLayer"]
-offset_left = 32.0
+offset_left = 56.0
 offset_top = 24.0
-offset_right = 128.0
+offset_right = 160.0
 offset_bottom = 64.0
 text = "HP: 000"
 label_settings = SubResource("LabelSettings_r7f4e")
@@ -219,9 +224,9 @@ vertical_alignment = 1
 [node name="ReloadingLabel" type="Label" parent="CanvasLayer"]
 visible = false
 offset_left = 32.0
-offset_top = 96.0
-offset_right = 184.0
-offset_bottom = 120.0
+offset_top = 104.0
+offset_right = 191.0
+offset_bottom = 128.0
 text = "Recharging... 100%"
 label_settings = SubResource("LabelSettings_e3i7r")
 

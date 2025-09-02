@@ -2,7 +2,7 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	pass
 
 
 func _on_start_button_pressed() -> void:
@@ -19,7 +19,7 @@ func _on_credits_button_pressed() -> void:
 
 # Toggles the controls information label.
 func _on_controls_button_pressed() -> void:
-	if $CanvasLayer/ControlsLabel.visible:
-		$CanvasLayer/ControlsLabel.visible = false
+	if $Menus/ControlsPanel.visible:
+		$Menus/ControlsPanel.visible = false
 	else:
-		$CanvasLayer/ControlsLabel.visible = true
+		$Menus/ControlsPanel.visible = true

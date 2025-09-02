@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bbywua7ioalr"
+path="res://.godot/imported/BGM With Bells.wav-bd05aaaa280f0c7d49b18aafbdf6dbe3.sample"
+
+[deps]
+
+source_file="res://assets/music/BGM With Bells.wav"
+dest_files=["res://.godot/imported/BGM With Bells.wav-bd05aaaa280f0c7d49b18aafbdf6dbe3.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

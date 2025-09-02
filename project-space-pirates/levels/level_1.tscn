@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dubu7ix63wqvm"]
+[gd_scene load_steps=18 format=3 uid="uid://dubu7ix63wqvm"]
 
 [ext_resource type="Script" uid="uid://dh51ho4g2xpe1" path="res://levels/level_1.gd" id="1_3sk1a"]
 [ext_resource type="PackedScene" uid="uid://dej7s7gmiss13" path="res://objects/pickup_items/health_item.tscn" id="1_kx6l7"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://dc87e8bajv67w" path="res://objects/level_objects/checkpoint_area.tscn" id="6_btoec"]
 [ext_resource type="PackedScene" uid="uid://d0amyb102xm7k" path="res://objects/level_objects/scene_entrance.tscn" id="7_gwceb"]
 [ext_resource type="PackedScene" uid="uid://pj60a1uxovhp" path="res://objects/level_objects/kill_area.tscn" id="8_08mmt"]
+[ext_resource type="FontFile" uid="uid://bv0ty1gwebkck" path="res://assets/fonts/good timing bd.otf" id="10_5ot28"]
+[ext_resource type="AudioStream" uid="uid://c1t6tohhctf3u" path="res://assets/music/Level Abandoned Ship Song.wav" id="12_aerfg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ot28"]
 size = Vector2(3952, 56)
@@ -19,6 +21,14 @@ size = Vector2(2184, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gwceb"]
 size = Vector2(40, 528)
+
+[sub_resource type="LabelSettings" id="LabelSettings_aerfg"]
+font = ExtResource("10_5ot28")
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_nmsli"]
+font = ExtResource("10_5ot28")
+font_size = 24
 
 [node name="Level 1" type="Node2D"]
 script = ExtResource("1_3sk1a")
@@ -383,15 +393,15 @@ shape = SubResource("RectangleShape2D_gwceb")
 [node name="DoorSign" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 1672.0
-offset_top = 336.0
-offset_right = 1712.0
-offset_bottom = 376.0
+offset_left = 1568.0
+offset_top = 328.0
+offset_right = 1608.0
+offset_bottom = 368.0
 
 [node name="Panel" type="Panel" parent="DoorSign"]
 layout_mode = 0
-offset_right = 176.0
-offset_bottom = 40.0
+offset_right = 280.0
+offset_bottom = 48.0
 
 [node name="Label" type="Label" parent="DoorSign"]
 layout_mode = 0
@@ -400,6 +410,7 @@ offset_top = 8.0
 offset_right = 165.0
 offset_bottom = 31.0
 text = "Shoot doors to open"
+label_settings = SubResource("LabelSettings_aerfg")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -413,25 +424,32 @@ offset_bottom = 344.0
 
 [node name="Panel" type="Panel" parent="ControlsSign"]
 layout_mode = 0
-offset_right = 176.0
+offset_top = -32.0
+offset_right = 200.0
 offset_bottom = 144.0
 
 [node name="Label" type="Label" parent="ControlsSign"]
 layout_mode = 0
 offset_left = 8.0
-offset_top = 8.0
-offset_right = 165.0
-offset_bottom = 31.0
+offset_top = -24.0
+offset_right = 188.0
+offset_bottom = 138.0
 text = "Controls:
 A = Left
 D = Right
 Space = Jump
 Enter = Shoot"
+label_settings = SubResource("LabelSettings_nmsli")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PlayerPlatformer" parent="." instance=ExtResource("3_btoec")]
-position = Vector2(4568, 3736)
+position = Vector2(7336, 3704)
+
+[node name="Level1BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_aerfg")
+volume_db = -5.0
+autoplay = true
 
 [editable path="Kill Floor/KillArea"]
 [editable path="Kill Floor/KillArea2"]

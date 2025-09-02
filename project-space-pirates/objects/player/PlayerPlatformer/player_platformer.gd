@@ -13,7 +13,7 @@ enum State {
 @export var move_speed: float = 200.0
 @export var jump_velocity: float = -400.0
 var bullet: PackedScene = preload("res://objects/player/PlayerPlatformer/player_bullet.tscn")
-var current_state := State.IDLE
+var current_state := State.IDLE # Not currently used.
 var is_dying: bool = false
 var is_invincible: bool = false
 var is_knocked_back: bool = false
@@ -61,7 +61,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, move_speed) # Moves toward a destination speed before stopping.
 	
-	if velocity == Vector2.ZERO:
+	if velocity == Vector2.ZERO and $ShootCooldownTimer.is_stopped():
 		$AnimatedSprite2D.play("idle")
 	
 	# Movement.
@@ -103,10 +103,10 @@ func shoot() -> void:
 	if $ShootCooldownTimer.is_stopped() and PlayerVariables.ammo >= 1:
 		$ShootCooldownTimer.start() # Cooldown timer between shots.
 		
+		# Animations dependong on if in air or on ground.
 		if not is_on_floor():
 			$AnimatedSprite2D.play("shoot_air")
 		else:
-			# BUG: Conflicting with idle animation.
 			$AnimatedSprite2D.play("shoot_ground")
 		
 		# HUD effects.
@@ -142,6 +142,7 @@ func take_damage(damage: float) -> void:
 			death()
 			print("Player is playing dying animations.")
 		else:
+			$AnimatedSprite2D.play("hurt")
 			$Sounds/Hurt.play()
 
 

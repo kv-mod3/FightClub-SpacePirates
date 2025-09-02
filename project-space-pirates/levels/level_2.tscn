@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cdmp8ry4bd76d"]
+[gd_scene load_steps=15 format=3 uid="uid://cdmp8ry4bd76d"]
 
 [ext_resource type="Script" uid="uid://stju4lg1eawp" path="res://levels/level_2.gd" id="1_ep78u"]
 [ext_resource type="PackedScene" uid="uid://bacqw7l3u02n6" path="res://objects/level_objects/platform.tscn" id="1_mi4ay"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://pj60a1uxovhp" path="res://objects/level_objects/kill_area.tscn" id="4_dfjjl"]
 [ext_resource type="PackedScene" uid="uid://d0amyb102xm7k" path="res://objects/level_objects/scene_entrance.tscn" id="5_ilhis"]
 [ext_resource type="PackedScene" uid="uid://dc87e8bajv67w" path="res://objects/level_objects/checkpoint_area.tscn" id="6_ilhis"]
+[ext_resource type="AudioStream" uid="uid://c5hdp7ex12hct" path="res://assets/music/The Great Escape Level 2.wav" id="9_at1ld"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_at1ld"]
 size = Vector2(1944, 32)
@@ -307,6 +308,11 @@ text = "Escape!"
 label_settings = SubResource("LabelSettings_dfjjl")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Level2BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_at1ld")
+volume_db = -5.0
+autoplay = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 
