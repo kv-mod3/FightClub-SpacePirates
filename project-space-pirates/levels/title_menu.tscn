@@ -13,6 +13,9 @@ default_font = ExtResource("2_n1wg7")
 [sub_resource type="LabelSettings" id="LabelSettings_kcn0t"]
 font = ExtResource("4_fy8bn")
 font_size = 72
+font_color = Color(0.713726, 1, 0, 1)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.376)
 
 [node name="TitleMenu" type="Node2D"]
 script = ExtResource("1_hbfvm")
@@ -100,13 +103,13 @@ offset_bottom = 144.0
 
 [node name="ControlsLabel" type="RichTextLabel" parent="Menus/ControlsPanel"]
 layout_mode = 0
-offset_left = 8.0
+offset_left = 16.0
 offset_top = 8.0
-offset_right = 168.0
+offset_right = 176.0
 offset_bottom = 128.0
 theme_override_font_sizes/normal_font_size = 18
 bbcode_enabled = true
-text = "[center]Controls[/center]
+text = "[center][color=B6FF00]Controls[/color][/center]
 A = Left
 D = Right
 Space = Jump
@@ -123,13 +126,13 @@ offset_bottom = 96.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Menus/CreditsPanel"]
 layout_mode = 0
-offset_left = 8.0
+offset_left = 16.0
 offset_top = 8.0
-offset_right = 480.0
+offset_right = 488.0
 offset_bottom = 232.0
 theme_override_font_sizes/normal_font_size = 18
 bbcode_enabled = true
-text = "[center][color=B6FF00]Team[/color][/center]
+text = "[center][color=b6ff00]Team[/color][/center]
 * Kevin L. (CoffeeKev) - Programmer
 * ZeroMars - Level Layout & Audio Designer
 * Elijah D. Suggs - Artist (textures & ship/items)
@@ -183,9 +186,9 @@ offset_bottom = -8.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Landing"]
 layout_mode = 0
-offset_left = -184.0
+offset_left = -176.0
 offset_top = -128.0
-offset_right = 184.0
+offset_right = 192.0
 offset_bottom = -16.0
 theme_override_fonts/normal_font = ExtResource("2_n1wg7")
 theme_override_font_sizes/normal_font_size = 18
