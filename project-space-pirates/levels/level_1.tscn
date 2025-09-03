@@ -331,6 +331,9 @@ mode = 1
 position = Vector2(2362, 3441)
 initial_direction = 1
 
+[node name="PirateEnemy13" parent="Enemies" instance=ExtResource("4_gwceb")]
+position = Vector2(2782, 3334)
+
 [node name="PirateEnemy9" parent="Enemies" instance=ExtResource("4_gwceb")]
 position = Vector2(943, 1301)
 
@@ -514,7 +517,7 @@ position = Vector2(2112, 1272)
 position = Vector2(1856, 1304)
 
 [node name="Platform18" parent="Platforms" instance=ExtResource("5_n46q3")]
-position = Vector2(2504, 3264)
+position = Vector2(2504, 3288)
 
 [node name="Platform31" parent="Platforms" instance=ExtResource("5_n46q3")]
 position = Vector2(2358, 3345)
@@ -538,6 +541,9 @@ scale = Vector2(2, 1)
 
 [node name="Platform21" parent="Platforms" instance=ExtResource("5_n46q3")]
 position = Vector2(2690, 3568)
+
+[node name="Platform35" parent="Platforms" instance=ExtResource("5_n46q3")]
+position = Vector2(2780, 3377)
 
 [node name="Platform34" parent="Platforms" instance=ExtResource("5_n46q3")]
 position = Vector2(3014, 3688)
@@ -615,6 +621,9 @@ position = Vector2(400, 1080)
 
 [node name="CheckpointArea3" parent="Checkpoints" instance=ExtResource("6_btoec")]
 position = Vector2(4112, 3736)
+
+[node name="CheckpointArea4" parent="Checkpoints" instance=ExtResource("6_btoec")]
+position = Vector2(1783, 2511)
 
 [node name="SceneEntrance" parent="." instance=ExtResource("7_gwceb")]
 position = Vector2(7632, 3704)

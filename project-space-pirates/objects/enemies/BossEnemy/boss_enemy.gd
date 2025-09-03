@@ -235,7 +235,6 @@ func take_damage(damage: float, _bullet_direction: String) -> void:
 
 func _on_decision_timer_timeout() -> void:
 	if SceneManager.boss_defeated:
-		print("Boss has been defeated and won't make anymore choices.")
 		return
 		
 	if current_state == State.CHASE:
@@ -275,7 +274,6 @@ func intro_seq() -> void:
 func seek_core() -> void:
 	var destination: Vector2 = global_position - SceneManager.asteria_core_position
 	move_speed = 300
-	print("destination left: ", destination)
 	# CAUTION: Boss won't end up exactly at 0, so a range is needed.
 	if destination.x >= -20 and destination.x <= 20:
 		explode()
@@ -293,5 +291,5 @@ func explode() -> void:
 
 func _on_death_animation_animation_finished() -> void:
 	SceneManager.escape_seq_active = true
-	print("Boss died. Something likely unlocked?")
+	print("Boss exploded.")
 	queue_free()
