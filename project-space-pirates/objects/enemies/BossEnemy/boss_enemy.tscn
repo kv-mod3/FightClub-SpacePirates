@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://b5o3173tmhfnp"]
+[gd_scene load_steps=31 format=3 uid="uid://b5o3173tmhfnp"]
 
 [ext_resource type="Script" uid="uid://dr44kb8ahe6pu" path="res://objects/enemies/BossEnemy/boss_enemy.gd" id="1_3vdqm"]
 [ext_resource type="Texture2D" uid="uid://ci5o7vxxr023a" path="res://assets/sprites/boss_72x.png" id="1_bg26o"]
@@ -11,7 +11,7 @@
 radius = 32.249
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h3843"]
-radius = 232.138
+radius = 200.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gtotk"]
 atlas = ExtResource("1_bg26o")
@@ -130,6 +130,14 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_bd8y1"]
+atlas = ExtResource("3_h3843")
+region = Rect2(82, 11, 9, 11)
+
+[sub_resource type="Curve" id="Curve_7kv1d"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.761364, 0.0786518), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_k3ejj"]
 atlas = ExtResource("3_h3843")
 region = Rect2(0, 0, 64, 64)
@@ -213,9 +221,18 @@ shape = SubResource("CircleShape2D_h3843")
 debug_color = Color(0.997788, 0, 0.158, 0.42)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_6idkp")
-animation = &"hurt"
+animation = &"jump"
 autoplay = "idle"
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="AnimatedSprite2D"]
+z_index = -1
+position = Vector2(29, 20)
+emitting = false
+texture = SubResource("AtlasTexture_bd8y1")
+lifetime = 0.5
+scale_amount_curve = SubResource("Curve_7kv1d")
 
 [node name="DeathAnimation" type="AnimatedSprite2D" parent="."]
 visible = false

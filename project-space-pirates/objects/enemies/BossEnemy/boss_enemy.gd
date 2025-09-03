@@ -1,5 +1,8 @@
 extends CharacterBody2D
 
+# NOTE: Boss's AnimatedSprite is flipped on purpose to face away from player.
+# The face_target() func should flip it back properly.
+
 enum State {
 	INACTIVE,
 	IDLE,
@@ -84,6 +87,7 @@ func jump_attack() -> void:
 	is_hovering = true
 	velocity.y = 0 # Stops velocity.
 	$AnimationPlayer.play("hover")
+	$AnimatedSprite2D/CPUParticles2D.emitting = true
 	
 	# Chases target for a few seconds. Boss's move speed is increased.
 	current_state = State.CHASE
@@ -97,6 +101,7 @@ func jump_attack() -> void:
 	await get_tree().create_timer(1).timeout
 
 	# Stops hovering and slams into floor.
+	$AnimatedSprite2D/CPUParticles2D.emitting = false
 	$AnimationPlayer.play("RESET")
 	$AnimatedSprite2D.play("idle")
 	is_hovering = false
@@ -123,10 +128,12 @@ func face_target() -> void:
 	if distance_to_target.x > 0:
 		$AnimatedSprite2D.flip_h = true # Flips sprite horizontally.
 		$MuzzleMarker.rotation_degrees = 180 # Rotates enemy muzzle to 180 degrees.
+		$AnimatedSprite2D/CPUParticles2D.position = Vector2(-29, 20)
 	# Face right.
 	if distance_to_target.x < -0:
 		$AnimatedSprite2D.flip_h = false
 		$MuzzleMarker.rotation_degrees = 0 # Rotates enemy muzzle to 0 degrees.
+		$AnimatedSprite2D/CPUParticles2D.position = Vector2(29, 20)
 
 
 # Faces enemy's sprite and gun depending on the direction it is in.
@@ -195,7 +202,7 @@ func take_damage(damage: float, _bullet_direction: String) -> void:
 
 
 func _on_decision_timer_timeout() -> void:
-	$DecisionTimer.wait_time = range(3, 6).pick_random()
+	$DecisionTimer.wait_time = range(3, 5).pick_random()
 	print("Boss will act in ", $DecisionTimer.get_wait_time(), " seconds.")
 	if current_state == State.CHASE:
 		var choice: String = attack_choices.front()
@@ -213,6 +220,7 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 	# First time detection.
 	if not target and body is Player: # If the enemy had no target:
 		target = body # Sets Player as the target.
+		$AnimatedSprite2D.flip_h = false
 		$AnimatedSprite2D.play("moving")
 		$DecisionTimer.wait_time = range(3, 6).pick_random()
 		$DecisionTimer.start()

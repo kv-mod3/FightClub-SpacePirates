@@ -135,6 +135,7 @@ func take_damage(damage: float) -> void:
 	if not is_invincible:
 		i_frames(2) # Invincibility frames for x seconds.
 		PlayerVariables.health -= damage
+		red_text_blink($CanvasLayer/HealthLabel)
 		$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
 		print("Player took %d damage!" % damage, " Current HP: ", PlayerVariables.health)
 		if PlayerVariables.health <= 0 and not is_dying:
@@ -248,14 +249,13 @@ func green_text_blink(label: Control) -> void:
 
 
 func full_damage() -> void:
-	PlayerVariables.health -= PlayerVariables.MAX_HEALTH
-	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
-	print("Player took %d damage!" % PlayerVariables.MAX_HEALTH, " Current HP: ", PlayerVariables.health)
-	if PlayerVariables.health <= 0 and not is_dying:
+	if not is_dying:
+		is_dying = true
+		PlayerVariables.health -= PlayerVariables.MAX_HEALTH
+		red_text_blink($CanvasLayer/HealthLabel)
+		$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
+		print("Player took %d damage!" % PlayerVariables.MAX_HEALTH, " Current HP: ", PlayerVariables.health)
 		death()
-	else:
-		$AnimatedSprite2D.play("hurt")
-		$Sounds/Hurt.play()
 
 
 func death() -> void:
@@ -286,15 +286,18 @@ func respawn() -> void:
 	$CanvasLayer/AmmoLabel.text = "Ammo: %d" % PlayerVariables.ammo
 	green_text_blink($CanvasLayer/AmmoLabel)
 	
-	# Re-enables collisions.
-	$CollisionShape2D.set_deferred("disabled", false)
-	$HitboxArea.set_deferred("monitoring", true)
-	$HitboxArea.set_deferred("monitorable", true)
-	
 	# Sets Player position to respawn location.
 	$AnimatedSprite2D.visible = true # NOTE: DeathAnimation disables itself once finished.
 	global_position = SceneManager.respawn_location
 	print("Player has respawned.")
+	
+	# Buffer timer so that player doesn't get killed by kill zone before they are able to respawn.
+	await get_tree().create_timer(0.2).timeout
+	
+	# Re-enables collisions.
+	$CollisionShape2D.set_deferred("disabled", false)
+	$HitboxArea.set_deferred("monitoring", true)
+	$HitboxArea.set_deferred("monitorable", true)
 	is_dying = false
 
 

@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://djqjhjduc3a3u"]
+
+[ext_resource type="Texture2D" uid="uid://ch7r38e5jwuap" path="res://assets/textures/pixil-frame-04.png" id="1_b2w7k"]
+
+[node name="Container" type="Node2D"]
+
+[node name="BotPoly" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(-80, -8)
+texture = ExtResource("1_b2w7k")
+texture_offset = Vector2(0, 16)
+polygon = PackedVector2Array(32, -16, 32, 8, 128, 8, 128, -16)
+
+[node name="BotPoly2" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(-64, -33)
+texture = ExtResource("1_b2w7k")
+texture_offset = Vector2(0, -2)
+polygon = PackedVector2Array(32, 2, 32, 9, 96, 9, 96, 2)
+
+[node name="TopPoly3" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(-64, -96)
+texture = ExtResource("1_b2w7k")
+texture_offset = Vector2(0, -2)
+polygon = PackedVector2Array(32, 2, 32, 9, 96, 9, 96, 2)
+
+[node name="Glass" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(-64, -89)
+color = Color(0.180392, 1, 1, 0.352941)
+texture_offset = Vector2(0, -2)
+polygon = PackedVector2Array(32, 2, 32, 58, 96, 58, 96, 2)

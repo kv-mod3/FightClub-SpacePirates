@@ -1,14 +1,19 @@
-[gd_scene load_steps=15 format=3 uid="uid://cdmp8ry4bd76d"]
+[gd_scene load_steps=18 format=3 uid="uid://cdmp8ry4bd76d"]
 
 [ext_resource type="Script" uid="uid://stju4lg1eawp" path="res://levels/level_2.gd" id="1_ep78u"]
 [ext_resource type="PackedScene" uid="uid://bacqw7l3u02n6" path="res://objects/level_objects/platform.tscn" id="1_mi4ay"]
 [ext_resource type="PackedScene" uid="uid://bvstcalgkhvp6" path="res://objects/level_objects/door.tscn" id="2_0srwa"]
-[ext_resource type="PackedScene" uid="uid://c6apj1qu862c2" path="res://objects/level_objects/player_ship_actor.tscn" id="3_5722l"]
+[ext_resource type="Texture2D" uid="uid://blivnaon5dwu5" path="res://assets/textures/space_background.png" id="2_sd18g"]
 [ext_resource type="PackedScene" uid="uid://c1vwxu07abuus" path="res://objects/player/PlayerPlatformer/player_platformer.tscn" id="3_v5uil"]
 [ext_resource type="PackedScene" uid="uid://pj60a1uxovhp" path="res://objects/level_objects/kill_area.tscn" id="4_dfjjl"]
 [ext_resource type="PackedScene" uid="uid://d0amyb102xm7k" path="res://objects/level_objects/scene_entrance.tscn" id="5_ilhis"]
+[ext_resource type="Texture2D" uid="uid://cfmcdtd6xkocq" path="res://assets/sprites/door.png" id="5_vm7no"]
 [ext_resource type="PackedScene" uid="uid://dc87e8bajv67w" path="res://objects/level_objects/checkpoint_area.tscn" id="6_ilhis"]
 [ext_resource type="AudioStream" uid="uid://c5hdp7ex12hct" path="res://assets/music/The Great Escape Level 2.wav" id="9_at1ld"]
+[ext_resource type="PackedScene" uid="uid://bgu7u2465aw55" path="res://objects/level_objects/player_ship_static.tscn" id="9_sd18g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hbb88"]
+size = Vector2(16, 95)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_at1ld"]
 size = Vector2(1944, 32)
@@ -31,23 +36,29 @@ shadow_color = Color(0, 0, 0, 0.313726)
 [node name="Level 2" type="Node2D"]
 script = ExtResource("1_ep78u")
 
+[node name="Parallax2D" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0, 0)
+
+[node name="SpaceBG" type="TextureRect" parent="Parallax2D"]
+offset_left = 104.0
+offset_right = 7928.0
+offset_bottom = 5152.0
+texture = ExtResource("2_sd18g")
+stretch_mode = 1
+
 [node name="Ship Background" type="Polygon2D" parent="."]
 position = Vector2(6, 2)
 color = Color(0.416016, 0.414308, 0.385424, 1)
-polygon = PackedVector2Array(1863, 370, 1866, 294, 2016, 244, 2276, 197, 2645, 181, 3233, 235, 3569, 273, 4321, 275, 4543, 293, 5241, 325, 5336, 690, 5383, 1641, 8009, 1745, 8046, 3037, 8122, 3880, 8113, 5185, 7145, 5180, 6563, 5170, 5903, 5180, 4710, 5189, 2770, 5167, 1493, 5153, 37, 5153, -7, 1344, 84, 742, 837, 636, 1397, 593, 1901, 594, 1869, 533)
+polygon = PackedVector2Array(1863, 370, 1866, 294, 2016, 244, 2276, 197, 2645, 181, 3233, 235, 3569, 273, 4321, 275, 4543, 293, 5241, 325, 5336, 690, 5383, 1641, 5714, 2382, 5714, 2822, 7762, 2814, 7762, 2638, 8122, 2606, 8122, 3880, 8113, 5185, 7145, 5180, 6563, 5170, 5903, 5180, 4710, 5189, 2770, 5167, 1493, 5153, 37, 5153, -7, 1344, 84, 742, 837, 636, 1397, 593, 1901, 594, 1869, 533)
 
-[node name="Space Background" type="Polygon2D" parent="."]
-position = Vector2(421.3, 1435)
-color = Color(0.158065, 3.24401e-05, 0.594869, 1)
-polygon = PackedVector2Array(5173.7, 617, 5245, 321, 7952, 449, 7952, 1374, 7560, 1381, 5909, 1388, 5376, 1381, 5326.7, 874)
-
-[node name="Landing Pad" type="StaticBody2D" parent="Space Background"]
-position = Vector2(-6, -2)
-
-[node name="Polygon2D" type="Polygon2D" parent="Space Background/Landing Pad"]
-position = Vector2(5152.7, 901)
+[node name="LandingPand" type="Polygon2D" parent="."]
+position = Vector2(5568, 2334)
 color = Color(0.560955, 0.560955, 0.560955, 1)
 polygon = PackedVector2Array(704, 443, 757.9, 410.643, 805, 381, 835, 354, 1045, 353, 1069, 373, 1121, 407, 1183, 438, 936, 443)
+
+[node name="PlayerShipStatic" parent="." instance=ExtResource("9_sd18g")]
+position = Vector2(6504, 2608)
+scale = Vector2(2, 2)
 
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(5665, 1752)
@@ -129,8 +140,8 @@ position = Vector2(3950, 3702)
 scale = Vector2(0.2, 2)
 
 [node name="Platform11" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4917, 4177)
-scale = Vector2(1, 7)
+position = Vector2(4920, 4144)
+scale = Vector2(1, 5)
 
 [node name="Platform12" parent="Platforms" instance=ExtResource("1_mi4ay")]
 position = Vector2(3550, 3337)
@@ -141,10 +152,10 @@ position = Vector2(3874, 3636)
 scale = Vector2(0.5, 1)
 
 [node name="Platform17" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(3987, 3224)
+position = Vector2(3976, 3224)
 
 [node name="Platform28" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4679, 4084)
+position = Vector2(4672, 4080)
 
 [node name="Platform15" parent="Platforms" instance=ExtResource("1_mi4ay")]
 position = Vector2(4709, 3948)
@@ -162,10 +173,10 @@ position = Vector2(3731, 3282)
 scale = Vector2(1.2, 1)
 
 [node name="Platform18" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4792, 4177)
+position = Vector2(4792, 4176)
 
 [node name="Platform31" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4573, 4010)
+position = Vector2(4576, 4016)
 scale = Vector2(0.5, 1)
 
 [node name="Platform33" parent="Platforms" instance=ExtResource("1_mi4ay")]
@@ -173,10 +184,10 @@ position = Vector2(4562, 3872)
 scale = Vector2(0.5, 1)
 
 [node name="Platform20" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(5070, 4358)
+position = Vector2(5080, 4312)
 
 [node name="Platform24" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(5373, 4233)
+position = Vector2(5368, 4248)
 scale = Vector2(1.2, 1)
 
 [node name="Platform25" parent="Platforms" instance=ExtResource("1_mi4ay")]
@@ -190,7 +201,7 @@ position = Vector2(5702, 4272)
 scale = Vector2(2, 1)
 
 [node name="Platform21" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4819, 4329)
+position = Vector2(4832, 4328)
 
 [node name="Platform19" parent="Platforms" instance=ExtResource("1_mi4ay")]
 position = Vector2(4632, 4248)
@@ -205,11 +216,26 @@ scale = Vector2(0.5, 1)
 
 [node name="Doors That Dont Open" type="Node2D" parent="."]
 
-[node name="Door" parent="Doors That Dont Open" instance=ExtResource("2_0srwa")]
-position = Vector2(6960, 4270)
+[node name="FakeDoor" type="StaticBody2D" parent="Doors That Dont Open"]
 
-[node name="Door2" parent="Doors That Dont Open" instance=ExtResource("2_0srwa")]
-position = Vector2(7761.3, 2719)
+[node name="Sprite2D" type="Sprite2D" parent="Doors That Dont Open/FakeDoor"]
+position = Vector2(6771, 4267)
+texture = ExtResource("5_vm7no")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Doors That Dont Open/FakeDoor"]
+position = Vector2(6771, 4264.5)
+shape = SubResource("RectangleShape2D_hbb88")
+
+[node name="FakeDoor2" type="StaticBody2D" parent="Doors That Dont Open"]
+position = Vector2(1000, -1547)
+
+[node name="Sprite2D" type="Sprite2D" parent="Doors That Dont Open/FakeDoor2"]
+position = Vector2(6771, 4267)
+texture = ExtResource("5_vm7no")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Doors That Dont Open/FakeDoor2"]
+position = Vector2(6771, 4264.5)
+shape = SubResource("RectangleShape2D_hbb88")
 
 [node name="Door That Should Open" type="Node2D" parent="."]
 
@@ -242,11 +268,8 @@ position = Vector2(3384, 4264)
 position = Vector2(-2, 0)
 shape = SubResource("RectangleShape2D_sd18g")
 
-[node name="PlayerShipActor" parent="." instance=ExtResource("3_5722l")]
-position = Vector2(6438, 2763)
-
 [node name="PlayerPlatformer" parent="." instance=ExtResource("3_v5uil")]
-position = Vector2(6573, 4284)
+position = Vector2(6696, 4280)
 
 [node name="SceneEntrance" parent="." instance=ExtResource("5_ilhis")]
 position = Vector2(6030, 1644)
