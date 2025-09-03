@@ -1,59 +1,202 @@
-[gd_scene load_steps=13 format=3 uid="uid://c1vwxu07abuus"]
+[gd_scene load_steps=36 format=3 uid="uid://c1vwxu07abuus"]
 
 [ext_resource type="Script" uid="uid://b0jyw622gwwpt" path="res://objects/player/PlayerPlatformer/player_platformer.gd" id="1_qgnnd"]
 [ext_resource type="Texture2D" uid="uid://cw0k2qagu3gtg" path="res://assets/concepts/GJ_-_Alien_ideas_01.png" id="2_qgnnd"]
+[ext_resource type="Texture2D" uid="uid://bj8fmp6fdf61x" path="res://assets/sprites/player_36x.png" id="3_4bss0"]
 [ext_resource type="AudioStream" uid="uid://bhts5tpvpiv20" path="res://assets/sounds/death.wav" id="3_c223f"]
+[ext_resource type="FontFile" uid="uid://bv0ty1gwebkck" path="res://assets/fonts/good timing bd.otf" id="4_a57bp"]
+[ext_resource type="Texture2D" uid="uid://e0kokd7flpb" path="res://assets/sprites/player_death_32x.png" id="4_m1ubb"]
 [ext_resource type="AudioStream" uid="uid://b18jur2ggrd7m" path="res://assets/sounds/player_shoot.wav" id="4_p8b3x"]
 [ext_resource type="AudioStream" uid="uid://bt6c5inpy04m3" path="res://assets/sounds/jump.wav" id="5_8ho1c"]
 [ext_resource type="AudioStream" uid="uid://d2a2umq143akn" path="res://assets/sounds/hurt.wav" id="6_p8b3x"]
+[ext_resource type="AudioStream" uid="uid://b31iafnruux3h" path="res://assets/sounds/finish_recharging.wav" id="7_8ho1c"]
+[ext_resource type="AudioStream" uid="uid://bvunqqt240e2r" path="res://assets/sounds/recharging.wav" id="8_xirlr"]
+[ext_resource type="AudioStream" uid="uid://fikqg2qg13qq" path="res://assets/sounds/pickup.wav" id="9_2f74p"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5442t"]
 atlas = ExtResource("2_qgnnd")
 region = Rect2(128, 448, 832, 1088)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_4bss0"]
+atlas = ExtResource("3_4bss0")
+region = Rect2(0, 36, 36, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1ubb"]
+atlas = ExtResource("3_4bss0")
+region = Rect2(36, 36, 36, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nm038"]
+atlas = ExtResource("3_4bss0")
+region = Rect2(0, 144, 36, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t1dbn"]
+atlas = ExtResource("3_4bss0")
+region = Rect2(36, 144, 36, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a57bp"]
+atlas = ExtResource("3_4bss0")
+region = Rect2(0, 0, 36, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pux3u"]
+atlas = ExtResource("3_4bss0")
+region = Rect2(36, 0, 36, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dufjy"]
+atlas = ExtResource("3_4bss0")
+region = Rect2(72, 72, 36, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mipuv"]
+atlas = ExtResource("3_4bss0")
+region = Rect2(72, 108, 36, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_814gr"]
+atlas = ExtResource("3_4bss0")
+region = Rect2(36, 72, 36, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_apkcp"]
+atlas = ExtResource("3_4bss0")
+region = Rect2(36, 108, 36, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_khtay"]
+atlas = ExtResource("3_4bss0")
+region = Rect2(36, 0, 36, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r2v0u"]
+atlas = ExtResource("3_4bss0")
+region = Rect2(72, 0, 36, 36)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_p8b3x"]
 animations = [{
-"frames": [],
-"loop": true,
-"name": &"hurt",
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4bss0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m1ubb")
+}],
+"loop": false,
+"name": &"blink",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nm038")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t1dbn")
+}],
 "loop": true,
+"name": &"hurt",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a57bp")
+}],
+"loop": false,
 "name": &"idle",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pux3u")
+}],
 "loop": true,
-"name": &"shoot",
+"name": &"jump",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dufjy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mipuv")
+}],
+"loop": false,
+"name": &"shoot_air",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_814gr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_apkcp")
+}],
+"loop": false,
+"name": &"shoot_ground",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_khtay")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r2v0u")
+}],
 "loop": true,
 "name": &"walk",
 "speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wjn1b"]
+atlas = ExtResource("4_m1ubb")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o22bv"]
+atlas = ExtResource("4_m1ubb")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f08pv"]
+atlas = ExtResource("4_m1ubb")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ibe81"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wjn1b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o22bv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f08pv")
+}],
+"loop": false,
+"name": &"death",
+"speed": 3.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4y5so"]
 size = Vector2(16, 32)
 
 [sub_resource type="LabelSettings" id="LabelSettings_r7f4e"]
+font = ExtResource("4_a57bp")
 font_size = 24
+shadow_size = 4
 shadow_color = Color(0, 0, 0, 0.313726)
 
 [sub_resource type="LabelSettings" id="LabelSettings_y3hdj"]
+font = ExtResource("4_a57bp")
 font_size = 24
 shadow_color = Color(0, 0, 0, 0.314)
 
 [sub_resource type="LabelSettings" id="LabelSettings_e3i7r"]
+font = ExtResource("4_a57bp")
 font_color = Color(0, 1, 0, 1)
 shadow_color = Color(0, 0, 0, 0.313726)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xirlr"]
+radius = 8.0
+height = 32.0
 
 [node name="PlayerPlatformer" type="CharacterBody2D"]
 collision_layer = 4
 script = ExtResource("1_qgnnd")
 
 [node name="TestSprite2D" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(0, -9.53674e-07)
 scale = Vector2(0.0384615, 0.0384615)
 texture = SubResource("AtlasTexture_5442t")
@@ -62,15 +205,25 @@ texture = SubResource("AtlasTexture_5442t")
 sprite_frames = SubResource("SpriteFrames_p8b3x")
 animation = &"hurt"
 autoplay = "idle"
+offset = Vector2(0, -2)
+
+[node name="DeathAnimation" type="AnimatedSprite2D" parent="."]
+visible = false
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_ibe81")
+animation = &"death"
+frame = 2
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_4y5so")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -48)
 zoom = Vector2(2, 2)
 
 [node name="MuzzleMarker" type="Marker2D" parent="."]
-position = Vector2(18, 2)
+position = Vector2(18, 0)
 
 [node name="ShootCooldownTimer" type="Timer" parent="."]
 wait_time = 0.2
@@ -85,13 +238,13 @@ one_shot = true
 [node name="Panel" type="Panel" parent="CanvasLayer"]
 offset_left = 16.0
 offset_top = 16.0
-offset_right = 192.0
+offset_right = 208.0
 offset_bottom = 136.0
 
 [node name="HealthLabel" type="Label" parent="CanvasLayer"]
-offset_left = 32.0
+offset_left = 56.0
 offset_top = 24.0
-offset_right = 128.0
+offset_right = 160.0
 offset_bottom = 64.0
 text = "HP: 000"
 label_settings = SubResource("LabelSettings_r7f4e")
@@ -109,16 +262,16 @@ vertical_alignment = 1
 [node name="ReloadingLabel" type="Label" parent="CanvasLayer"]
 visible = false
 offset_left = 32.0
-offset_top = 96.0
-offset_right = 184.0
-offset_bottom = 120.0
+offset_top = 104.0
+offset_right = 191.0
+offset_bottom = 128.0
 text = "Recharging... 100%"
 label_settings = SubResource("LabelSettings_e3i7r")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 visible = false
 
-[node name="Sounds" type="Node" parent="."]
+[node name="Sounds" type="Node2D" parent="."]
 
 [node name="Death" type="AudioStreamPlayer2D" parent="Sounds"]
 stream = ExtResource("3_c223f")
@@ -132,4 +285,23 @@ stream = ExtResource("5_8ho1c")
 [node name="Hurt" type="AudioStreamPlayer2D" parent="Sounds"]
 stream = ExtResource("6_p8b3x")
 
+[node name="FinishRecharge" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("7_8ho1c")
+
+[node name="Recharging" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("8_xirlr")
+
+[node name="Pickup" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("9_2f74p")
+
+[node name="HitboxArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxArea"]
+shape = SubResource("CapsuleShape2D_xirlr")
+debug_color = Color(0.998151, 0, 0.149284, 0.42)
+
+[connection signal="animation_finished" from="DeathAnimation" to="." method="_on_death_animation_animation_finished"]
 [connection signal="timeout" from="RechargeTimer" to="." method="_on_recharge_timer_timeout"]
+[connection signal="body_entered" from="HitboxArea" to="." method="_on_hitbox_area_body_entered"]

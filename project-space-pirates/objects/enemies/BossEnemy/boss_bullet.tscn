@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://c02215dvlfviu"]
+
+[ext_resource type="Script" uid="uid://cepa8nac374iw" path="res://objects/enemies/BossEnemy/boss_bullet.gd" id="1_47nmm"]
+[ext_resource type="Texture2D" uid="uid://b4fyunh3ne4v5" path="res://assets/sprites/boss_bullet_26x.png" id="2_da7j4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_weho4"]
+atlas = ExtResource("2_da7j4")
+region = Rect2(0, 0, 26, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h0o4v"]
+atlas = ExtResource("2_da7j4")
+region = Rect2(26, 0, 26, 26)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5aj87"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_weho4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h0o4v")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8afq0"]
+radius = 12.0
+
+[node name="BossBullet" type="Area2D"]
+z_index = 2
+collision_layer = 8
+collision_mask = 5
+script = ExtResource("1_47nmm")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-4, -4)
+scale = Vector2(2, 2)
+rect = Rect2(0, 0, 4, 4)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_5aj87")
+autoplay = "default"
+frame_progress = 0.854801
+offset = Vector2(-0.6, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_8afq0")
+debug_color = Color(0.908136, 0.000116284, 0.737729, 0.42)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

@@ -5,10 +5,6 @@ const SPEED: float = 650
 const DAMAGE: float = 10
 
 
-func _ready() -> void:
-	pass # Replace with function body.
-
-
 func _physics_process(delta: float) -> void:
 	# Bullet moves right by default.
 	position += transform.x * SPEED * delta

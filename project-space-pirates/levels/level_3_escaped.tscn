@@ -1,3 +1,86 @@
-[gd_scene format=3 uid="uid://bvn4lk3ikymfs"]
+[gd_scene load_steps=9 format=3 uid="uid://bvn4lk3ikymfs"]
 
-[node name="AsteroidsLevel" type="Node2D"]
+[ext_resource type="Script" uid="uid://bifowpnx6g283" path="res://levels/level_3_escaped.gd" id="1_esw5h"]
+[ext_resource type="Texture2D" uid="uid://blivnaon5dwu5" path="res://assets/textures/space_background.png" id="1_p85b4"]
+[ext_resource type="PackedScene" uid="uid://c6apj1qu862c2" path="res://objects/level_objects/player_ship_actor.tscn" id="3_4q188"]
+[ext_resource type="FontFile" uid="uid://bv0ty1gwebkck" path="res://assets/fonts/good timing bd.otf" id="3_4w55r"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vfrfw"]
+font = ExtResource("3_4w55r")
+font_size = 42
+
+[sub_resource type="Animation" id="Animation_4w55r"]
+resource_name = "message"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VictoryPanel/Label:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-256, -232), Vector2(-256, -128)]
+}
+
+[sub_resource type="Animation" id="Animation_vfrfw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VictoryPanel/Label:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-256, -232)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4w55r"]
+_data = {
+&"RESET": SubResource("Animation_vfrfw"),
+&"message": SubResource("Animation_4w55r")
+}
+
+[node name="Level 3 Escaped" type="Node2D"]
+script = ExtResource("1_esw5h")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+
+[node name="SpaceBG" type="TextureRect" parent="."]
+offset_left = -296.0
+offset_top = -168.0
+offset_right = 296.0
+offset_bottom = 168.0
+texture = ExtResource("1_p85b4")
+stretch_mode = 1
+
+[node name="VictoryPanel" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="VictoryPanel"]
+layout_mode = 0
+offset_left = -256.0
+offset_top = -232.0
+offset_right = 256.0
+offset_bottom = -168.0
+text = "You saved the galaxy!"
+label_settings = SubResource("LabelSettings_vfrfw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerShipActor" parent="." instance=ExtResource("3_4q188")]
+position = Vector2(344, 56)
+moving = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_4w55r")
+}

@@ -7,6 +7,6 @@ var is_opened: bool = false
 func open() -> void:
 	if not is_opened:
 		is_opened = true
-		$DoorSensors.color = Color(0.26, 1, 0.26)
+		$AudioStreamPlayer2D.play()
 		$AnimationPlayer.play("open")
-		$CollisionPolygon2D.set_deferred("disabled", true)
+		$CollisionShape2D.set_deferred("disabled", true)

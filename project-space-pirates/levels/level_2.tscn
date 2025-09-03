@@ -1,13 +1,19 @@
-[gd_scene load_steps=14 format=3 uid="uid://cdmp8ry4bd76d"]
+[gd_scene load_steps=18 format=3 uid="uid://cdmp8ry4bd76d"]
 
 [ext_resource type="Script" uid="uid://stju4lg1eawp" path="res://levels/level_2.gd" id="1_ep78u"]
 [ext_resource type="PackedScene" uid="uid://bacqw7l3u02n6" path="res://objects/level_objects/platform.tscn" id="1_mi4ay"]
 [ext_resource type="PackedScene" uid="uid://bvstcalgkhvp6" path="res://objects/level_objects/door.tscn" id="2_0srwa"]
-[ext_resource type="PackedScene" uid="uid://c6apj1qu862c2" path="res://objects/level_objects/player_ship_actor.tscn" id="3_5722l"]
+[ext_resource type="Texture2D" uid="uid://blivnaon5dwu5" path="res://assets/textures/space_background.png" id="2_sd18g"]
 [ext_resource type="PackedScene" uid="uid://c1vwxu07abuus" path="res://objects/player/PlayerPlatformer/player_platformer.tscn" id="3_v5uil"]
 [ext_resource type="PackedScene" uid="uid://pj60a1uxovhp" path="res://objects/level_objects/kill_area.tscn" id="4_dfjjl"]
 [ext_resource type="PackedScene" uid="uid://d0amyb102xm7k" path="res://objects/level_objects/scene_entrance.tscn" id="5_ilhis"]
+[ext_resource type="Texture2D" uid="uid://cfmcdtd6xkocq" path="res://assets/sprites/door.png" id="5_vm7no"]
 [ext_resource type="PackedScene" uid="uid://dc87e8bajv67w" path="res://objects/level_objects/checkpoint_area.tscn" id="6_ilhis"]
+[ext_resource type="AudioStream" uid="uid://c5hdp7ex12hct" path="res://assets/music/The Great Escape Level 2.wav" id="9_at1ld"]
+[ext_resource type="PackedScene" uid="uid://bgu7u2465aw55" path="res://objects/level_objects/player_ship_static.tscn" id="9_sd18g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hbb88"]
+size = Vector2(16, 95)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_at1ld"]
 size = Vector2(1944, 32)
@@ -30,35 +36,41 @@ shadow_color = Color(0, 0, 0, 0.313726)
 [node name="Level 2" type="Node2D"]
 script = ExtResource("1_ep78u")
 
+[node name="Parallax2D" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0, 0)
+
+[node name="SpaceBG" type="TextureRect" parent="Parallax2D"]
+offset_left = 104.0
+offset_right = 7928.0
+offset_bottom = 5152.0
+texture = ExtResource("2_sd18g")
+stretch_mode = 1
+
 [node name="Ship Background" type="Polygon2D" parent="."]
 position = Vector2(6, 2)
 color = Color(0.416016, 0.414308, 0.385424, 1)
-polygon = PackedVector2Array(1863, 370, 1866, 294, 2016, 244, 2276, 197, 2645, 181, 3233, 235, 3569, 273, 4321, 275, 4543, 293, 5241, 325, 5336, 690, 5383, 1641, 8009, 1745, 8046, 3037, 8122, 3880, 8113, 5185, 7145, 5180, 6563, 5170, 5903, 5180, 4710, 5189, 2770, 5167, 1493, 5153, 37, 5153, -7, 1344, 84, 742, 837, 636, 1397, 593, 1901, 594, 1869, 533)
+polygon = PackedVector2Array(1863, 370, 1866, 294, 2016, 244, 2276, 197, 2645, 181, 3233, 235, 3569, 273, 4321, 275, 4543, 293, 5241, 325, 5336, 690, 5383, 1641, 5714, 2382, 5714, 2822, 7762, 2814, 7762, 2638, 8122, 2606, 8122, 3880, 8113, 5185, 7145, 5180, 6563, 5170, 5903, 5180, 4710, 5189, 2770, 5167, 1493, 5153, 37, 5153, -7, 1344, 84, 742, 837, 636, 1397, 593, 1901, 594, 1869, 533)
 
-[node name="Space Background" type="Polygon2D" parent="."]
-position = Vector2(100.3, 237)
-color = Color(0.158065, 3.24401e-05, 0.594869, 1)
-polygon = PackedVector2Array(5173.7, 617, 5245, 321, 7952, 449, 7952, 1374, 7560, 1381, 5909, 1388, 5376, 1381, 5326.7, 874)
-
-[node name="Landing Pad" type="StaticBody2D" parent="Space Background"]
-position = Vector2(-6, -2)
-
-[node name="Polygon2D" type="Polygon2D" parent="Space Background/Landing Pad"]
-position = Vector2(5152.7, 901)
+[node name="LandingPand" type="Polygon2D" parent="."]
+position = Vector2(5568, 2334)
 color = Color(0.560955, 0.560955, 0.560955, 1)
 polygon = PackedVector2Array(704, 443, 757.9, 410.643, 805, 381, 835, 354, 1045, 353, 1069, 373, 1121, 407, 1183, 438, 936, 443)
 
+[node name="PlayerShipStatic" parent="." instance=ExtResource("9_sd18g")]
+position = Vector2(6504, 2608)
+scale = Vector2(2, 2)
+
 [node name="Floor" type="StaticBody2D" parent="."]
-position = Vector2(5471, 852)
+position = Vector2(5665, 1752)
 
 [node name="Polygon2D" type="Polygon2D" parent="Floor"]
-position = Vector2(75, 234)
+position = Vector2(202, 532)
 color = Color(0.51377, 0.271399, 0.0889548, 1)
-polygon = PackedVector2Array(-151, 244, -103, 237, -6, 191, 73.2391, 126.999, 98, 107, 199, 88, 274, 167, 263, 289, 263, 364, 293, 420, 361, 470, 479, 482, 614, 484, 861, 485, 1026, 471, 1217, 492, 1448, 499, 1725, 505, 1861, 482, 1883, 482, 1890, 534, -143, 542)
+polygon = PackedVector2Array(-150, 245, -127, 242, -103, 237, -6, 191, 73.2391, 126.999, 98, 107, 199, 88, 274, 167, 263, 289, 263, 364, 293, 420, 361, 470, 479, 482, 614, 484, 861, 485, 1026, 471, 1217, 492, 1448, 499, 1725, 505, 1861, 482, 1883, 482, 1890, 534, -143, 542)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Floor"]
-position = Vector2(75, 234)
-polygon = PackedVector2Array(-151, 244, -103, 237, -6, 191, 98, 107, 199, 88, 274, 167, 263, 289, 263, 364, 293, 420, 361, 470, 479, 482, 614, 484, 861, 485, 1026, 471, 1217, 492, 1448, 499, 1725, 505, 1861, 482, 1883, 482, 1890, 534, -143, 542)
+position = Vector2(203, 533)
+polygon = PackedVector2Array(-151, 244, -103, 236, -7, 190, 72, 126, 97, 106, 198, 87, 273, 166, 262, 287, 262, 364, 293, 420, 360, 469, 479, 481, 614, 483, 861, 484, 1025, 470, 1217, 491, 1447, 498, 1725, 504, 1860, 481, 1882, 481, 1890, 534, -143, 542)
 
 [node name="Level 2 start" type="Node2D" parent="."]
 
@@ -73,20 +85,20 @@ polygon = PackedVector2Array(7243, 4761, 7233, 4328, 6465, 4298, 6598, 4729)
 [node name="Rock or Machine" type="StaticBody2D" parent="Level 2 start"]
 
 [node name="Random Part" type="Polygon2D" parent="Level 2 start/Rock or Machine"]
-polygon = PackedVector2Array(4704, 5206, 4692, 4923, 4586, 4792, 4565, 4539, 4646, 4321, 4301, 4323, 3812, 4180, 3863, 4398, 3838, 4624, 3863, 4967, 3702, 5202)
+polygon = PackedVector2Array(4704, 5206, 4692, 4923, 4586, 4792, 4565, 4539, 4529, 3812, 4275, 3729, 3998, 3759, 3863, 4398, 3838, 4624, 3863, 4967, 3702, 5202)
 
 [node name="Random Part Collision" type="CollisionPolygon2D" parent="Level 2 start/Rock or Machine"]
-polygon = PackedVector2Array(4704, 5206, 4692, 4923, 4586, 4792, 4565, 4539, 4646, 4321, 4301, 4323, 3812, 4180, 3863, 4398, 3838, 4624, 3863, 4967, 3702, 5202)
+polygon = PackedVector2Array(4704, 5206, 4692, 4923, 4586, 4792, 4565, 4539, 4529, 3812, 4275, 3729, 3998, 3759, 3863, 4398, 3838, 4624, 3863, 4967, 3702, 5202)
 
 [node name="Wall" type="StaticBody2D" parent="Level 2 start"]
 
 [node name="Wall 1" type="Polygon2D" parent="Level 2 start/Wall"]
 position = Vector2(57, 359)
-polygon = PackedVector2Array(6478, 3506, 6554, 3654, 6478, 3823, 6706, 3860, 7001, 3867, 7279, 3867, 7271, 3434, 6699, 3141, 7001, 2306, 7064, 1832, 6080, 1664, 5771, 1311, 5495, 1265, 5345, 1228, 5341, 1077, 5339, 972, 5287, 997, 5212, 1040, 5086, 1070, 5009, 1101, 4925, 1135, 4828, 1177, 4699, 1241, 4434, 1330, 4279, 1387, 4285, 1476, 4813, 1485, 5018, 1565, 5164, 1561, 5310, 1642, 5554, 2027, 5314, 2211, 5239, 2386, 5028, 2396, 4938, 2478, 4831, 2534, 4731, 2541, 4652, 2620, 4507, 2648, 4298, 2661, 4213, 2717, 4247, 2770, 4501, 2850, 4825, 2693, 4979, 2785, 5088, 2888, 5804, 3107, 6037, 3287)
+polygon = PackedVector2Array(6478, 3506, 6554, 3654, 6478, 3823, 6706, 3860, 7001, 3867, 7279, 3867, 7271, 3434, 7199, 3228, 7170, 3119, 7275, 2760, 7234, 2455, 6679, 2465, 6383, 2466, 6036, 2465, 5714, 2466, 5665, 2384, 5661, 2246, 5660, 2170, 5617, 2170, 5612, 2202, 5591, 2209, 5574, 2224, 5536, 2228, 5505, 2252, 5389, 2283, 5404, 2349, 5317, 2418, 5192, 2452, 5137, 2423, 5038, 2431, 4938, 2478, 4831, 2534, 4731, 2541, 4652, 2620, 4507, 2648, 4298, 2661, 4213, 2717, 4247, 2770, 4501, 2850, 4825, 2693, 4979, 2785, 5088, 2888, 5804, 3107, 6037, 3287)
 
 [node name="Wall 1 Collisions" type="CollisionPolygon2D" parent="Level 2 start/Wall"]
 position = Vector2(57, 359)
-polygon = PackedVector2Array(6478, 3506, 6554, 3654, 6478, 3823, 6706, 3860, 7001, 3867, 7279, 3867, 7271, 3434, 6699, 3141, 7001, 2306, 7064, 1832, 6080, 1664, 5771, 1311, 5495, 1265, 5345, 1228, 5341, 1077, 5339, 972, 5287, 997, 5212, 1040, 5086, 1070, 5009, 1101, 4925, 1135, 4828, 1177, 4699, 1241, 4434, 1330, 4279, 1387, 4285, 1476, 4813, 1485, 5018, 1565, 5164, 1561, 5310, 1642, 5554, 2027, 5314, 2211, 5239, 2386, 5028, 2396, 4938, 2478, 4831, 2534, 4731, 2541, 4652, 2620, 4507, 2648, 4298, 2661, 4213, 2717, 4247, 2770, 4501, 2850, 4825, 2693, 4979, 2785, 5088, 2888, 5804, 3107, 6037, 3287)
+polygon = PackedVector2Array(6478, 3506, 6554, 3654, 6478, 3823, 6706, 3860, 7001, 3867, 7279, 3867, 7271, 3434, 7199, 3228, 7170, 3119, 7275, 2760, 7234, 2455, 6679, 2465, 6383, 2466, 6036, 2465, 5714, 2466, 5665, 2384, 5661, 2246, 5660, 2170, 5617, 2170, 5612, 2202, 5591, 2209, 5574, 2224, 5536, 2228, 5505, 2252, 5389, 2283, 5404, 2349, 5317, 2418, 5192, 2452, 5137, 2423, 5038, 2431, 4938, 2478, 4831, 2534, 4731, 2541, 4652, 2620, 4507, 2648, 4298, 2661, 4213, 2717, 4247, 2770, 4501, 2850, 4825, 2693, 4979, 2785, 5088, 2888, 5804, 3107, 6037, 3287)
 
 [node name="Just There" type="StaticBody2D" parent="Level 2 start"]
 
@@ -102,45 +114,34 @@ polygon = PackedVector2Array(4555, 4868, 4666, 4782, 4722, 4696, 4565, 4539, 452
 
 [node name="Polygon2D" type="Polygon2D" parent="Level 2 start/StaticBody2D3"]
 position = Vector2(91, -5)
-polygon = PackedVector2Array(2755, 5086, 2726, 4387, 2804, 3767, 3000, 3636, 3258, 3673, 3413, 3673, 3559, 3603, 3645, 3634, 3722, 3622, 3731, 3581, 3724, 3542, 3662, 3540, 3648, 3487, 3610, 3464, 3579, 3405, 3505, 3408, 3424, 3378, 3409, 3282, 3254, 3265, 3076, 3234, 2950, 3212, 2926, 3279, 2859, 3281, 2572, 3199, 2498, 2723, 2692, 2510, 2974, 2135, 2823, 1525, 3164, 1221, 3970, 1394, 4571, 1366, 4924, 1267, 5140, 1267, 5258, 1232, 5362, 1234, 5347, 1128, 5290, 1022, 5225, 958, 5238, 842, 5291, 768, 5237, 676, 5241, 572, 5129, 526, 5179, 430, 5103, 342, 4819, 397, 4569, 327, 3311, 294, 2171, 716, 2101, 1708, 2050, 2267, 1967, 4416, 2046, 5086)
+polygon = PackedVector2Array(2755, 5086, 2726, 4387, 2804, 3767, 3000, 3636, 3258, 3673, 3413, 3673, 3559, 3603, 3645, 3634, 3722, 3622, 3731, 3581, 3724, 3542, 3662, 3540, 3648, 3487, 3610, 3464, 3579, 3405, 3505, 3408, 3424, 3378, 3409, 3282, 3254, 3265, 3076, 3234, 2950, 3212, 2926, 3279, 2859, 3281, 2572, 3199, 2498, 2723, 2692, 2510, 2974, 2135, 2823, 1525, 3164, 1221, 3970, 1394, 4654, 1777, 5071, 1970, 5397, 2422, 5474, 2445, 5556, 2438, 5600, 2441, 5690, 2436, 5693, 2312, 5588, 2023, 5425, 1897, 5472, 1733, 5394, 1616, 5259, 1520, 5294, 1428, 5289, 1325, 5305, 1277, 5336, 1256, 5362, 1234, 5347, 1128, 5290, 1022, 5225, 958, 5238, 842, 5291, 768, 5237, 676, 5241, 572, 5129, 526, 5179, 430, 5103, 342, 4819, 397, 4569, 327, 3311, 294, 2171, 716, 2101, 1708, 2050, 2267, 1967, 4416, 2046, 5086)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Level 2 start/StaticBody2D3"]
 position = Vector2(91, -5)
-polygon = PackedVector2Array(2755, 5086, 2726, 4387, 2804, 3767, 3000, 3636, 3258, 3673, 3413, 3673, 3559, 3603, 3645, 3634, 3722, 3622, 3731, 3581, 3724, 3542, 3662, 3540, 3648, 3487, 3610, 3464, 3579, 3405, 3505, 3408, 3424, 3378, 3409, 3282, 3254, 3265, 3076, 3234, 2950, 3212, 2926, 3279, 2859, 3281, 2572, 3199, 2498, 2723, 2692, 2510, 2974, 2135, 2823, 1525, 3164, 1221, 3970, 1394, 4571, 1366, 4924, 1267, 5140, 1267, 5258, 1232, 5362, 1234, 5347, 1128, 5290, 1022, 5225, 958, 5238, 842, 5291, 768, 5237, 676, 5241, 572, 5129, 526, 5179, 430, 5103, 342, 4819, 397, 4569, 327, 3311, 294, 2171, 716, 2101, 1708, 2050, 2267, 1967, 4416, 2046, 5086)
+polygon = PackedVector2Array(2755, 5086, 2726, 4387, 2804, 3767, 3000, 3636, 3258, 3673, 3413, 3673, 3559, 3603, 3645, 3634, 3722, 3622, 3731, 3581, 3724, 3542, 3662, 3540, 3648, 3487, 3610, 3464, 3579, 3405, 3505, 3408, 3424, 3378, 3409, 3282, 3254, 3265, 3076, 3234, 2950, 3212, 2926, 3279, 2859, 3281, 2572, 3199, 2498, 2723, 2692, 2510, 2974, 2135, 2823, 1525, 3164, 1221, 3970, 1394, 4654, 1777, 5071, 1970, 5397, 2422, 5474, 2445, 5556, 2438, 5600, 2441, 5690, 2436, 5693, 2312, 5588, 2023, 5425, 1897, 5472, 1733, 5394, 1616, 5259, 1520, 5294, 1428, 5289, 1325, 5305, 1277, 5336, 1256, 5362, 1234, 5347, 1128, 5290, 1022, 5225, 958, 5238, 842, 5291, 768, 5237, 676, 5241, 572, 5129, 526, 5179, 430, 5103, 342, 4819, 397, 4569, 327, 3311, 294, 2171, 716, 2101, 1708, 2050, 2267, 1967, 4416, 2046, 5086)
 
 [node name="For asethetics" type="StaticBody2D" parent="Level 2 start"]
 
 [node name="Polygon2D2" type="Polygon2D" parent="Level 2 start/For asethetics"]
-position = Vector2(101, 385)
+position = Vector2(422, 1583)
 polygon = PackedVector2Array(7477, 1240, 7334, 1235, 7328, 1183, 7356, 1180, 7418, 1158, 7545, 1158, 7744, 1173, 7837, 1201, 7955, 1254, 7884, 1333, 7713, 1248)
 
 [node name="Polygon2D" type="Polygon2D" parent="Level 2 start/For asethetics"]
-position = Vector2(91.2998, 243)
+position = Vector2(412.3, 1441)
 polygon = PackedVector2Array(7482, 1220, 7338, 1231, 7338, 1195, 7356, 1180, 7418, 1158, 7549, 1139, 7750, 1158, 7846, 1174, 7957, 1215, 7956, 1299, 7713, 1248)
 
 [node name="Platforms" type="Node" parent="."]
 
 [node name="Platform" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4923, 2699)
-
-[node name="Platform4" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4177, 1830)
-
-[node name="Platform6" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4324, 1900)
-scale = Vector2(0.5, 1)
+position = Vector2(5356, 2731)
 
 [node name="Platform14" parent="Platforms" instance=ExtResource("1_mi4ay")]
 position = Vector2(3950, 3702)
 scale = Vector2(0.2, 2)
 
-[node name="Platform5" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4330, 2053)
-scale = Vector2(0.5, 1)
-
 [node name="Platform11" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(3334, 4039)
-scale = Vector2(1, 7)
+position = Vector2(4920, 4144)
+scale = Vector2(1, 5)
 
 [node name="Platform12" parent="Platforms" instance=ExtResource("1_mi4ay")]
 position = Vector2(3550, 3337)
@@ -150,35 +151,21 @@ scale = Vector2(0.5, 1)
 position = Vector2(3874, 3636)
 scale = Vector2(0.5, 1)
 
-[node name="Platform13" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4505, 2123)
-
 [node name="Platform17" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(3987, 3224)
+position = Vector2(3976, 3224)
 
 [node name="Platform28" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(3725, 3853)
-
-[node name="Platform29" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4436, 2282)
-scale = Vector2(0.5, 2)
+position = Vector2(4672, 4080)
 
 [node name="Platform15" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(3530, 3934)
+position = Vector2(4709, 3948)
 scale = Vector2(1, 2)
-
-[node name="Platform16" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4504, 2248)
-scale = Vector2(0.5, 2)
-
-[node name="Platform2" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4449, 2568)
 
 [node name="Platform3" parent="Platforms" instance=ExtResource("1_mi4ay")]
 position = Vector2(4196, 3145)
 
 [node name="Platform7" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4675, 2650)
+position = Vector2(5288, 2762)
 scale = Vector2(1.2, 1)
 
 [node name="Platform8" parent="Platforms" instance=ExtResource("1_mi4ay")]
@@ -186,17 +173,21 @@ position = Vector2(3731, 3282)
 scale = Vector2(1.2, 1)
 
 [node name="Platform18" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(3465, 4051)
+position = Vector2(4792, 4176)
 
 [node name="Platform31" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(3882, 3774)
+position = Vector2(4576, 4016)
+scale = Vector2(0.5, 1)
+
+[node name="Platform33" parent="Platforms" instance=ExtResource("1_mi4ay")]
+position = Vector2(4562, 3872)
 scale = Vector2(0.5, 1)
 
 [node name="Platform20" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(5070, 4358)
+position = Vector2(5080, 4312)
 
 [node name="Platform24" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(5373, 4233)
+position = Vector2(5368, 4248)
 scale = Vector2(1.2, 1)
 
 [node name="Platform25" parent="Platforms" instance=ExtResource("1_mi4ay")]
@@ -210,26 +201,13 @@ position = Vector2(5702, 4272)
 scale = Vector2(2, 1)
 
 [node name="Platform21" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4819, 4329)
+position = Vector2(4832, 4328)
 
 [node name="Platform19" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(3667, 4130)
-
-[node name="Platform9" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4613, 2486)
-
-[node name="Platform26" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4434, 2402)
-
-[node name="Platform27" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4293, 2334)
+position = Vector2(4632, 4248)
 
 [node name="Platform10" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4377, 2181)
-scale = Vector2(0.5, 1)
-
-[node name="Platform33" parent="Platforms" instance=ExtResource("1_mi4ay")]
-position = Vector2(4224, 1977)
+position = Vector2(5422, 2682)
 scale = Vector2(0.5, 1)
 
 [node name="Platform22" parent="Platforms" instance=ExtResource("1_mi4ay")]
@@ -238,28 +216,43 @@ scale = Vector2(0.5, 1)
 
 [node name="Doors That Dont Open" type="Node2D" parent="."]
 
-[node name="Door" parent="Doors That Dont Open" instance=ExtResource("2_0srwa")]
-position = Vector2(6960, 4270)
+[node name="FakeDoor" type="StaticBody2D" parent="Doors That Dont Open"]
 
-[node name="Door2" parent="Doors That Dont Open" instance=ExtResource("2_0srwa")]
-position = Vector2(7440.3, 1521)
+[node name="Sprite2D" type="Sprite2D" parent="Doors That Dont Open/FakeDoor"]
+position = Vector2(6771, 4267)
+texture = ExtResource("5_vm7no")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Doors That Dont Open/FakeDoor"]
+position = Vector2(6771, 4264.5)
+shape = SubResource("RectangleShape2D_hbb88")
+
+[node name="FakeDoor2" type="StaticBody2D" parent="Doors That Dont Open"]
+position = Vector2(1000, -1547)
+
+[node name="Sprite2D" type="Sprite2D" parent="Doors That Dont Open/FakeDoor2"]
+position = Vector2(6771, 4267)
+texture = ExtResource("5_vm7no")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Doors That Dont Open/FakeDoor2"]
+position = Vector2(6771, 4264.5)
+shape = SubResource("RectangleShape2D_hbb88")
 
 [node name="Door That Should Open" type="Node2D" parent="."]
 
 [node name="Door3" parent="Door That Should Open" instance=ExtResource("2_0srwa")]
-position = Vector2(5414, 1279)
+position = Vector2(5714, 2482)
 
 [node name="Kill Floor" type="Node2D" parent="."]
 
 [node name="Kill Floor 4" type="Polygon2D" parent="Kill Floor"]
 position = Vector2(3687, 631)
 color = Color(0.631373, 0.176471, 0.0823529, 1)
-polygon = PackedVector2Array(2823, 3802, 918, 3802, 912, 3822, 2824, 3817)
+polygon = PackedVector2Array(2823, 3802, 893, 3804, 893, 3823, 2824, 3817)
 
 [node name="Kill Floor 5" type="Polygon2D" parent="Kill Floor"]
 position = Vector2(-238, 433)
 color = Color(0.631373, 0.176471, 0.0823529, 1)
-polygon = PackedVector2Array(3076, 3781, 4060, 3797, 4068, 3818, 3073, 3812)
+polygon = PackedVector2Array(3076, 3781, 4137, 3791, 4133, 3812, 3073, 3812)
 
 [node name="KillArea" parent="Kill Floor" instance=ExtResource("4_dfjjl")]
 position = Vector2(5576, 4464)
@@ -272,20 +265,18 @@ shape = SubResource("RectangleShape2D_at1ld")
 position = Vector2(3384, 4264)
 
 [node name="CollisionShape2D" parent="Kill Floor/KillArea2" index="0"]
-position = Vector2(-52, 0)
+position = Vector2(-2, 0)
 shape = SubResource("RectangleShape2D_sd18g")
 
-[node name="PlayerShipActor" parent="." instance=ExtResource("3_5722l")]
-position = Vector2(6182, 1441)
-
 [node name="PlayerPlatformer" parent="." instance=ExtResource("3_v5uil")]
-position = Vector2(6573, 4284)
+position = Vector2(6696, 4280)
 
 [node name="SceneEntrance" parent="." instance=ExtResource("5_ilhis")]
-position = Vector2(6176, 1504)
+position = Vector2(6030, 1644)
 next_scene = "res://levels/level_3_escaped.tscn"
 
 [node name="CollisionShape2D" parent="SceneEntrance" index="0"]
+position = Vector2(465, 1058)
 shape = SubResource("RectangleShape2D_5722l")
 
 [node name="Checkpoints" type="Node" parent="."]
@@ -294,16 +285,16 @@ shape = SubResource("RectangleShape2D_5722l")
 position = Vector2(6520, 4264)
 
 [node name="CheckpointArea2" parent="Checkpoints" instance=ExtResource("6_ilhis")]
-position = Vector2(4600, 4288)
+position = Vector2(4482, 3767)
 
 [node name="CheckpointArea3" parent="Checkpoints" instance=ExtResource("6_ilhis")]
-position = Vector2(3784, 3496)
+position = Vector2(3787, 3504)
 
 [node name="CheckpointArea4" parent="Checkpoints" instance=ExtResource("6_ilhis")]
 position = Vector2(4416, 2984)
 
 [node name="CheckpointArea5" parent="Checkpoints" instance=ExtResource("6_ilhis")]
-position = Vector2(4216, 1792)
+position = Vector2(5991, 2355)
 
 [node name="Timer" type="Timer" parent="."]
 
@@ -340,6 +331,11 @@ text = "Escape!"
 label_settings = SubResource("LabelSettings_dfjjl")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Level2BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_at1ld")
+volume_db = -5.0
+autoplay = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 

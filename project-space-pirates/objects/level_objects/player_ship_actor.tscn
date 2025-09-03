@@ -1,8 +1,101 @@
-[gd_scene load_steps=3 format=3 uid="uid://c6apj1qu862c2"]
+[gd_scene load_steps=12 format=3 uid="uid://c6apj1qu862c2"]
 
 [ext_resource type="Script" uid="uid://bia1tuesalyml" path="res://objects/level_objects/player_ship_actor.gd" id="1_kxes3"]
+[ext_resource type="Texture2D" uid="uid://cpvsajkvgt6ji" path="res://assets/sprites/player_ship.png" id="2_xycui"]
+[ext_resource type="Texture2D" uid="uid://e0kokd7flpb" path="res://assets/sprites/player_death_32x.png" id="3_a5275"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vdqnk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eeiyc"]
+atlas = ExtResource("3_a5275")
+region = Rect2(13, 13, 7, 7)
+
+[sub_resource type="Curve" id="Curve_a5275"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.761364, 0.0786518), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Animation" id="Animation_i61so"]
+resource_name = "flying"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -8), Vector2(0, -12), Vector2(0, -4)]
+}
+
+[sub_resource type="Animation" id="Animation_u8g85"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_a5275"]
+resource_name = "enlarge"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_eeiyc"]
+resource_name = "RESET_shrunk"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kapeh"]
+_data = {
+&"RESET": SubResource("Animation_u8g85"),
+&"RESET_shrunk": SubResource("Animation_eeiyc"),
+&"enlarge": SubResource("Animation_a5275"),
+&"flying": SubResource("Animation_i61so")
+}
 
 [node name="PlayerShipActor" type="CharacterBody2D"]
 collision_layer = 4
@@ -15,5 +108,48 @@ shape = SubResource("CircleShape2D_vdqnk")
 disabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+texture = ExtResource("2_xycui")
+
+[node name="Particles" type="Node2D" parent="Sprite2D"]
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Sprite2D/Particles"]
+position = Vector2(46, -8)
+texture = SubResource("AtlasTexture_eeiyc")
+lifetime = 0.5
+gravity = Vector2(980, 0)
+scale_amount_curve = SubResource("Curve_a5275")
+
+[node name="CPUParticles2D2" type="CPUParticles2D" parent="Sprite2D/Particles"]
+position = Vector2(53, 1)
+texture = SubResource("AtlasTexture_eeiyc")
+lifetime = 0.5
+gravity = Vector2(980, 0)
+scale_amount_curve = SubResource("Curve_a5275")
+
+[node name="CPUParticles2D3" type="CPUParticles2D" parent="Sprite2D/Particles"]
+position = Vector2(50, 13)
+texture = SubResource("AtlasTexture_eeiyc")
+lifetime = 0.5
+gravity = Vector2(980, 0)
+scale_amount_curve = SubResource("Curve_a5275")
+
+[node name="CPUParticles2D4" type="CPUParticles2D" parent="Sprite2D/Particles"]
+position = Vector2(48, 21)
+texture = SubResource("AtlasTexture_eeiyc")
+lifetime = 0.5
+gravity = Vector2(980, 0)
+scale_amount_curve = SubResource("Curve_a5275")
+
+[node name="CPUParticles2D5" type="CPUParticles2D" parent="Sprite2D/Particles"]
+position = Vector2(11, 20)
+texture = SubResource("AtlasTexture_eeiyc")
+lifetime = 0.5
+gravity = Vector2(980, 0)
+scale_amount_curve = SubResource("Curve_a5275")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_kapeh")
+}
+autoplay = "flying"

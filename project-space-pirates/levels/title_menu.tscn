@@ -1,66 +1,110 @@
-[gd_scene load_steps=2 format=3 uid="uid://mla2uybpdk5c"]
+[gd_scene load_steps=9 format=3 uid="uid://mla2uybpdk5c"]
 
 [ext_resource type="Script" uid="uid://eir1vhr7su6c" path="res://levels/title_menu.gd" id="1_hbfvm"]
+[ext_resource type="FontFile" uid="uid://bv0ty1gwebkck" path="res://assets/fonts/good timing bd.otf" id="2_n1wg7"]
+[ext_resource type="Texture2D" uid="uid://blivnaon5dwu5" path="res://assets/textures/space_background.png" id="3_nkk4w"]
+[ext_resource type="FontFile" uid="uid://bwc5ulkxsitpr" path="res://assets/fonts/Astroz Trial.ttf" id="4_fy8bn"]
+[ext_resource type="AudioStream" uid="uid://bbywua7ioalr" path="res://assets/music/BGM With Bells.wav" id="4_wlus1"]
+[ext_resource type="PackedScene" uid="uid://c6apj1qu862c2" path="res://objects/level_objects/player_ship_actor.tscn" id="6_kcn0t"]
+
+[sub_resource type="Theme" id="Theme_nkk4w"]
+default_font = ExtResource("2_n1wg7")
+
+[sub_resource type="LabelSettings" id="LabelSettings_kcn0t"]
+font = ExtResource("4_fy8bn")
+font_size = 72
 
 [node name="TitleMenu" type="Node2D"]
 script = ExtResource("1_hbfvm")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="SpaceBG" type="TextureRect" parent="."]
+offset_left = -304.0
+offset_top = -176.0
+offset_right = 304.0
+offset_bottom = 176.0
+texture = ExtResource("3_nkk4w")
+stretch_mode = 1
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+[node name="Menus" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = SubResource("Theme_nkk4w")
+
+[node name="ColorRect" type="ColorRect" parent="Menus"]
+layout_mode = 1
 anchors_preset = -1
 anchor_left = -0.0138889
 anchor_top = -0.0246914
 anchor_right = 0.5
 anchor_bottom = 0.506173
-offset_right = 592.0
-offset_bottom = 336.0
-color = Color(0, 0, 0, 1)
-metadata/_edit_use_anchors_ = true
+offset_left = -303.444
+offset_top = -175.012
+offset_right = 284.0
+offset_bottom = 155.753
+color = Color(0, 0, 0, 0.196078)
 
-[node name="StartButton" type="Button" parent="CanvasLayer"]
-offset_left = 488.0
-offset_top = 440.0
-offset_right = 600.0
-offset_bottom = 472.0
-text = "Start Game"
+[node name="StartButton" type="Button" parent="Menus"]
+layout_mode = 0
+offset_left = -64.0
+offset_top = 8.0
+offset_right = 64.0
+offset_bottom = 47.0
+theme_override_font_sizes/font_size = 24
+text = "Start"
 
-[node name="ControlsButton" type="Button" parent="CanvasLayer"]
-offset_left = 488.0
-offset_top = 488.0
-offset_right = 600.0
-offset_bottom = 520.0
+[node name="ControlsButton" type="Button" parent="Menus"]
+layout_mode = 0
+offset_left = -64.0
+offset_top = 56.0
+offset_right = 64.0
+offset_bottom = 95.0
+theme_override_font_sizes/font_size = 24
 text = "Controls"
 
-[node name="CreditsButton" type="Button" parent="CanvasLayer"]
-offset_left = 488.0
-offset_top = 536.0
-offset_right = 600.0
-offset_bottom = 568.0
+[node name="CreditsButton" type="Button" parent="Menus"]
+layout_mode = 0
+offset_left = -64.0
+offset_top = 104.0
+offset_right = 64.0
+offset_bottom = 142.0
+theme_override_font_sizes/font_size = 24
 text = "Credits"
 
-[node name="DebugLevelButton" type="Button" parent="CanvasLayer"]
-modulate = Color(1, 1, 0, 1)
-offset_left = 680.0
-offset_top = 440.0
-offset_right = 792.0
-offset_bottom = 472.0
-text = "Debug Level"
-
-[node name="Label" type="Label" parent="CanvasLayer"]
-offset_left = 664.0
-offset_top = 408.0
-offset_right = 808.0
-offset_bottom = 431.0
-text = "Try the test level"
+[node name="DebugLabel" type="Label" parent="Menus"]
+layout_mode = 0
+offset_left = -256.0
+offset_top = 184.0
+offset_right = -111.0
+offset_bottom = 207.0
+text = "Try the test level:"
 horizontal_alignment = 1
 
-[node name="ControlsLabel" type="RichTextLabel" parent="CanvasLayer"]
+[node name="DebugLevelButton" type="Button" parent="Menus"]
+modulate = Color(1, 1, 0, 1)
+layout_mode = 0
+offset_left = -240.0
+offset_top = 216.0
+offset_right = -128.0
+offset_bottom = 248.0
+text = "Debug Level"
+
+[node name="ControlsPanel" type="Panel" parent="Menus"]
 visible = false
-offset_left = 264.0
-offset_top = 448.0
-offset_right = 376.0
-offset_bottom = 576.0
+layout_mode = 0
+offset_left = -272.0
+offset_top = 8.0
+offset_right = -96.0
+offset_bottom = 144.0
+
+[node name="ControlsLabel" type="RichTextLabel" parent="Menus/ControlsPanel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 168.0
+offset_bottom = 128.0
+theme_override_font_sizes/normal_font_size = 18
 bbcode_enabled = true
 text = "[center]Controls[/center]
 A = Left
@@ -69,7 +113,101 @@ Space = Jump
 Enter = Shoot
 "
 
-[connection signal="pressed" from="CanvasLayer/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/ControlsButton" to="." method="_on_controls_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/CreditsButton" to="." method="_on_credits_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/DebugLevelButton" to="." method="_on_debug_level_button_pressed"]
+[node name="CreditsPanel" type="Panel" parent="Menus"]
+visible = false
+layout_mode = 0
+offset_left = -240.0
+offset_top = -144.0
+offset_right = 248.0
+offset_bottom = 96.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Menus/CreditsPanel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 480.0
+offset_bottom = 232.0
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+text = "[center][color=B6FF00]Team[/color][/center]
+* Kevin L. (CoffeeKev) - Programmer
+* ZeroMars - Level Layout & Audio Designer
+* Elijah D. Suggs - Level Artist (textures & ship/items)
+* TES - Artist (concept and enemy/player sprites)
+
+[center][color=B6FF00]Audio[/color][/center]
+* Sounds made with Chiptone
+* Music made with BeepBox"
+
+[node name="Title" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -152.0
+offset_top = -128.0
+offset_right = -112.0
+offset_bottom = -88.0
+
+[node name="Label" type="Label" parent="Title"]
+layout_mode = 0
+offset_right = 304.0
+offset_bottom = 96.0
+text = "Asteria"
+label_settings = SubResource("LabelSettings_kcn0t")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Landing" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="OKButton" type="Button" parent="Landing"]
+visible = false
+layout_mode = 0
+offset_left = -80.0
+offset_top = 96.0
+offset_right = 79.0
+offset_bottom = 136.0
+theme_override_fonts/font = ExtResource("2_n1wg7")
+theme_override_font_sizes/font_size = 24
+text = "Got it"
+
+[node name="Panel" type="Panel" parent="Landing"]
+layout_mode = 0
+offset_left = -192.0
+offset_top = -136.0
+offset_right = 192.0
+offset_bottom = -8.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Landing"]
+layout_mode = 0
+offset_left = -184.0
+offset_top = -128.0
+offset_right = 184.0
+offset_bottom = -16.0
+theme_override_fonts/normal_font = ExtResource("2_n1wg7")
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+text = "Space pirates are on their way to retrieve a powerful artifact called the Asteria Core. Only you can stop them before they can get their hands on it and threaten the galaxy."
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="BellsBGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_wlus1")
+volume_db = -5.0
+autoplay = true
+
+[node name="PlayerShipActor" parent="." instance=ExtResource("6_kcn0t")]
+visible = false
+position = Vector2(0, 40)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+
+[connection signal="pressed" from="Menus/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Menus/ControlsButton" to="." method="_on_controls_button_pressed"]
+[connection signal="pressed" from="Menus/CreditsButton" to="." method="_on_credits_button_pressed"]
+[connection signal="pressed" from="Menus/DebugLevelButton" to="." method="_on_debug_level_button_pressed"]
+[connection signal="pressed" from="Landing/OKButton" to="." method="_on_ok_button_pressed"]

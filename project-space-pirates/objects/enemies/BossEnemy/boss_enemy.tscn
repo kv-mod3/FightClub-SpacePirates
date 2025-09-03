@@ -1,13 +1,17 @@
-[gd_scene load_steps=11 format=3 uid="uid://b5o3173tmhfnp"]
+[gd_scene load_steps=31 format=3 uid="uid://b5o3173tmhfnp"]
 
 [ext_resource type="Script" uid="uid://dr44kb8ahe6pu" path="res://objects/enemies/BossEnemy/boss_enemy.gd" id="1_3vdqm"]
 [ext_resource type="Texture2D" uid="uid://ci5o7vxxr023a" path="res://assets/sprites/boss_72x.png" id="1_bg26o"]
+[ext_resource type="Texture2D" uid="uid://dqnhomy3kjh3x" path="res://assets/sprites/boss_death_64x.png" id="3_h3843"]
+[ext_resource type="AudioStream" uid="uid://dws4uf0vdr036" path="res://assets/sounds/enemy_shoot.wav" id="4_gtotk"]
+[ext_resource type="AudioStream" uid="uid://cejpca6og0q3y" path="res://assets/sounds/enemy_hurt.wav" id="5_yonik"]
+[ext_resource type="AudioStream" uid="uid://b31iafnruux3h" path="res://assets/sounds/finish_recharging.wav" id="6_yonik"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vdqm"]
 radius = 32.249
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h3843"]
-radius = 384.0
+radius = 200.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gtotk"]
 atlas = ExtResource("1_bg26o")
@@ -17,9 +21,25 @@ region = Rect2(0, 72, 72, 72)
 atlas = ExtResource("1_bg26o")
 region = Rect2(72, 72, 72, 72)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_jc358"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(0, 216, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eav67"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(72, 288, 72, 72)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_6idkp"]
 atlas = ExtResource("1_bg26o")
 region = Rect2(0, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dx6ga"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(144, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ipk8a"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(216, 0, 72, 72)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3vdqm"]
 atlas = ExtResource("1_bg26o")
@@ -28,6 +48,18 @@ region = Rect2(0, 0, 72, 72)
 [sub_resource type="AtlasTexture" id="AtlasTexture_h3843"]
 atlas = ExtResource("1_bg26o")
 region = Rect2(72, 0, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3qntf"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(0, 144, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kx77c"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(72, 144, 72, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ky8t"]
+atlas = ExtResource("1_bg26o")
+region = Rect2(0, 0, 72, 72)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6idkp"]
 animations = [{
@@ -42,10 +74,16 @@ animations = [{
 "name": &"charge",
 "speed": 10.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jc358")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eav67")
+}],
 "loop": true,
-"name": &"death",
-"speed": 5.0
+"name": &"hurt",
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -57,15 +95,114 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_dx6ga")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ipk8a")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_3vdqm")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_h3843")
 }],
 "loop": true,
-"name": &"walk",
+"name": &"moving",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3qntf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kx77c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ky8t")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 8.0
 }]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bd8y1"]
+atlas = ExtResource("3_h3843")
+region = Rect2(82, 11, 9, 11)
+
+[sub_resource type="Curve" id="Curve_7kv1d"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.761364, 0.0786518), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k3ejj"]
+atlas = ExtResource("3_h3843")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k8is3"]
+atlas = ExtResource("3_h3843")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iny1s"]
+atlas = ExtResource("3_h3843")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3qntf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k3ejj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k8is3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iny1s")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}]
+
+[sub_resource type="Animation" id="Animation_k3ejj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_yonik"]
+resource_name = "hover"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:offset")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 5), Vector2(0, -5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_k8is3"]
+_data = {
+&"RESET": SubResource("Animation_k3ejj"),
+&"hover": SubResource("Animation_yonik")
+}
 
 [node name="BossEnemy" type="CharacterBody2D" groups=["enemies"]]
 collision_layer = 2
@@ -84,14 +221,54 @@ shape = SubResource("CircleShape2D_h3843")
 debug_color = Color(0.997788, 0, 0.158, 0.42)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_6idkp")
-animation = &"charge"
+animation = &"jump"
 autoplay = "idle"
-frame_progress = 0.332418
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="AnimatedSprite2D"]
+z_index = -1
+position = Vector2(29, 20)
+emitting = false
+texture = SubResource("AtlasTexture_bd8y1")
+lifetime = 0.5
+scale_amount_curve = SubResource("Curve_7kv1d")
+
+[node name="DeathAnimation" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(0, 4)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_3qntf")
+animation = &"death"
+frame = 2
+frame_progress = 1.0
 
 [node name="MuzzleMarker" type="Marker2D" parent="."]
 position = Vector2(0, 4)
 
 [node name="DecisionTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="Sounds" type="Node2D" parent="."]
+
+[node name="Shoot" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("4_gtotk")
+volume_db = 5.0
+
+[node name="Hurt" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("5_yonik")
+volume_db = 5.0
+
+[node name="Charging" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("6_yonik")
+pitch_scale = 0.5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_k8is3")
+}
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="animation_finished" from="DeathAnimation" to="." method="_on_death_animation_animation_finished"]
+[connection signal="timeout" from="DecisionTimer" to="." method="_on_decision_timer_timeout"]

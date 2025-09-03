@@ -7,7 +7,6 @@ var color_increment: float = 1
 func _ready() -> void:
 	$Timer.start()
 	$Control/CanvasLayer/TimerLabel.text = "Time left: %d" % countdown
-	SoundManager.play_bgm("level 2")
 
 
 func _on_timer_timeout() -> void:

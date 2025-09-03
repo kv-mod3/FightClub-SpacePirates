@@ -1,0 +1,64 @@
+[gd_scene load_steps=3 format=3 uid="uid://k4kvpo1twabx"]
+
+[ext_resource type="Texture2D" uid="uid://cjcym3a1qpefh" path="res://assets/textures/pixilart-drawing4.png" id="1_erpic"]
+[ext_resource type="Texture2D" uid="uid://ch7r38e5jwuap" path="res://assets/textures/pixil-frame-04.png" id="2_ygvxo"]
+
+[node name="BigContainer" type="Node2D"]
+metadata/_edit_vertical_guides_ = [72.0, -64.0]
+metadata/_edit_horizontal_guides_ = [-192.0]
+
+[node name="BotPoly5" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(-91, -37)
+texture = ExtResource("1_erpic")
+texture_offset = Vector2(0, 14)
+polygon = PackedVector2Array(23, -6, 23, 37, 167, 37, 167, -6)
+
+[node name="BotPoly4" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(-79, -24)
+texture = ExtResource("1_erpic")
+texture_offset = Vector2(0, 7)
+polygon = PackedVector2Array(27, 1, 27, 24, 139, 24, 139, 1)
+
+[node name="TopPoly1" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(-76, -53)
+texture = ExtResource("2_ygvxo")
+texture_offset = Vector2(0, 16)
+polygon = PackedVector2Array(32, -16, 32, 3, 128, 3, 128, -16)
+
+[node name="TopPoly2" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(-60, -52)
+texture = ExtResource("2_ygvxo")
+texture_offset = Vector2(0, -2)
+polygon = PackedVector2Array(16, 2, 16, 9, 112, 9, 112, 2)
+
+[node name="TopPoly5" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(-76, -195)
+texture = ExtResource("2_ygvxo")
+texture_offset = Vector2(0, 16)
+polygon = PackedVector2Array(32, -16, 32, 3, 128, 3, 128, -16)
+
+[node name="TopPoly6" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(-60, -194)
+texture = ExtResource("2_ygvxo")
+texture_offset = Vector2(0, -2)
+polygon = PackedVector2Array(16, 2, 16, 9, 112, 9, 112, 2)
+
+[node name="TopPoly4" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(-64, -32)
+texture = ExtResource("2_ygvxo")
+texture_offset = Vector2(0, -2)
+polygon = PackedVector2Array(12, 2, 12, 9, 124, 9, 124, 2)
+
+[node name="Glass2" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(-76, -127)
+color = Color(0.180392, 1, 1, 0.352941)
+texture_offset = Vector2(0, -2)
+polygon = PackedVector2Array(32, -58, 32, 58, 128, 58, 128, -58)

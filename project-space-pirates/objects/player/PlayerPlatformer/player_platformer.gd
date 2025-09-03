@@ -3,9 +3,17 @@ extends CharacterBody2D
 
 # INFO: This is the player with platformer controls.
 
+enum State {
+	IDLE,
+	BLINK,
+	JUMP,
+	SHOOT
+}
+
 @export var move_speed: float = 200.0
 @export var jump_velocity: float = -400.0
 var bullet: PackedScene = preload("res://objects/player/PlayerPlatformer/player_bullet.tscn")
+var current_state := State.IDLE # Not currently used.
 var is_dying: bool = false
 var is_invincible: bool = false
 var is_knocked_back: bool = false
@@ -20,15 +28,6 @@ func _ready() -> void:
 	
 	SceneManager.respawn_location = global_position
 	print("SceneManager: Set initial respawn point to ", SceneManager.respawn_location)
-	
-	# TEST
-	var noomalize_left: Vector2 = Vector2.LEFT
-	noomalize_left = noomalize_left.normalized()
-	print(noomalize_left)
-	
-	var noomalize_right: Vector2 = Vector2.RIGHT
-	noomalize_right = noomalize_right.normalized()
-	print(noomalize_right)
 
 
 func _physics_process(delta: float) -> void:
@@ -37,7 +36,7 @@ func _physics_process(delta: float) -> void:
 	
 	# TESTING: Debug "K" key sets player health to 0. For debugging death-related events.
 	if Input.is_action_just_pressed("debug"):
-		take_damage(100)
+		full_damage()
 	
 	# Add the gravity.
 	if not is_on_floor():
@@ -47,6 +46,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
 		$Sounds/Jump.play()
+		$AnimatedSprite2D.play("jump")
 	
 	# Shoots if not knocked back.
 	if Input.is_action_just_pressed("shoot") and not is_knocked_back:
@@ -54,11 +54,15 @@ func _physics_process(delta: float) -> void:
 
 	# Get the input direction and handle the movement/deceleration.
 	var direction := Input.get_axis("left", "right")
-	if direction:
+	if direction and not is_knocked_back:
 		velocity.x = direction * move_speed
+		$AnimatedSprite2D.play("walk")
 		face_direction() # Is placed here to prevent knockback from turning Player around.
 	else:
 		velocity.x = move_toward(velocity.x, 0, move_speed) # Moves toward a destination speed before stopping.
+	
+	if velocity == Vector2.ZERO and $ShootCooldownTimer.is_stopped():
+		$AnimatedSprite2D.play("idle")
 	
 	# Movement.
 	move_and_slide()
@@ -74,25 +78,43 @@ func _physics_process(delta: float) -> void:
 				PlayerVariables.is_reloading = false
 
 
+func state_controller() -> void:
+	match current_state:
+		State.IDLE:
+			$AnimatedSprite2D.play("idle")
+		State.SHOOT:
+			$AnimatedSprite2D.play("shoot_air")
+
+
 # Animate Player
 func face_direction() -> void:
 	if velocity.x < 0:
-		$TestSprite2D.flip_h = true
-		$MuzzleMarker.position = Vector2(-18, 2) # Face player muzzle to the left.
+		$AnimatedSprite2D.flip_h = true
+		$MuzzleMarker.position = Vector2(-21, 1.5) # Face player muzzle to the left.
 		$MuzzleMarker.rotation_degrees = 180 # Sets the player muzzle to a rotation of 180 degrees.
 	if velocity.x > 0:
-		$TestSprite2D.flip_h = false
-		$MuzzleMarker.position = Vector2(18, 2) # Face player muzzle to the right (default).
+		$AnimatedSprite2D.flip_h = false
+		$MuzzleMarker.position = Vector2(21, 1.5) # Face player muzzle to the right (default).
 		$MuzzleMarker.rotation_degrees = 0 # Sets the player muzzle back to its original rotation.
 
 
 func shoot() -> void:
-	# Creates bullet and shoots it out of muzzle.
+	# Creates bullet and shoots it out of muzzle, as long as weapon is ready and ammo is > 1.
 	if $ShootCooldownTimer.is_stopped() and PlayerVariables.ammo >= 1:
 		$ShootCooldownTimer.start() # Cooldown timer between shots.
+		
+		# Animations dependong on if in air or on ground.
+		if not is_on_floor():
+			$AnimatedSprite2D.play("shoot_air")
+		else:
+			$AnimatedSprite2D.play("shoot_ground")
+		
+		# HUD effects.
 		red_text_blink($CanvasLayer/AmmoLabel)
 		PlayerVariables.ammo -= 1
 		$CanvasLayer/AmmoLabel.text = "Ammo: %d" % PlayerVariables.ammo
+		
+		# Bullet creation.
 		var b = bullet.instantiate()
 		owner.add_child(b) # Adds bullet to the root node of the scene the player is in, instead of to player themself.
 		b.transform = $MuzzleMarker.global_transform
@@ -111,37 +133,58 @@ func shoot() -> void:
 
 func take_damage(damage: float) -> void:
 	if not is_invincible:
-		i_frames(3) # Invincibility frames for x seconds.
-		# TODO: Add animations.
+		i_frames(2) # Invincibility frames for x seconds.
 		PlayerVariables.health -= damage
+		red_text_blink($CanvasLayer/HealthLabel)
 		$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
+		print("Player took %d damage!" % damage, " Current HP: ", PlayerVariables.health)
 		if PlayerVariables.health <= 0 and not is_dying:
 			death()
 			print("Player is playing dying animations.")
 		else:
+			$AnimatedSprite2D.play("hurt")
 			$Sounds/Hurt.play()
-		print("Player took %d damage!" % damage, " Current HP: ", PlayerVariables.health)
 
 
 func knockback(bullet_position) -> void:
 	if not is_knocked_back:
+		is_knocked_back = true
 		var knockback_direction: Vector2 = global_position - bullet_position
-		var knockback_strength: float = 200
+		# var knockback_strength: float = 200
 
 		print("Bullet direction: ", knockback_direction)
-		is_knocked_back = true
 		if knockback_direction.x < 0:
 			knockback_direction = Vector2(-800, -200)
-			# knockback_direction = Vector2(-2, -0.707107)
 		if knockback_direction.x > 0:
 			knockback_direction = Vector2(800, -200)
-			# knockback_direction = Vector2(2, -0.707107)
 		# Targets the player's velocity and pushes them back in a direction multiplied by strength.
 		velocity = knockback_direction
 		print("Velocity from hit: ", velocity)
-		# TODO: Clamp velocity.
 		await get_tree().create_timer(0.3).timeout
 		is_knocked_back = false
+
+
+# Knockback when Player's hitbox touches enemy.
+# TODO: Rework above knockback function into the following one.
+func _on_hitbox_area_body_entered(body: Node2D) -> void:
+	if not is_knocked_back:
+		is_knocked_back = true
+		if body.is_in_group("enemies"):
+			# Takes the player position and subtracts the target's position from it.
+			var distance: Vector2 = global_position - body.global_position
+			var knockback_direction: Vector2
+			var knockback_strength: float = 200
+		
+			if distance.x < 0:
+				knockback_direction = Vector2(-5, -1.5)
+			if distance.x > 0:
+				knockback_direction = Vector2(5, -1.5)
+			# Targets the player's velocity and pushes them back in a direction multiplied by strength.
+			velocity = knockback_direction * knockback_strength
+			
+			take_damage(20)
+			await get_tree().create_timer(0.6).timeout
+			is_knocked_back = false
 
 
 # Invincibility period after taking damage.
@@ -150,11 +193,26 @@ func i_frames(duration) -> void:
 	await get_tree().create_timer(duration).timeout
 	is_invincible = false
 
+# NOTE: Currently unused.
+func i_frames_effect() -> void:
+	$AnimatedSprite2D.visible = false
+	await get_tree().create_timer(0.2).timeout
+	$AnimatedSprite2D.visible = true
+	await get_tree().create_timer(0.2).timeout
+	$AnimatedSprite2D.visible = false
+	await get_tree().create_timer(0.2).timeout
+	$AnimatedSprite2D.visible = true
+	await get_tree().create_timer(0.2).timeout
+	$AnimatedSprite2D.visible = false
+	await get_tree().create_timer(0.2).timeout
+	$AnimatedSprite2D.visible = true
+
 
 func restore_health(health) -> void:
-	# TODO: Add sound effects.
 	PlayerVariables.health += health
 	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
+	if not is_dying:
+		$Sounds/Pickup.play()
 	green_text_blink($CanvasLayer/HealthLabel)
 	print("Player HP restored by %d" % health)
 	print("Current Player HP: ", PlayerVariables.health)
@@ -166,6 +224,7 @@ func reloading(delta) -> void:
 		PlayerVariables.ammo = clampi(PlayerVariables.ammo, 0, 6)
 		$CanvasLayer/AmmoLabel.text = "Ammo: %d" % PlayerVariables.ammo
 		green_text_blink($CanvasLayer/AmmoLabel)
+		$Sounds/FinishRecharge.play()
 		PlayerVariables.reloading_progress = 0
 	else:
 		PlayerVariables.reloading_progress += 100 * delta
@@ -174,6 +233,7 @@ func reloading(delta) -> void:
 
 func _on_recharge_timer_timeout() -> void:
 	PlayerVariables.is_reloading = true
+	$Sounds/Recharging.play()
 
 
 func red_text_blink(label: Control) -> void:
@@ -188,20 +248,58 @@ func green_text_blink(label: Control) -> void:
 	label.label_settings.font_color = Color(1, 1, 1) # White font color.
 
 
+func full_damage() -> void:
+	if not is_dying:
+		is_dying = true
+		PlayerVariables.health -= PlayerVariables.MAX_HEALTH
+		red_text_blink($CanvasLayer/HealthLabel)
+		$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
+		print("Player took %d damage!" % PlayerVariables.MAX_HEALTH, " Current HP: ", PlayerVariables.health)
+		death()
+
+
 func death() -> void:
 	is_dying = true
-	$Sounds/Death.play()
-	# TODO: insert animations on this very line.
-	await get_tree().create_timer(3).timeout
-	global_position = SceneManager.respawn_location # Sets Player position to respawn location.
 	
+	# Disables collisions
+	$CollisionShape2D.set_deferred("disabled", true)
+	$HitboxArea.set_deferred("monitoring", false)
+	$HitboxArea.set_deferred("monitorable", false)
+	
+	# Visual effects
+	$Sounds/Death.play()
+	$AnimatedSprite2D.visible = false
+	$DeathAnimation.visible = true
+	$DeathAnimation.play("death")
+	print("Player has died.")
+	
+	# Time until respawn
+	await get_tree().create_timer(5).timeout
+	respawn()
+
+
+# Respawns the player and resets a values.
+func respawn() -> void:
 	# Resets health and ammo.
-	PlayerVariables.health = 100
-	$CanvasLayer/HealthLabel.text = "HP: %d" % PlayerVariables.health
-	green_text_blink($CanvasLayer/HealthLabel)
+	restore_health(PlayerVariables.MAX_HEALTH)
 	PlayerVariables.ammo = 6
 	$CanvasLayer/AmmoLabel.text = "Ammo: %d" % PlayerVariables.ammo
 	green_text_blink($CanvasLayer/AmmoLabel)
 	
-	print("Player has died.")
+	# Sets Player position to respawn location.
+	$AnimatedSprite2D.visible = true # NOTE: DeathAnimation disables itself once finished.
+	global_position = SceneManager.respawn_location
+	print("Player has respawned.")
+	
+	# Buffer timer so that player doesn't get killed by kill zone before they are able to respawn.
+	await get_tree().create_timer(0.2).timeout
+	
+	# Re-enables collisions.
+	$CollisionShape2D.set_deferred("disabled", false)
+	$HitboxArea.set_deferred("monitoring", true)
+	$HitboxArea.set_deferred("monitorable", true)
 	is_dying = false
+
+
+func _on_death_animation_animation_finished() -> void:
+	$DeathAnimation.visible = false

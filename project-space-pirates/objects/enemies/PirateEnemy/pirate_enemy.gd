@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+# NOTE: If you are reviewing this as a reference for movement, see the Boss's script. It is organized a bit better.
+
 enum State {
 	IDLE,
 	MOVE,
@@ -21,12 +23,12 @@ var jump_velocity: float = -400
 var bullet: PackedScene = preload("res://objects/enemies/PirateEnemy/pirate_bullet.tscn")
 
 var current_state := State.MOVE
-var shuffling_states: Array = [State.IDLE, State.MOVE]
 var direction: Vector2
 var instinct_to_jump: bool = false
 var target: Node2D # Starts with a value of null on load. Currently unused.
 var is_shooting: bool = false
 var taking_damage: bool = false
+var is_dying: bool = false
 
 
 func _ready() -> void:
@@ -42,11 +44,14 @@ func _ready() -> void:
 	match mode:
 		EnemyMode.STATIONARY:
 			current_state = State.IDLE
+			$BlinkTimer.start(range(3, 6).pick_random())
 		EnemyMode.ROAMING:
 			current_state = State.MOVE
 
 
 func _physics_process(delta: float) -> void:
+	if is_dying:
+		return
 	# Player affected by gravity if not on floor.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -62,7 +67,6 @@ func state_controller() -> void:
 				velocity = Vector2(0, 0) # BUG: Enemy falls down slower if caught in middle of jump.
 			# If target exists AND enemy is not shooting AND is in within detection area, then shoot.
 			if target and not is_shooting:
-				# if $DetectionArea2D.has_overlapping_bodies(): # TODO: Change the overlapping method to only include the Player.
 				shoot()
 				print("Enemy sees you and shoots.")
 		State.MOVE:
@@ -84,6 +88,8 @@ func state_controller() -> void:
 func move() -> void:
 	# velocity = velocity.move_toward(direction * move_speed, acceleration)
 	velocity = direction * move_speed
+	if is_on_floor():
+		$AnimatedSprite2D.play("walk")
 
 
 func choose(array): # Not given a static type (Vector2) to ensure the function remains flexible for arrays too.
@@ -110,20 +116,22 @@ func _on_direction_timer_timeout() -> void:
 func face_direction() -> void:
 	# Face left.
 	if direction.x > 0:
-		$TestSprite2D.flip_h = true # Flips sprite horizontally.
+		$AnimatedSprite2D.flip_h = true # Flips sprite horizontally.
 		$DetectionArea2D/DetectCollisionShape.position = Vector2(108, 0) # Moves detection collision shape.
-		$MuzzleMarker.position = Vector2(20, 8) # Moves enemy muzzle.
+		$MuzzleMarker.position = Vector2(19, 17) # Moves enemy muzzle.
 		$MuzzleMarker.rotation_degrees = 180 # Rotates enemy muzzle to 180 degrees.
 	# Face right.
 	if direction.x < 0:
-		$TestSprite2D.flip_h = false
+		$AnimatedSprite2D.flip_h = false
 		$DetectionArea2D/DetectCollisionShape.position = Vector2(-108, 0)
-		$MuzzleMarker.position = Vector2(-20, 8)
+		$MuzzleMarker.position = Vector2(-19, 17)
 		$MuzzleMarker.rotation_degrees = 0 # Rotates enemy muzzle to 0 degrees.
 
 
 func jump() -> void:
 	velocity.y = jump_velocity
+	$Sounds/Jump.play()
+	$AnimatedSprite2D.play("jump")
 
 
 func _on_jumping_timer_timeout() -> void:
@@ -136,7 +144,6 @@ func shoot() -> void:
 	is_shooting = true
 	await get_tree().create_timer(0.5).timeout # Windup before firing.
 	create_bullet()
-	$Sounds/Shoot.play()
 	await get_tree().create_timer(3).timeout # Cooldown after firing. Affects how long until enemy does next action.
 	is_shooting = false
 	print("Enemy is ready to fire again.")
@@ -146,6 +153,8 @@ func create_bullet() -> void:
 	var b = bullet.instantiate()
 	get_owner().call_deferred("add_child", b)
 	b.transform = $MuzzleMarker.global_transform
+	$AnimatedSprite2D.play("shoot")
+	$Sounds/Shoot.play()
 
 
 func take_damage(damage: float, bullet_direction: String) -> void:
@@ -165,25 +174,23 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 	if taking_damage == false: # Prevents the enemy from taking too many instances of damage while the code runs.
 		taking_damage = true
 		health -= damage
+		$AnimatedSprite2D.play("hurt")
+		$Sounds/Hurt.play()
 		print("Enemy current health: ", health)
 		
-		# Enemy flashes red on hit.
-		var flash_red_color: Color = Color(50, 0.5, 0.5)
-		modulate = flash_red_color
-		
-		# Awaits the timeout of a timer of 0.2 seconds, created within the SceneTree, before continuing the code.
-		await get_tree().create_timer(0.2).timeout
-		
-		# Removes the enemy if it is dead, otherwise continues running code.
+		# Plays animation if enemy is dead, otherwise continues running code.
+		# NOTE: Enemy is freed from the scene once DeathAnimation finishes. See func further below.
 		if health <= 0:
-			queue_free()
-			print("Enemy died.")
-		
-		# Enemy returns to original color.
-		var original_color: Color = Color(1, 1, 1)
-		modulate = original_color
-		
-		taking_damage = false
+			is_dying = true
+			$CollisionShape2D.set_deferred("disabled", true) # Disables collision shape.
+			await get_tree().create_timer(0.5).timeout # Allows hurt animations to play out before death.
+			$AnimatedSprite2D.visible = false
+			$DeathAnimation.visible = true
+			$DeathAnimation.play("death")
+		else:
+			await get_tree().create_timer(0.5).timeout
+			$AnimatedSprite2D.play("idle") # Resets enemy sprite.
+			taking_damage = false
 		
 	# NOTE: The following code is here at the bottom to give the enemy a moment to understand it got hurt.
 	# TODO: Might want to move it into the nested block above though.
@@ -196,11 +203,17 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 		face_direction()
 
 
+func _on_death_animation_animation_finished() -> void:
+	print("Enemy died.")
+	queue_free()
+
+
 func _on_detection_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
 		if not target: # If the enemy had no target:
 			target = body # Sets Player as the target.
 			status_indicator("!", "red")
+			$AnimatedSprite2D.play("attention")
 			print("Enemy detected Player.")
 			if mode == EnemyMode.ROAMING: # If enemy is roamer, stop movement immediately.
 				current_state = State.IDLE
@@ -223,6 +236,8 @@ func _on_forget_timer_timeout() -> void:
 	# Roamers begin moving again.
 	if mode == EnemyMode.ROAMING:
 		current_state = State.MOVE
+	if mode == EnemyMode.STATIONARY:
+		$AnimatedSprite2D.play("idle")
 
 
 func status_indicator(text: String, color: String) -> void:
@@ -236,3 +251,13 @@ func status_indicator(text: String, color: String) -> void:
 	$StatusLabel.visible = true
 	await get_tree().create_timer(1).timeout
 	$StatusLabel.visible = false
+
+
+func _on_blink_timer_timeout() -> void:
+	if $ForgetTimer.is_stopped():
+		$AnimatedSprite2D.play("blink")
+		await get_tree().create_timer(2).timeout
+		$AnimatedSprite2D.play("idle")
+		$BlinkTimer.start(range(4, 8).pick_random())
+	else:
+		$BlinkTimer.start(range(4, 8).pick_random())
