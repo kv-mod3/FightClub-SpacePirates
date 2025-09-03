@@ -3,17 +3,9 @@ extends CharacterBody2D
 
 # INFO: This is the player with platformer controls.
 
-enum State {
-	IDLE,
-	BLINK,
-	JUMP,
-	SHOOT
-}
-
 @export var move_speed: float = 200.0
 @export var jump_velocity: float = -400.0
 var bullet: PackedScene = preload("res://objects/player/PlayerPlatformer/player_bullet.tscn")
-var current_state := State.IDLE # Not currently used.
 var is_dying: bool = false
 var is_invincible: bool = false
 var is_knocked_back: bool = false
@@ -76,14 +68,6 @@ func _physics_process(delta: float) -> void:
 				$CanvasLayer/ReloadingLabel.visible = false
 				PlayerVariables.reloading_progress = 0
 				PlayerVariables.is_reloading = false
-
-
-func state_controller() -> void:
-	match current_state:
-		State.IDLE:
-			$AnimatedSprite2D.play("idle")
-		State.SHOOT:
-			$AnimatedSprite2D.play("shoot_air")
 
 
 # Animate Player
@@ -167,6 +151,8 @@ func knockback(bullet_position) -> void:
 # Knockback when Player's hitbox touches enemy.
 # TODO: Rework above knockback function into the following one.
 func _on_hitbox_area_body_entered(body: Node2D) -> void:
+	if body.is_in_group("enemies") and SceneManager.boss_defeated:
+		return
 	if not is_knocked_back:
 		is_knocked_back = true
 		if body.is_in_group("enemies"):

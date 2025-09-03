@@ -8,7 +8,8 @@ enum State {
 	IDLE,
 	CHASE,
 	JUMP,
-	SHOOT
+	SHOOT,
+	DESTROY
 }
 
 var health: float = 100
@@ -25,6 +26,7 @@ var is_shooting: bool = false
 var is_hovering: bool = false
 var taking_damage: bool = false
 var is_invincible: bool = false
+var is_exploding: bool = false
 
 
 func _ready() -> void:
@@ -58,14 +60,26 @@ func state_controller() -> void:
 				await charging_shot()
 				is_shooting = false
 				$AnimatedSprite2D.play("moving")
-				$DecisionTimer.start() # Begins waiting for its next move.
+				$DecisionTimer.start(range(3, 5).pick_random()) # Begins waiting for its next move.
 				current_state = State.CHASE
+		State.DESTROY:
+			# Destory the Asteria core.
+			move()
+			face_direction()
+			seek_core()
 
 
 func move() -> void:
+	# Move towards player.
 	if current_state == State.CHASE:
 		var dir_to_player = position.direction_to(target.position) * move_speed
 		velocity.x = dir_to_player.x
+		$AnimatedSprite2D.play("moving")
+	
+	# Move towards core.
+	if current_state == State.DESTROY:
+		var dir_to_core = global_position.direction_to(SceneManager.asteria_core_position) * move_speed
+		velocity.x = dir_to_core.x
 
 
 # NOTE: Not currently used.
@@ -108,13 +122,13 @@ func jump_attack() -> void:
 	$AnimatedSprite2D.play("idle")
 	is_hovering = false
 	velocity.y += 800
-	is_invincible = false # Gives player a momentary window to attack.
+	
 	
 	# Stays on the ground for X seconds before moving again. If take_damage() activates, may enter chase earlier.
-	await get_tree().create_timer(2.5).timeout
-	$AnimatedSprite2D.play("moving")
+	await get_tree().create_timer(1.5).timeout
+	$DecisionTimer.start(range(3, 5).pick_random()) # Begins waiting for its next move.
 	current_state = State.CHASE
-	$DecisionTimer.start() # Begins waiting for its next move.
+	is_invincible = false # Gives player a momentary window to attack.
 
 
 func shuffle_choices(array): # Not given a static type (Vector2) to ensure the function remains flexible for arrays too.
@@ -138,8 +152,23 @@ func face_target() -> void:
 		$AnimatedSprite2D/CPUParticles2D.position = Vector2(29, 20)
 
 
-# Faces enemy's sprite and gun depending on the direction it is in.
+# Faces enemy's sprite and roll depending on the direction it is in.
 func face_direction() -> void:
+	# Face right.
+	if velocity.x > 0:
+		$AnimatedSprite2D.flip_h = true # Flips sprite horizontally.
+		$AnimationPlayer.play("rolling_right")
+		
+		# Muzzle isn't needed but it's here anyway
+		$MuzzleMarker.rotation_degrees = 180 # Rotates enemy muzzle to 180 degrees.
+	# Face left.
+	if velocity.x < 0:
+		$AnimatedSprite2D.flip_h = false
+		$AnimationPlayer.play("rolling_left")
+		$MuzzleMarker.rotation_degrees = 0 # Rotates enemy muzzle to 0 degrees.
+
+# Backup func.
+func face_direction2() -> void:
 	# Face left.
 	if velocity.x > 0.707:
 		$AnimatedSprite2D.flip_h = true # Flips sprite horizontally.
@@ -148,7 +177,6 @@ func face_direction() -> void:
 	if velocity.x < -0.707:
 		$AnimatedSprite2D.flip_h = false
 		$MuzzleMarker.rotation_degrees = 0 # Rotates enemy muzzle to 0 degrees.
-
 
 func charging_shot() -> void:
 	is_invincible = true
@@ -193,17 +221,23 @@ func take_damage(damage: float, _bullet_direction: String) -> void:
 		# Removes the boss if it is dead, otherwise continues running code.
 		if health <= 0:
 			velocity = Vector2.ZERO
-			current_state = State.INACTIVE
-			$AnimatedSprite2D.visible = false
-			$DeathAnimation.visible = true
-			$DeathAnimation.play("death")
+			SceneManager.boss_defeated = true # Prevents boss from bulldozing over player.
+			$BossBGM.stop()
+			
+			# Enters state to destroy the core.
+			# TODO: increase speed
+			current_state = State.DESTROY # Chases after core.
+			print("Boss defeated. Wait, what are they doing?")
 		else:
-			$AnimatedSprite2D.play("moving")
 			current_state = State.CHASE
 			taking_damage = false
 
 
 func _on_decision_timer_timeout() -> void:
+	if SceneManager.boss_defeated:
+		print("Boss has been defeated and won't make anymore choices.")
+		return
+		
 	if current_state == State.CHASE:
 		var choice: String = attack_choices.front()
 		print("Choice: ", choice)
@@ -216,22 +250,18 @@ func _on_decision_timer_timeout() -> void:
 				current_state = State.SHOOT
 	else:
 		$DecisionTimer.start(range(3, 5).pick_random())
-		print("Boss will act in ", $DecisionTimer.get_wait_time(), " seconds.")
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
 	# First time detection.
 	if not target and body is Player: # If the enemy had no target:
 		target = body # Sets Player as the target.
+		SceneManager.boss_battle_begin = true # Tells Level1 script to turn off BGM
+		$BossBGM.play() # Plays this BGM instead.
 		await intro_seq()
 
 		$DecisionTimer.start(range(3, 5).pick_random())
-		print("Boss will act in ", $DecisionTimer.get_wait_time(), " seconds.")
-			
-		# TODO: If adding an intro, add code below here.
-		$AnimatedSprite2D.play("moving")
 		current_state = State.CHASE
-		
 
 
 func intro_seq() -> void:
@@ -242,8 +272,26 @@ func intro_seq() -> void:
 	$StatusLabel.visible = false
 	
 
+func seek_core() -> void:
+	var destination: Vector2 = global_position - SceneManager.asteria_core_position
+	move_speed = 300
+	print("destination left: ", destination)
+	# CAUTION: Boss won't end up exactly at 0, so a range is needed.
+	if destination.x >= -20 and destination.x <= 20:
+		explode()
+
+
+func explode() -> void:
+	if not is_exploding:
+		is_exploding = true
+		$AnimationPlayer.stop()
+		$Sounds/Explode.play()
+		$AnimatedSprite2D.visible = false
+		$DeathAnimation.visible = true
+		$DeathAnimation.play("death")
+
 
 func _on_death_animation_animation_finished() -> void:
-	SceneManager.boss_defeated = true
+	SceneManager.escape_seq_active = true
 	print("Boss died. Something likely unlocked?")
 	queue_free()

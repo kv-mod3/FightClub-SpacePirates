@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://dubu7ix63wqvm"]
+[gd_scene load_steps=35 format=3 uid="uid://dubu7ix63wqvm"]
 
 [ext_resource type="Script" uid="uid://dh51ho4g2xpe1" path="res://levels/level_1.gd" id="1_3sk1a"]
 [ext_resource type="PackedScene" uid="uid://dej7s7gmiss13" path="res://objects/pickup_items/health_item.tscn" id="1_kx6l7"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://c1vwxu07abuus" path="res://objects/player/PlayerPlatformer/player_platformer.tscn" id="3_btoec"]
 [ext_resource type="PackedScene" uid="uid://dkc7n6xag5por" path="res://objects/enemies/PirateEnemy/pirate_enemy.tscn" id="4_gwceb"]
 [ext_resource type="Texture2D" uid="uid://s12p0dqrhcom" path="res://assets/textures/pixilart-drawing4_brick.png" id="4_udfhf"]
+[ext_resource type="Texture2D" uid="uid://ch7r38e5jwuap" path="res://assets/textures/pixil-frame-04.png" id="5_0fu15"]
 [ext_resource type="PackedScene" uid="uid://b5o3173tmhfnp" path="res://objects/enemies/BossEnemy/boss_enemy.tscn" id="5_l53as"]
 [ext_resource type="PackedScene" uid="uid://bacqw7l3u02n6" path="res://objects/level_objects/platform.tscn" id="5_n46q3"]
 [ext_resource type="Texture2D" uid="uid://611shfp5376l" path="res://assets/textures/pixil-frame-010.png" id="5_ntdhj"]
@@ -24,12 +25,15 @@
 [ext_resource type="AudioStream" uid="uid://c1t6tohhctf3u" path="res://assets/music/Level Abandoned Ship Song.wav" id="12_aerfg"]
 [ext_resource type="PackedScene" uid="uid://k4kvpo1twabx" path="res://objects/level_objects/big_container.tscn" id="13_7nvrk"]
 [ext_resource type="PackedScene" uid="uid://bc81r3s5gkckc" path="res://objects/level_objects/asteria_core.tscn" id="13_nmsli"]
-[ext_resource type="AudioStream" uid="uid://1wmryolbiwy4" path="res://assets/music/BGM Without Bells.wav" id="15_vjtdm"]
 [ext_resource type="AudioStream" uid="uid://81sgi6ej020v" path="res://assets/sounds/door close.wav" id="16_bgw3c"]
+[ext_resource type="PackedScene" uid="uid://df4phoxqoox8e" path="res://objects/enemies/PirateEnemy/pirate_actor.tscn" id="27_4knja"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_0fu15"]
 font = ExtResource("6_ntdhj")
 font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4knja"]
+size = Vector2(20, 800)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ot28"]
 size = Vector2(3951, 56)
@@ -50,7 +54,6 @@ font_size = 24
 
 [node name="Level 1" type="Node2D"]
 script = ExtResource("1_3sk1a")
-metadata/_edit_vertical_guides_ = [4560.0, 4512.0]
 
 [node name="Parallax2D" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0, 0)
@@ -73,17 +76,52 @@ position = Vector2(6, 2)
 texture = ExtResource("4_udfhf")
 polygon = PackedVector2Array(1875, 327, 2016, 290, 2382, 211, 3204, 232, 3445, 400, 3560, 403, 3570, 276, 4317, 280, 4318, 1057, 4513, 1076, 4589, 1534, 4573, 1798, 5466, 1806, 6262, 2157, 6750, 2588, 7156, 2854, 7833, 2833, 7950, 2822, 8044, 2868, 8046, 3037, 8048, 3879, 7929, 4344, 7013, 4442, 6569, 4767, 5954, 5063, 4710, 5189, 2770, 5167, 1519, 4818, 7, 3908, 14, 1313, 84, 742, 837, 636, 1397, 593, 1901, 594, 1871, 530)
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
+[node name="BigJumpRoomBG" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(32, -240)
+texture = ExtResource("4_udfhf")
+texture_scale = Vector2(0.2, 0.2)
+polygon = PackedVector2Array(488, 952, 320, 1232, 320, 1384, 432, 1496, 416, 2000, 4448, 1984, 4456, 1480, 3608, 1440, 3480, 1296, 3480, 1096, 3104, 1080, 2792, 840, 2416, 856, 1368, 848, 1168, 1152, 960, 1152, 824, 1096)
+
+[node name="Parallax2D2" type="Parallax2D" parent="."]
+visible = false
+scroll_scale = Vector2(1, 0)
+
+[node name="TextureRect" type="TextureRect" parent="Parallax2D2"]
+offset_left = 336.0
+offset_top = 643.0
+offset_right = 1122.0
+offset_bottom = 858.0
+scale = Vector2(5, 5)
+texture = ExtResource("5_0fu15")
+stretch_mode = 1
+
+[node name="LongTunnelBG" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(104, 872)
+color = Color(0.6, 0.6, 0.6, 1)
+texture = ExtResource("6_0fu15")
+polygon = PackedVector2Array(-40, 8, 96, -88, 240, 0, 248, 128, 248, 256, 160, 256, 200, 992, 864, 1216, 1328, 1472, 2024, 1544, 2544, 1896, 2568, 2272, 2272, 2272, 1240, 1728, 440, 1312, 24, 1336)
+
+[node name="ChuteBG" type="Polygon2D" parent="."]
 texture_repeat = 2
 position = Vector2(3776, 768)
 texture = ExtResource("5_ntdhj")
 polygon = PackedVector2Array(41, -432, 338, -424, 343, -174, 163, -163, 172, 296, -270, 285, -270, 105, 58, 87)
 
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = 2425.0
+offset_top = 3082.0
+offset_right = 2586.0
+offset_bottom = 3146.0
+texture = ExtResource("8_w75he")
+stretch_mode = 1
+
 [node name="PreCoreRoomBG" type="Polygon2D" parent="."]
 texture_repeat = 2
 position = Vector2(6, 2)
 texture = ExtResource("6_0fu15")
-polygon = PackedVector2Array(1852, 3133, 3282, 3151, 3273, 3832, 1839, 3834)
+polygon = PackedVector2Array(1852, 3133, 3285, 3132, 3273, 3832, 1839, 3834)
 
 [node name="CoreRoomBG" type="Polygon2D" parent="."]
 texture_repeat = 2
@@ -114,14 +152,14 @@ polygon = PackedVector2Array(4504, 3392, 4504, 3464, 4608, 3464, 4608, 3392)
 
 [node name="Label1" type="Label" parent="Screens/BL"]
 visible = false
-offset_left = 4576.0
+offset_left = 4575.0
 offset_top = 3391.0
-offset_right = 4664.0
+offset_right = 4666.0
 offset_bottom = 3448.0
-text = "WARNING!
+text = "WARNING! CORE DAMAGED!
 CORE UNSTABLE!
-WARNING!
-CORE UNSTABLE!"
+EMERGENCY!
+EVACUATE IMMEDIATELY!"
 label_settings = SubResource("LabelSettings_0fu15")
 
 [node name="BR" type="Polygon2D" parent="Screens"]
@@ -136,14 +174,14 @@ polygon = PackedVector2Array(4504, 3392, 4504, 3464, 4608, 3464, 4608, 3392)
 
 [node name="Label2" type="Label" parent="Screens/BR"]
 visible = false
-offset_left = 4576.0
+offset_left = 4575.0
 offset_top = 3392.0
-offset_right = 4664.0
-offset_bottom = 3448.0
-text = "WARNING!
+offset_right = 4666.0
+offset_bottom = 3449.0
+text = "WARNING! CORE DAMAGED!
 CORE UNSTABLE!
-WARNING!
-CORE UNSTABLE!"
+EMERGENCY!
+EVACUATE IMMEDIATELY!"
 label_settings = SubResource("LabelSettings_0fu15")
 
 [node name="Polygon2D3" type="Polygon2D" parent="Screens"]
@@ -176,6 +214,19 @@ position = Vector2(139, -4)
 color = Color(0.18, 1, 1, 1)
 polygon = PackedVector2Array(4408, 3392, 4408, 3480, 4688, 3480, 4688, 3392)
 
+[node name="Label3" type="Label" parent="Screens/TM"]
+visible = false
+offset_left = 4555.0
+offset_top = 3396.0
+offset_right = 4824.0
+offset_bottom = 3468.0
+text = "WARNING! CORE UNSTABLE! EMERGENCY! EVACUATE IMMEDIATELY!
+CORE UNSTABLE! EMERGENCY! EVACUATE IMMEDIATELY! WARNING! EMERGENCY!
+EMERGENCY! EVACUATE IMMEDIATELY! WARNING! CORE UNSTABLE! EMERGENCY!
+EVACUATE IMMEDIATELY! GOODBYE! EVACUATE IMMEDIATELY!
+EVACUATE IMMEDIATELY! DON'T EAT MY FRIES! EVACUATE IMMEDIATELY!"
+label_settings = SubResource("LabelSettings_0fu15")
+
 [node name="TR" type="Polygon2D" parent="Screens"]
 position = Vector2(656, 96)
 color = Color(0, 0, 0, 1)
@@ -204,7 +255,7 @@ polygon = PackedVector2Array(0, 195, 98, 107, 199, 88, 274, 167, 263, 289, 263, 
 color = Color(0.51377, 0.271399, 0.0889548, 1)
 polygon = PackedVector2Array(0, 195, 98, 107, 199, 88, 274, 167, 263, 289, 263, 364, 293, 420, 361, 470, 479, 482, 614, 484, 861, 485, 1026, 471, 1217, 492, 1448, 499, 1725, 505, 1861, 482, 1883, 482, 1884, 536, 0, 535)
 
-[node name="Objects" type="Node" parent="."]
+[node name="Objects" type="Node2D" parent="."]
 
 [node name="HealthItem" parent="Objects" instance=ExtResource("1_kx6l7")]
 position = Vector2(4072, 568)
@@ -267,12 +318,12 @@ position = Vector2(604, 1532)
 initial_direction = 1
 
 [node name="PirateEnemy10" parent="Enemies" instance=ExtResource("4_gwceb")]
-position = Vector2(563, 2109)
+position = Vector2(563, 2101)
 initial_direction = 1
 mode = 1
 
 [node name="PirateEnemy11" parent="Enemies" instance=ExtResource("4_gwceb")]
-position = Vector2(1537, 2512)
+position = Vector2(1541, 2500)
 initial_direction = 1
 mode = 1
 
@@ -300,19 +351,19 @@ polygon = PackedVector2Array(1883, 482, 2925, 485, 2951, 505, 3160, 592, 3841, 5
 [node name="Spaceship Floor 1" type="Polygon2D" parent="SpaceShip/Space Ship Floors"]
 texture_repeat = 2
 texture = ExtResource("6_jkxa6")
-polygon = PackedVector2Array(1883, 482, 2925, 485, 2951, 505, 3160, 592, 3841, 593, 3846, 871, 3103, 898, 3045, 836, 2959, 750, 2800, 656, 1406, 657, 1235, 969, 1179, 967, 918, 955, 735, 837, 609, 798, 508, 771, 426, 1010, 344, 1011, 312, 928, 275, 868, 203, 824, 137, 864, 118, 956, 115, 1118, 162, 1117, 169, 2138, 579, 2138, 1401.05, 2538.11, 1830, 2545, 2414, 2990, 2442, 3173, 1867, 3157, 1894, 3889, 1392, 3899, 547, 3883, -8, 3901, 4, 535, 1884, 535)
+polygon = PackedVector2Array(1883, 482, 2925, 485, 2951, 505, 3160, 592, 3841, 593, 3846, 871, 3103, 898, 3045, 836, 2959, 750, 2800, 656, 1406, 657, 1235, 969, 1179, 967, 918, 955, 735, 837, 609, 798, 508, 771, 424, 1016, 344, 1016, 312, 928, 275, 868, 203, 824, 137, 864, 118, 956, 115, 1118, 162, 1117, 169, 2138, 579, 2138, 1401.05, 2538.11, 1830, 2545, 2414, 2990, 2442, 3173, 1867, 3157, 1894, 3889, 1392, 3899, 547, 3883, -8, 3901, 4, 535, 1884, 535)
 
 [node name="Space Ship Walls" type="StaticBody2D" parent="SpaceShip"]
 
 [node name="Floor Wall" type="CollisionPolygon2D" parent="SpaceShip/Space Ship Walls"]
 position = Vector2(290, -252)
-polygon = PackedVector2Array(1909, 461, 1992, 458, 2114, 445, 2920, 481, 3010, 531, 3166, 654, 3271, 654, 3280, 575, 3283, 527, 3672, 531, 4036, 531, 4042, 1309, 4233, 1323, 4283, 1514, 4312, 2045, 4146, 2040, 4140, 1495, 3705, 1490, 3281, 1488, 3185, 1422, 3128, 1295, 3292, 1297, 3492, 1213, 3643, 1209, 3643, 845, 3815, 844, 3812, 598, 3534, 603, 3533, 718, 3154, 713, 2957, 580, 2908, 563, 2612, 570, 2267, 565, 2025, 541, 1747, 619, 1567, 639, 1563, 580, 1594, 545)
+polygon = PackedVector2Array(1909, 461, 1992, 458, 2114, 445, 2920, 481, 3010, 531, 3166, 654, 3271, 654, 3280, 575, 3283, 527, 3672, 531, 4036, 531, 4042, 1309, 4233, 1323, 4283, 1514, 4312, 2045, 4146, 2040, 4140, 1495, 3705, 1490, 3281, 1488, 3185, 1422, 3128, 1295, 3292, 1297, 3492, 1213, 3643, 1209, 3643, 845, 3815, 844, 3812, 598, 3534, 603, 3533, 718, 3154, 713, 2957, 580, 2908, 563, 2612, 570, 2267, 565, 2025, 541, 1747, 619, 1590, 636, 1590, 572, 1595, 544)
 
 [node name="Spaceship Wall 1" type="Polygon2D" parent="SpaceShip/Space Ship Walls"]
 texture_repeat = 2
 position = Vector2(291, -253)
 texture = ExtResource("6_jkxa6")
-polygon = PackedVector2Array(1908, 462, 1991, 459, 2113, 446, 2920, 482, 3009, 532, 3166, 654, 3271, 654, 3280, 575, 3283, 527, 3672, 531, 4036, 531, 4042, 1309, 4233, 1323, 4283, 1514, 4311, 2047, 4145, 2041, 4140, 1495, 3705, 1490, 3281, 1488, 3185, 1422, 3128, 1295, 3292, 1297, 3492, 1213, 3643, 1209, 3642, 846, 3814, 845, 3812, 598, 3533, 604, 3532, 719, 3154, 714, 2956, 580, 2908, 564, 2612, 570, 2267, 565, 2024, 542, 1747, 620, 1567, 639, 1563, 580, 1594, 545)
+polygon = PackedVector2Array(1908, 462, 1991, 459, 2113, 446, 2920, 482, 3009, 532, 3166, 654, 3271, 654, 3280, 575, 3283, 527, 3672, 531, 4036, 531, 4042, 1309, 4233, 1323, 4283, 1514, 4311, 2047, 4145, 2041, 4140, 1495, 3705, 1490, 3281, 1488, 3185, 1422, 3128, 1295, 3292, 1297, 3492, 1213, 3643, 1209, 3642, 846, 3814, 845, 3812, 598, 3533, 604, 3532, 719, 3154, 714, 2956, 580, 2908, 564, 2612, 570, 2267, 565, 2024, 542, 1747, 620, 1589, 637, 1590, 536, 1601, 519)
 
 [node name="Space Ship Part Polys" type="StaticBody2D" parent="SpaceShip"]
 
@@ -342,13 +393,13 @@ polygon = PackedVector2Array(981, 1198, 993, 1895, 873, 1895, 837, 1809, 821, 14
 
 [node name="Long Hallway" type="CollisionPolygon2D" parent="SpaceShip/Space Ship Corridor Polys"]
 position = Vector2(-1164, -1012)
-polygon = PackedVector2Array(1405, 2125, 1401, 2997, 1604, 2996, 1940, 3116, 2585, 3424, 2965, 3427, 3163, 3481, 3469, 3673, 3733, 3861, 3745, 4191, 3937, 4191, 4439, 4200, 4518, 3935, 4730, 3691, 5104, 3463, 5674, 3308, 6494, 3297, 6920, 3433, 7314, 3755, 7587, 3989, 7914, 4252, 9037, 4245, 9037, 3852, 8327, 3874, 7921, 3612, 7421, 3171, 6653, 2831, 5599, 2800, 5058, 3065, 4569, 3328, 4068, 3569, 3678, 3450, 3170, 3263, 2608, 3218, 2016, 2956, 1651, 2884, 1661, 2672, 1662, 2405, 1671, 2338, 1705, 2291, 1715, 2237, 1651, 2235, 1652, 2174, 1586, 2175, 1587, 2125)
+polygon = PackedVector2Array(1405, 2125, 1401, 2997, 1604, 2996, 1940, 3116, 2585, 3424, 2965, 3427, 3163, 3481, 3469, 3673, 3733, 3861, 3745, 4191, 3937, 4191, 4439, 4200, 4518, 3935, 4730, 3691, 5104, 3463, 5674, 3308, 6494, 3297, 6920, 3433, 7314, 3755, 7587, 3989, 7914, 4252, 9037, 4245, 9037, 3852, 8327, 3874, 7921, 3612, 7421, 3171, 6653, 2831, 5604, 2796, 5604, 2772, 3860, 2772, 1660, 2772, 1661, 2672, 1662, 2405, 1671, 2338, 1705, 2291, 1715, 2237, 1651, 2235, 1652, 2174, 1586, 2175, 1587, 2125)
 
 [node name="SpaceShip Corridor" type="Polygon2D" parent="SpaceShip/Space Ship Corridor Polys"]
 texture_repeat = 2
 position = Vector2(-1164, -1012)
 texture = ExtResource("7_jkxa6")
-polygon = PackedVector2Array(1405, 2125, 1401, 2997, 1604, 2996, 1940, 3116, 2585, 3424, 2965, 3427, 3163, 3481, 3469, 3673, 3733, 3861, 3745, 4191, 3937, 4191, 4439, 4200, 4518, 3935, 4730, 3691, 5104, 3463, 5674, 3308, 6494, 3297, 6920, 3433, 7314, 3755, 7587, 3989, 7914, 4252, 9037, 4245, 9037, 3852, 8327, 3874, 7921, 3612, 7421, 3171, 6653, 2831, 5599, 2800, 5058, 3065, 4569, 3328, 4068, 3569, 3678, 3450, 3170, 3263, 2608, 3218, 2016, 2956, 1651, 2884, 1661, 2672, 1662, 2405, 1671, 2338, 1705, 2291, 1715, 2237, 1651, 2235, 1652, 2174, 1586, 2175, 1587, 2125)
+polygon = PackedVector2Array(1405, 2125, 1401, 2997, 1604, 2996, 1940, 3116, 2585, 3424, 2965, 3427, 3163, 3481, 3469, 3673, 3733, 3861, 3745, 4191, 3937, 4191, 4439, 4200, 4518, 3935, 4730, 3691, 5104, 3463, 5674, 3308, 6494, 3297, 6920, 3433, 7314, 3755, 7587, 3989, 7914, 4252, 9037, 4245, 9037, 3852, 8327, 3874, 7921, 3612, 7421, 3171, 6653, 2831, 5604, 2796, 5604, 2772, 2380, 2772, 1660, 2772, 1661, 2672, 1662, 2405, 1671, 2338, 1705, 2291, 1715, 2237, 1651, 2235, 1652, 2174, 1586, 2175, 1587, 2125)
 
 [node name="Boss Area" type="StaticBody2D" parent="SpaceShip"]
 
@@ -386,6 +437,14 @@ texture_repeat = 2
 position = Vector2(0, -3)
 texture = ExtResource("8_w75he")
 polygon = PackedVector2Array(5875, 3769, 6768, 3775, 6752, 3835, 5878, 3832)
+
+[node name="InvisiWall" type="StaticBody2D" parent="."]
+position = Vector2(4066, 3757)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InvisiWall"]
+position = Vector2(-4, -388)
+shape = SubResource("RectangleShape2D_4knja")
+disabled = true
 
 [node name="Platforms" type="Node" parent="."]
 
@@ -480,6 +539,9 @@ scale = Vector2(2, 1)
 [node name="Platform21" parent="Platforms" instance=ExtResource("5_n46q3")]
 position = Vector2(2690, 3568)
 
+[node name="Platform34" parent="Platforms" instance=ExtResource("5_n46q3")]
+position = Vector2(3014, 3688)
+
 [node name="Platform19" parent="Platforms" instance=ExtResource("5_n46q3")]
 position = Vector2(2311, 3485)
 
@@ -487,7 +549,7 @@ position = Vector2(2311, 3485)
 position = Vector2(1597, 1321)
 
 [node name="Platform26" parent="Platforms" instance=ExtResource("5_n46q3")]
-position = Vector2(1523, 1192)
+position = Vector2(1523, 1189)
 
 [node name="Platform27" parent="Platforms" instance=ExtResource("5_n46q3")]
 position = Vector2(1336, 1119)
@@ -658,20 +720,46 @@ vertical_alignment = 1
 
 [node name="PlayerPlatformer" parent="." instance=ExtResource("3_btoec")]
 z_index = 1
-position = Vector2(4152, 3742)
+position = Vector2(596, 360)
 
 [node name="Level1BGM" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("12_aerfg")
 volume_db = -5.0
 autoplay = true
 
-[node name="BossBGM" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("15_vjtdm")
-
 [node name="ShipDoorClose" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("16_bgw3c")
 
+[node name="Actors" type="Node2D" parent="."]
+position = Vector2(4184, 3337)
+
+[node name="PirateActor" parent="Actors" instance=ExtResource("27_4knja")]
+position = Vector2(-54, -121)
+initial_direction = 1
+
+[node name="PirateActor5" parent="Actors" instance=ExtResource("27_4knja")]
+position = Vector2(0, -176)
+initial_direction = 1
+move_speed = 300.0
+
+[node name="PirateActor2" parent="Actors" instance=ExtResource("27_4knja")]
+position = Vector2(48, -121)
+initial_direction = 1
+move_speed = 200.0
+
+[node name="PirateActor3" parent="Actors" instance=ExtResource("27_4knja")]
+position = Vector2(120, -121)
+initial_direction = 1
+move_speed = 180.0
+
+[node name="PirateActor4" parent="Actors" instance=ExtResource("27_4knja")]
+position = Vector2(1560, -81)
+initial_direction = 1
+move_speed = 25.0
+
+[editable path="Objects/Door2"]
 [editable path="Kill Floor/KillArea"]
 [editable path="Kill Floor/KillArea2"]
 [editable path="SceneEntrance"]
+[editable path="BigContainer"]
 [editable path="BossEnemy"]
