@@ -331,6 +331,9 @@ mode = 1
 position = Vector2(2362, 3441)
 initial_direction = 1
 
+[node name="PirateEnemy13" parent="Enemies" instance=ExtResource("4_gwceb")]
+position = Vector2(2782, 3334)
+
 [node name="PirateEnemy9" parent="Enemies" instance=ExtResource("4_gwceb")]
 position = Vector2(943, 1301)
 
@@ -357,13 +360,13 @@ polygon = PackedVector2Array(1883, 482, 2925, 485, 2951, 505, 3160, 592, 3841, 5
 
 [node name="Floor Wall" type="CollisionPolygon2D" parent="SpaceShip/Space Ship Walls"]
 position = Vector2(290, -252)
-polygon = PackedVector2Array(1909, 461, 1992, 458, 2114, 445, 2920, 481, 3010, 531, 3166, 654, 3271, 654, 3280, 575, 3283, 527, 3672, 531, 4036, 531, 4042, 1309, 4233, 1323, 4283, 1514, 4312, 2045, 4146, 2040, 4140, 1495, 3705, 1490, 3281, 1488, 3185, 1422, 3128, 1295, 3292, 1297, 3492, 1213, 3643, 1209, 3643, 845, 3815, 844, 3812, 598, 3534, 603, 3533, 718, 3154, 713, 2957, 580, 2908, 563, 2612, 570, 2267, 565, 2025, 541, 1747, 619, 1590, 636, 1590, 572, 1595, 544)
+polygon = PackedVector2Array(1909, 461, 1992, 458, 2114, 445, 2920, 481, 3010, 531, 3166, 654, 3271, 654, 3280, 575, 3283, 527, 3672, 531, 4036, 531, 4042, 1309, 4233, 1323, 4283, 1514, 4312, 2045, 4146, 2040, 4140, 1495, 3705, 1490, 3281, 1488, 3185, 1422, 3128, 1295, 3292, 1297, 3492, 1213, 3643, 1209, 3643, 845, 3815, 844, 3812, 598, 3534, 603, 3533, 718, 3154, 713, 2957, 580, 2908, 563, 2612, 570, 2267, 565, 2025, 541, 1747, 619, 1599, 638, 1580, 638, 1580, 534, 1601, 518)
 
 [node name="Spaceship Wall 1" type="Polygon2D" parent="SpaceShip/Space Ship Walls"]
 texture_repeat = 2
 position = Vector2(291, -253)
 texture = ExtResource("6_jkxa6")
-polygon = PackedVector2Array(1908, 462, 1991, 459, 2113, 446, 2920, 482, 3009, 532, 3166, 654, 3271, 654, 3280, 575, 3283, 527, 3672, 531, 4036, 531, 4042, 1309, 4233, 1323, 4283, 1514, 4311, 2047, 4145, 2041, 4140, 1495, 3705, 1490, 3281, 1488, 3185, 1422, 3128, 1295, 3292, 1297, 3492, 1213, 3643, 1209, 3642, 846, 3814, 845, 3812, 598, 3533, 604, 3532, 719, 3154, 714, 2956, 580, 2908, 564, 2612, 570, 2267, 565, 2024, 542, 1747, 620, 1589, 637, 1590, 536, 1601, 519)
+polygon = PackedVector2Array(1908, 462, 1991, 459, 2113, 446, 2920, 482, 3009, 532, 3166, 654, 3271, 654, 3280, 575, 3283, 527, 3672, 531, 4036, 531, 4042, 1309, 4233, 1323, 4283, 1514, 4311, 2047, 4145, 2041, 4140, 1495, 3705, 1490, 3281, 1488, 3185, 1422, 3128, 1295, 3292, 1297, 3492, 1213, 3643, 1209, 3642, 846, 3814, 845, 3812, 598, 3533, 604, 3532, 719, 3154, 714, 2956, 580, 2908, 564, 2612, 570, 2267, 565, 2024, 542, 1747, 620, 1598, 639, 1579, 639, 1579, 535, 1601, 519)
 
 [node name="Space Ship Part Polys" type="StaticBody2D" parent="SpaceShip"]
 
@@ -514,7 +517,7 @@ position = Vector2(2112, 1272)
 position = Vector2(1856, 1304)
 
 [node name="Platform18" parent="Platforms" instance=ExtResource("5_n46q3")]
-position = Vector2(2504, 3264)
+position = Vector2(2504, 3288)
 
 [node name="Platform31" parent="Platforms" instance=ExtResource("5_n46q3")]
 position = Vector2(2358, 3345)
@@ -538,6 +541,9 @@ scale = Vector2(2, 1)
 
 [node name="Platform21" parent="Platforms" instance=ExtResource("5_n46q3")]
 position = Vector2(2690, 3568)
+
+[node name="Platform35" parent="Platforms" instance=ExtResource("5_n46q3")]
+position = Vector2(2780, 3377)
 
 [node name="Platform34" parent="Platforms" instance=ExtResource("5_n46q3")]
 position = Vector2(3014, 3688)
@@ -615,6 +621,9 @@ position = Vector2(400, 1080)
 
 [node name="CheckpointArea3" parent="Checkpoints" instance=ExtResource("6_btoec")]
 position = Vector2(4112, 3736)
+
+[node name="CheckpointArea4" parent="Checkpoints" instance=ExtResource("6_btoec")]
+position = Vector2(1783, 2511)
 
 [node name="SceneEntrance" parent="." instance=ExtResource("7_gwceb")]
 position = Vector2(7632, 3704)

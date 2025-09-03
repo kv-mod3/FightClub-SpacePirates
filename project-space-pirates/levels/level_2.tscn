@@ -161,6 +161,7 @@ position = Vector2(-377, -2542)
 polygon = PackedVector2Array(4555, 4868, 4666, 4782, 4722, 4696, 4565, 4539, 4529, 4460, 4301, 4323, 3812, 4180, 3750, 4293, 3792, 4380, 3872, 4403, 3969, 4595, 4156, 4747, 4388, 4853)
 
 [node name="StaticBody2D3" type="StaticBody2D" parent="Level 2 start"]
+z_index = 1
 
 [node name="Polygon2D" type="Polygon2D" parent="Level 2 start/StaticBody2D3"]
 texture_repeat = 2
@@ -269,7 +270,7 @@ scale = Vector2(0.5, 1)
 
 [node name="Doors That Dont Open" type="Node2D" parent="."]
 
-[node name="FakeDoor" type="StaticBody2D" parent="Doors That Dont Open"]
+[node name="FakeDoor" type="StaticBody2D" parent="Doors That Dont Open" groups=["solids"]]
 
 [node name="Sprite2D" type="Sprite2D" parent="Doors That Dont Open/FakeDoor"]
 position = Vector2(6771, 4267)
