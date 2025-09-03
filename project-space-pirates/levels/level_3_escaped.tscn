@@ -8,21 +8,9 @@
 [sub_resource type="LabelSettings" id="LabelSettings_vfrfw"]
 font = ExtResource("3_4w55r")
 font_size = 42
-
-[sub_resource type="Animation" id="Animation_4w55r"]
-resource_name = "message"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("VictoryPanel/Label:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(-256, -232), Vector2(-256, -128)]
-}
+font_color = Color(0.713726, 1, 0, 1)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.376)
 
 [sub_resource type="Animation" id="Animation_vfrfw"]
 length = 0.001
@@ -37,6 +25,21 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(-256, -232)]
+}
+
+[sub_resource type="Animation" id="Animation_4w55r"]
+resource_name = "message"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VictoryPanel/Label:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-256, -232), Vector2(-256, -128)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4w55r"]
