@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bc81r3s5gkckc"]
+[gd_scene load_steps=9 format=3 uid="uid://bc81r3s5gkckc"]
 
 [ext_resource type="Texture2D" uid="uid://bx42nttcjanot" path="res://assets/sprites/asteria_core.png" id="1_g2x1i"]
 
@@ -23,6 +23,33 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
+
+[sub_resource type="Animation" id="Animation_ffjk7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 3)]
+}
 
 [sub_resource type="Animation" id="Animation_g2x1i"]
 resource_name = "floating"
@@ -53,8 +80,10 @@ tracks/1/keys = {
 "values": [Vector2(0, 0), Vector2(0, 3), Vector2(0, -3)]
 }
 
-[sub_resource type="Animation" id="Animation_ffjk7"]
-length = 0.001
+[sub_resource type="Animation" id="Animation_4supa"]
+resource_name = "unstable"
+length = 0.5
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -62,28 +91,29 @@ tracks/0/path = NodePath(".:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [0.0]
+"values": [0.0, 3.14159, 6.28319]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/path = NodePath(".:position")
-tracks/1/interp = 1
+tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 3)]
+"values": [Vector2(0, 0), Vector2(10, 10), Vector2(-10, -10), Vector2(10, -10), Vector2(-10, -10)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ffjk7"]
 _data = {
 &"RESET": SubResource("Animation_ffjk7"),
-&"floating": SubResource("Animation_g2x1i")
+&"floating": SubResource("Animation_g2x1i"),
+&"unstable": SubResource("Animation_4supa")
 }
 
 [node name="AsteriaCore" type="Node2D"]

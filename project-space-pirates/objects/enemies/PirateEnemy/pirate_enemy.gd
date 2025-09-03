@@ -204,7 +204,7 @@ func take_damage(damage: float, bullet_direction: String) -> void:
 
 
 func _on_death_animation_animation_finished() -> void:
-	print("Enemy died.")
+	print("Boss exploded.")
 	queue_free()
 
 

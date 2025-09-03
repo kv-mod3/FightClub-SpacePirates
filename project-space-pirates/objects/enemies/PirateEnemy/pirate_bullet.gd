@@ -2,7 +2,7 @@ extends Area2D
 
 
 const SPEED: float = 300
-const DAMAGE: float = 10
+const DAMAGE: float = 20
 
 
 func _physics_process(delta: float) -> void:
