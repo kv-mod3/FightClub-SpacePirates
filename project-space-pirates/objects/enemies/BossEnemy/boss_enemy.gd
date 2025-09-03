@@ -72,15 +72,17 @@ func move() -> void:
 func jump() -> void:
 	jump_velocity = -400
 	velocity.y = jump_velocity
+	$Sounds/Jump.play()
 
 
 func jump_attack() -> void:
 	is_invincible = true
 	
 	# Jumps.
-	$AnimatedSprite2D.play("jump")
 	jump_velocity = -800
 	velocity.y = jump_velocity
+	$AnimatedSprite2D.play("jump")
+	$Sounds/Jump.play()
 	
 	# Stops mid-air and hovers.
 	await get_tree().create_timer(0.25).timeout
@@ -202,8 +204,6 @@ func take_damage(damage: float, _bullet_direction: String) -> void:
 
 
 func _on_decision_timer_timeout() -> void:
-	$DecisionTimer.wait_time = range(3, 5).pick_random()
-	print("Boss will act in ", $DecisionTimer.get_wait_time(), " seconds.")
 	if current_state == State.CHASE:
 		var choice: String = attack_choices.front()
 		print("Choice: ", choice)
@@ -214,20 +214,33 @@ func _on_decision_timer_timeout() -> void:
 				jump_attack()
 			"Charged Attack":
 				current_state = State.SHOOT
+	else:
+		$DecisionTimer.start(range(3, 5).pick_random())
+		print("Boss will act in ", $DecisionTimer.get_wait_time(), " seconds.")
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
 	# First time detection.
 	if not target and body is Player: # If the enemy had no target:
 		target = body # Sets Player as the target.
-		$AnimatedSprite2D.flip_h = false
-		$AnimatedSprite2D.play("moving")
-		$DecisionTimer.wait_time = range(3, 6).pick_random()
-		$DecisionTimer.start()
+		await intro_seq()
+
+		$DecisionTimer.start(range(3, 5).pick_random())
 		print("Boss will act in ", $DecisionTimer.get_wait_time(), " seconds.")
 			
 		# TODO: If adding an intro, add code below here.
+		$AnimatedSprite2D.play("moving")
 		current_state = State.CHASE
+		
+
+
+func intro_seq() -> void:
+	$AnimatedSprite2D.flip_h = false
+	$StatusLabel.visible = true
+	jump()
+	await get_tree().create_timer(1).timeout
+	$StatusLabel.visible = false
+	
 
 
 func _on_death_animation_animation_finished() -> void:

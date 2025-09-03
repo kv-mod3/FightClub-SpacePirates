@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dubu7ix63wqvm"]
+[gd_scene load_steps=33 format=3 uid="uid://dubu7ix63wqvm"]
 
 [ext_resource type="Script" uid="uid://dh51ho4g2xpe1" path="res://levels/level_1.gd" id="1_3sk1a"]
 [ext_resource type="PackedScene" uid="uid://dej7s7gmiss13" path="res://objects/pickup_items/health_item.tscn" id="1_kx6l7"]
@@ -6,12 +6,19 @@
 [ext_resource type="PackedScene" uid="uid://bvstcalgkhvp6" path="res://objects/level_objects/door.tscn" id="2_n46q3"]
 [ext_resource type="PackedScene" uid="uid://c1vwxu07abuus" path="res://objects/player/PlayerPlatformer/player_platformer.tscn" id="3_btoec"]
 [ext_resource type="PackedScene" uid="uid://dkc7n6xag5por" path="res://objects/enemies/PirateEnemy/pirate_enemy.tscn" id="4_gwceb"]
+[ext_resource type="Texture2D" uid="uid://s12p0dqrhcom" path="res://assets/textures/pixilart-drawing4_brick.png" id="4_udfhf"]
 [ext_resource type="PackedScene" uid="uid://b5o3173tmhfnp" path="res://objects/enemies/BossEnemy/boss_enemy.tscn" id="5_l53as"]
 [ext_resource type="PackedScene" uid="uid://bacqw7l3u02n6" path="res://objects/level_objects/platform.tscn" id="5_n46q3"]
+[ext_resource type="Texture2D" uid="uid://611shfp5376l" path="res://assets/textures/pixil-frame-010.png" id="5_ntdhj"]
+[ext_resource type="Texture2D" uid="uid://dd8fi6layhl2p" path="res://assets/textures/pixil-frame-09_border.png" id="6_0fu15"]
 [ext_resource type="PackedScene" uid="uid://dc87e8bajv67w" path="res://objects/level_objects/checkpoint_area.tscn" id="6_btoec"]
-[ext_resource type="Texture2D" uid="uid://e34p32836sc" path="res://assets/textures/pixil-frame-08.png" id="6_oqlok"]
+[ext_resource type="Texture2D" uid="uid://dduiamx0fvf3w" path="res://assets/textures/pixil-frame-08_border.png" id="6_jkxa6"]
+[ext_resource type="FontFile" uid="uid://duu3femx8twc5" path="res://assets/fonts/Pixels.ttf" id="6_ntdhj"]
 [ext_resource type="PackedScene" uid="uid://d0amyb102xm7k" path="res://objects/level_objects/scene_entrance.tscn" id="7_gwceb"]
+[ext_resource type="PackedScene" uid="uid://djqjhjduc3a3u" path="res://objects/level_objects/container.tscn" id="7_i6od7"]
+[ext_resource type="Texture2D" uid="uid://bb8qlgdihjw5a" path="res://assets/textures/pixil-frame-010_border.png" id="7_jkxa6"]
 [ext_resource type="PackedScene" uid="uid://pj60a1uxovhp" path="res://objects/level_objects/kill_area.tscn" id="8_08mmt"]
+[ext_resource type="Texture2D" uid="uid://cjcym3a1qpefh" path="res://assets/textures/pixilart-drawing4.png" id="8_w75he"]
 [ext_resource type="PackedScene" uid="uid://bgu7u2465aw55" path="res://objects/level_objects/player_ship_static.tscn" id="9_betor"]
 [ext_resource type="FontFile" uid="uid://bv0ty1gwebkck" path="res://assets/fonts/good timing bd.otf" id="10_5ot28"]
 [ext_resource type="AudioStream" uid="uid://c1t6tohhctf3u" path="res://assets/music/Level Abandoned Ship Song.wav" id="12_aerfg"]
@@ -20,14 +27,15 @@
 [ext_resource type="AudioStream" uid="uid://1wmryolbiwy4" path="res://assets/music/BGM Without Bells.wav" id="15_vjtdm"]
 [ext_resource type="AudioStream" uid="uid://81sgi6ej020v" path="res://assets/sounds/door close.wav" id="16_bgw3c"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7nvrk"]
-load_path = "res://.godot/imported/pixil-frame-09.png-895b0d0c25c7c84bd770a097b2a78cbb.ctex"
+[sub_resource type="LabelSettings" id="LabelSettings_0fu15"]
+font = ExtResource("6_ntdhj")
+font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ot28"]
-size = Vector2(3952, 56)
+size = Vector2(3951, 56)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_08mmt"]
-size = Vector2(2184, 32)
+size = Vector2(2176, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gwceb"]
 size = Vector2(40, 528)
@@ -42,6 +50,7 @@ font_size = 24
 
 [node name="Level 1" type="Node2D"]
 script = ExtResource("1_3sk1a")
+metadata/_edit_vertical_guides_ = [4560.0, 4512.0]
 
 [node name="Parallax2D" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0, 0)
@@ -53,17 +62,140 @@ texture = ExtResource("2_lrvbd")
 stretch_mode = 1
 
 [node name="LandingPad" type="Polygon2D" parent="."]
+texture_repeat = 2
 position = Vector2(-285, 51)
-color = Color(0.560955, 0.560955, 0.560955, 1)
+texture = ExtResource("7_jkxa6")
 polygon = PackedVector2Array(704, 443, 757.9, 410.643, 805, 381, 835, 354, 1045, 353, 1069, 373, 1121, 407, 1183, 438, 936, 443)
 
 [node name="Ship Background" type="Polygon2D" parent="."]
 texture_repeat = 2
 position = Vector2(6, 2)
-texture = SubResource("CompressedTexture2D_7nvrk")
-polygon = PackedVector2Array(1875, 327, 2016, 290, 2278, 215, 2649, 204, 3233, 235, 3450, 397, 3558, 397, 3569, 273, 4321, 275, 4330, 1048, 4535, 1077, 4589, 1534, 4601, 1795, 5466, 1806, 6262, 2157, 6750, 2588, 7156, 2854, 7833, 2833, 7950, 2822, 8044, 2868, 8046, 3037, 8048, 3879, 7929, 4344, 7013, 4442, 6569, 4767, 5954, 5063, 4710, 5189, 2770, 5167, 1519, 4818, -28, 3910, -7, 1344, 84, 742, 837, 636, 1397, 593, 1901, 594, 1871, 530)
+texture = ExtResource("4_udfhf")
+polygon = PackedVector2Array(1875, 327, 2016, 290, 2382, 211, 3204, 232, 3445, 400, 3560, 403, 3570, 276, 4317, 280, 4318, 1057, 4513, 1076, 4589, 1534, 4573, 1798, 5466, 1806, 6262, 2157, 6750, 2588, 7156, 2854, 7833, 2833, 7950, 2822, 8044, 2868, 8046, 3037, 8048, 3879, 7929, 4344, 7013, 4442, 6569, 4767, 5954, 5063, 4710, 5189, 2770, 5167, 1519, 4818, 7, 3908, 14, 1313, 84, 742, 837, 636, 1397, 593, 1901, 594, 1871, 530)
 
-[node name="Floor" type="StaticBody2D" parent="."]
+[node name="Polygon2D" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(3776, 768)
+texture = ExtResource("5_ntdhj")
+polygon = PackedVector2Array(41, -432, 338, -424, 343, -174, 163, -163, 172, 296, -270, 285, -270, 105, 58, 87)
+
+[node name="PreCoreRoomBG" type="Polygon2D" parent="."]
+texture_repeat = 2
+position = Vector2(6, 2)
+texture = ExtResource("6_0fu15")
+polygon = PackedVector2Array(1852, 3133, 3282, 3151, 3273, 3832, 1839, 3834)
+
+[node name="CoreRoomBG" type="Polygon2D" parent="."]
+texture_repeat = 2
+color = Color(0.423354, 0.435862, 0.900805, 1)
+texture = ExtResource("7_jkxa6")
+polygon = PackedVector2Array(3257, 2794, 3629, 2428, 4963, 2038, 6033, 2295, 6862, 3076, 7620, 3031, 7620, 3987, 7023, 3980, 6045, 4827, 4694, 4988, 3454, 4694, 3257, 3792, 3270, 3183)
+
+[node name="Screens" type="Node2D" parent="."]
+
+[node name="Red" type="Polygon2D" parent="Screens"]
+position = Vector2(-328, 184)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(4536, 3392, 4536, 3456, 4544, 3464, 4696, 3464, 4704, 3456, 4704, 3392, 4696, 3384, 4547.5, 3384)
+
+[node name="ScreenRed" type="Polygon2D" parent="Screens/Red"]
+color = Color(0.53, 0.0954, 0.0954, 1)
+polygon = PackedVector2Array(4544, 3392, 4544, 3456, 4696, 3456, 4696, 3392)
+
+[node name="BL" type="Polygon2D" parent="Screens"]
+position = Vector2(272, 193)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(4560, 3383, 4560, 3455, 4568, 3463, 4672, 3463, 4680, 3455, 4680, 3383, 4672, 3375, 4568, 3375)
+
+[node name="ScreenBL" type="Polygon2D" parent="Screens/BL"]
+position = Vector2(64, -9)
+color = Color(0.18, 1, 1, 1)
+polygon = PackedVector2Array(4504, 3392, 4504, 3464, 4608, 3464, 4608, 3392)
+
+[node name="Label1" type="Label" parent="Screens/BL"]
+visible = false
+offset_left = 4576.0
+offset_top = 3391.0
+offset_right = 4664.0
+offset_bottom = 3448.0
+text = "WARNING!
+CORE UNSTABLE!
+WARNING!
+CORE UNSTABLE!"
+label_settings = SubResource("LabelSettings_0fu15")
+
+[node name="BR" type="Polygon2D" parent="Screens"]
+position = Vector2(544, 192)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(4560, 3383, 4560, 3455, 4568, 3463, 4672, 3463, 4680, 3455, 4680, 3383, 4672, 3375, 4568, 3375)
+
+[node name="ScreenBR" type="Polygon2D" parent="Screens/BR"]
+position = Vector2(64, -9)
+color = Color(0.18, 1, 1, 1)
+polygon = PackedVector2Array(4504, 3392, 4504, 3464, 4608, 3464, 4608, 3392)
+
+[node name="Label2" type="Label" parent="Screens/BR"]
+visible = false
+offset_left = 4576.0
+offset_top = 3392.0
+offset_right = 4664.0
+offset_bottom = 3448.0
+text = "WARNING!
+CORE UNSTABLE!
+WARNING!
+CORE UNSTABLE!"
+label_settings = SubResource("LabelSettings_0fu15")
+
+[node name="Polygon2D3" type="Polygon2D" parent="Screens"]
+position = Vector2(32, 184)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(4536, 3392, 4536, 3448, 4544, 3456, 4696, 3456, 4704, 3448, 4704, 3392, 4696, 3384, 4544, 3384)
+
+[node name="Polygon2D5" type="Polygon2D" parent="Screens"]
+position = Vector2(-136, 184)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(4544, 3400, 4544, 3448, 4552, 3456, 4576, 3456, 4584, 3448, 4584, 3400, 4576, 3392, 4552, 3392)
+
+[node name="TL" type="Polygon2D" parent="Screens"]
+position = Vector2(272, 96)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(4544, 3400, 4544, 3448, 4552, 3456, 4576, 3456, 4584, 3448, 4584, 3400, 4576, 3392, 4552, 3392)
+
+[node name="ScreenTL" type="Polygon2D" parent="Screens/TL"]
+position = Vector2(5, -6)
+color = Color(0.18, 1, 1, 1)
+polygon = PackedVector2Array(4547, 3406, 4547, 3454, 4571, 3454, 4571, 3406)
+
+[node name="TM" type="Polygon2D" parent="Screens"]
+position = Vector2(341, 60)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(4539, 3388, 4539, 3476, 4547, 3484, 4827, 3484, 4835, 3476, 4835, 3388, 4827, 3380, 4547, 3380)
+
+[node name="ScreenTM" type="Polygon2D" parent="Screens/TM"]
+position = Vector2(139, -4)
+color = Color(0.18, 1, 1, 1)
+polygon = PackedVector2Array(4408, 3392, 4408, 3480, 4688, 3480, 4688, 3392)
+
+[node name="TR" type="Polygon2D" parent="Screens"]
+position = Vector2(656, 96)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(4544, 3400, 4544, 3448, 4552, 3456, 4576, 3456, 4584, 3448, 4584, 3400, 4576, 3392, 4552, 3392)
+
+[node name="ScreenTR" type="Polygon2D" parent="Screens/TR"]
+position = Vector2(5, -6)
+color = Color(0.18, 1, 1, 1)
+polygon = PackedVector2Array(4547, 3406, 4547, 3454, 4571, 3454, 4571, 3406)
+
+[node name="Dim" type="Polygon2D" parent="Screens"]
+position = Vector2(-56, 184)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(4528, 3352, 4528, 3448, 4536, 3456, 4584, 3456, 4592, 3448, 4592, 3352, 4584, 3344, 4536, 3344)
+
+[node name="ScreenDim" type="Polygon2D" parent="Screens/Dim"]
+color = Color(0.0954, 0.53, 0.53, 1)
+polygon = PackedVector2Array(4536, 3352, 4536, 3448, 4584, 3448, 4584, 3352)
+
+[node name="Floor" type="StaticBody2D" parent="." groups=["solids"]]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Floor"]
 polygon = PackedVector2Array(0, 195, 98, 107, 199, 88, 274, 167, 263, 289, 263, 364, 293, 420, 361, 470, 479, 482, 614, 484, 861, 485, 1026, 471, 1217, 492, 1448, 499, 1725, 505, 1861, 482, 1883, 482, 1884, 536, 0, 535)
@@ -94,6 +226,21 @@ position = Vector2(352, 1064)
 
 [node name="Door2" parent="Objects" instance=ExtResource("2_n46q3")]
 position = Vector2(1880, 433)
+
+[node name="Container" parent="Objects" instance=ExtResource("7_i6od7")]
+position = Vector2(4232, 3766)
+
+[node name="Container2" parent="Objects" instance=ExtResource("7_i6od7")]
+position = Vector2(4352, 3766)
+
+[node name="Container3" parent="Objects" instance=ExtResource("7_i6od7")]
+position = Vector2(4472, 3766)
+
+[node name="Container4" parent="Objects" instance=ExtResource("7_i6od7")]
+position = Vector2(4592, 3766)
+
+[node name="Container5" parent="Objects" instance=ExtResource("7_i6od7")]
+position = Vector2(4712, 3765)
 
 [node name="Enemies" type="Node" parent="."]
 
@@ -143,7 +290,7 @@ mode = 1
 [node name="PirateEnemy4" parent="Enemies" instance=ExtResource("4_gwceb")]
 position = Vector2(2887, 457)
 
-[node name="SpaceShip" type="Node2D" parent="."]
+[node name="SpaceShip" type="Node2D" parent="." groups=["solids"]]
 
 [node name="Space Ship Floors" type="StaticBody2D" parent="SpaceShip"]
 
@@ -152,42 +299,44 @@ polygon = PackedVector2Array(1883, 482, 2925, 485, 2951, 505, 3160, 592, 3841, 5
 
 [node name="Spaceship Floor 1" type="Polygon2D" parent="SpaceShip/Space Ship Floors"]
 texture_repeat = 2
-texture = ExtResource("6_oqlok")
+texture = ExtResource("6_jkxa6")
 polygon = PackedVector2Array(1883, 482, 2925, 485, 2951, 505, 3160, 592, 3841, 593, 3846, 871, 3103, 898, 3045, 836, 2959, 750, 2800, 656, 1406, 657, 1235, 969, 1179, 967, 918, 955, 735, 837, 609, 798, 508, 771, 426, 1010, 344, 1011, 312, 928, 275, 868, 203, 824, 137, 864, 118, 956, 115, 1118, 162, 1117, 169, 2138, 579, 2138, 1401.05, 2538.11, 1830, 2545, 2414, 2990, 2442, 3173, 1867, 3157, 1894, 3889, 1392, 3899, 547, 3883, -8, 3901, 4, 535, 1884, 535)
 
 [node name="Space Ship Walls" type="StaticBody2D" parent="SpaceShip"]
 
 [node name="Floor Wall" type="CollisionPolygon2D" parent="SpaceShip/Space Ship Walls"]
 position = Vector2(290, -252)
-polygon = PackedVector2Array(1909, 461, 1992, 458, 2114, 445, 2920, 481, 3010, 531, 3166, 654, 3271, 654, 3280, 575, 3283, 527, 3672, 531, 4036, 531, 4042, 1309, 4233, 1323, 4283, 1514, 4311, 2047, 4145, 2041, 4140, 1495, 3705, 1490, 3281, 1488, 3185, 1422, 3128, 1295, 3292, 1297, 3492, 1213, 3643, 1209, 3643, 845, 3815, 844, 3812, 598, 3534, 603, 3533, 718, 3154, 713, 2957, 580, 2908, 563, 2612, 570, 2267, 565, 2025, 541, 1747, 619, 1567, 639, 1563, 580, 1594, 545)
+polygon = PackedVector2Array(1909, 461, 1992, 458, 2114, 445, 2920, 481, 3010, 531, 3166, 654, 3271, 654, 3280, 575, 3283, 527, 3672, 531, 4036, 531, 4042, 1309, 4233, 1323, 4283, 1514, 4312, 2045, 4146, 2040, 4140, 1495, 3705, 1490, 3281, 1488, 3185, 1422, 3128, 1295, 3292, 1297, 3492, 1213, 3643, 1209, 3643, 845, 3815, 844, 3812, 598, 3534, 603, 3533, 718, 3154, 713, 2957, 580, 2908, 563, 2612, 570, 2267, 565, 2025, 541, 1747, 619, 1567, 639, 1563, 580, 1594, 545)
 
 [node name="Spaceship Wall 1" type="Polygon2D" parent="SpaceShip/Space Ship Walls"]
 texture_repeat = 2
 position = Vector2(291, -253)
-texture = ExtResource("6_oqlok")
+texture = ExtResource("6_jkxa6")
 polygon = PackedVector2Array(1908, 462, 1991, 459, 2113, 446, 2920, 482, 3009, 532, 3166, 654, 3271, 654, 3280, 575, 3283, 527, 3672, 531, 4036, 531, 4042, 1309, 4233, 1323, 4283, 1514, 4311, 2047, 4145, 2041, 4140, 1495, 3705, 1490, 3281, 1488, 3185, 1422, 3128, 1295, 3292, 1297, 3492, 1213, 3643, 1209, 3642, 846, 3814, 845, 3812, 598, 3533, 604, 3532, 719, 3154, 714, 2956, 580, 2908, 564, 2612, 570, 2267, 565, 2024, 542, 1747, 620, 1567, 639, 1563, 580, 1594, 545)
 
 [node name="Space Ship Part Polys" type="StaticBody2D" parent="SpaceShip"]
 
-[node name="Spaceship Part" type="Polygon2D" parent="SpaceShip/Space Ship Part Polys"]
-position = Vector2(578, 205)
-color = Color(0.168627, 0.180392, 0.196078, 1)
-polygon = PackedVector2Array(2045, 1498, 2035, 937, 2220, 936, 2216, 1514)
-
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="SpaceShip/Space Ship Part Polys"]
 position = Vector2(578, 205)
-polygon = PackedVector2Array(2045, 1498, 2035, 937, 2220, 936, 2216, 1514)
+polygon = PackedVector2Array(2046, 1556, 2035, 937, 2220, 936, 2216, 1555)
+
+[node name="Spaceship Part" type="Polygon2D" parent="SpaceShip/Space Ship Part Polys"]
+texture_repeat = 2
+position = Vector2(578, 205)
+texture = ExtResource("7_jkxa6")
+polygon = PackedVector2Array(2045, 1557, 2035, 937, 2220, 936, 2217, 1555)
 
 [node name="Space Ship Part 2" type="StaticBody2D" parent="SpaceShip"]
 
-[node name="Spaceship Part 2" type="Polygon2D" parent="SpaceShip/Space Ship Part 2"]
-position = Vector2(289, -135)
-color = Color(0.168627, 0.180392, 0.196078, 1)
-polygon = PackedVector2Array(981, 1198, 993, 1865, 893, 1863, 837, 1809, 821, 1416, 825, 1305, 865, 1255, 916, 1198)
-
 [node name="Ship part Polys" type="CollisionPolygon2D" parent="SpaceShip/Space Ship Part 2"]
 position = Vector2(289, -135)
-polygon = PackedVector2Array(981, 1198, 993, 1865, 893, 1863, 837, 1809, 821, 1416, 825, 1305, 865, 1255, 916, 1198)
+polygon = PackedVector2Array(981, 1198, 993, 1895, 873, 1895, 837, 1809, 821, 1416, 825, 1305, 865, 1255, 916, 1198)
+
+[node name="Spaceship Part 2" type="Polygon2D" parent="SpaceShip/Space Ship Part 2"]
+texture_repeat = 2
+position = Vector2(289, -135)
+texture = ExtResource("7_jkxa6")
+polygon = PackedVector2Array(981, 1198, 993, 1895, 873, 1895, 837, 1809, 821, 1416, 825, 1305, 865, 1255, 916, 1198)
 
 [node name="Space Ship Corridor Polys" type="StaticBody2D" parent="SpaceShip"]
 
@@ -196,8 +345,9 @@ position = Vector2(-1164, -1012)
 polygon = PackedVector2Array(1405, 2125, 1401, 2997, 1604, 2996, 1940, 3116, 2585, 3424, 2965, 3427, 3163, 3481, 3469, 3673, 3733, 3861, 3745, 4191, 3937, 4191, 4439, 4200, 4518, 3935, 4730, 3691, 5104, 3463, 5674, 3308, 6494, 3297, 6920, 3433, 7314, 3755, 7587, 3989, 7914, 4252, 9037, 4245, 9037, 3852, 8327, 3874, 7921, 3612, 7421, 3171, 6653, 2831, 5599, 2800, 5058, 3065, 4569, 3328, 4068, 3569, 3678, 3450, 3170, 3263, 2608, 3218, 2016, 2956, 1651, 2884, 1661, 2672, 1662, 2405, 1671, 2338, 1705, 2291, 1715, 2237, 1651, 2235, 1652, 2174, 1586, 2175, 1587, 2125)
 
 [node name="SpaceShip Corridor" type="Polygon2D" parent="SpaceShip/Space Ship Corridor Polys"]
+texture_repeat = 2
 position = Vector2(-1164, -1012)
-color = Color(0.168627, 0.180392, 0.196078, 1)
+texture = ExtResource("7_jkxa6")
 polygon = PackedVector2Array(1405, 2125, 1401, 2997, 1604, 2996, 1940, 3116, 2585, 3424, 2965, 3427, 3163, 3481, 3469, 3673, 3733, 3861, 3745, 4191, 3937, 4191, 4439, 4200, 4518, 3935, 4730, 3691, 5104, 3463, 5674, 3308, 6494, 3297, 6920, 3433, 7314, 3755, 7587, 3989, 7914, 4252, 9037, 4245, 9037, 3852, 8327, 3874, 7921, 3612, 7421, 3171, 6653, 2831, 5599, 2800, 5058, 3065, 4569, 3328, 4068, 3569, 3678, 3450, 3170, 3263, 2608, 3218, 2016, 2956, 1651, 2884, 1661, 2672, 1662, 2405, 1671, 2338, 1705, 2291, 1715, 2237, 1651, 2235, 1652, 2174, 1586, 2175, 1587, 2125)
 
 [node name="Boss Area" type="StaticBody2D" parent="SpaceShip"]
@@ -207,8 +357,10 @@ position = Vector2(-25, -151)
 polygon = PackedVector2Array(4040, 4954, 4090, 3917, 5900, 3917, 5955, 4896, 6015, 5127, 5459, 5096, 4933, 5029)
 
 [node name="Boss Floor" type="Polygon2D" parent="SpaceShip/Boss Area"]
+texture_repeat = 2
 position = Vector2(-25, -151)
-color = Color(0.40884, 0.164068, 0.147616, 1)
+color = Color(0.1475, 0.45725, 0.59, 1)
+texture = ExtResource("6_jkxa6")
 polygon = PackedVector2Array(4040, 4954, 4090, 3917, 5900, 3917, 5955, 4896, 6015, 5127, 5459, 5096, 4933, 5029)
 
 [node name="Macguffin Room" type="StaticBody2D" parent="SpaceShip"]
@@ -218,19 +370,22 @@ position = Vector2(-308, -3)
 polygon = PackedVector2Array(3131, 3778, 3131, 3778, 3118, 4241, 3285, 4622, 3732, 4945, 4269, 5132, 5259, 5169, 6041, 5179, 6731, 4852, 7126, 4497, 7354, 4212, 8017, 4226, 8042, 3774, 7440, 3773, 7076, 3775, 7004, 4033, 6792, 4350, 6478, 4591, 5989, 4757, 5301, 4809, 4457, 4727, 4065, 4609, 3806, 4357, 3628, 4083, 3573, 3785)
 
 [node name="Treasure Room" type="Polygon2D" parent="SpaceShip/Macguffin Room"]
+texture_repeat = 2
 position = Vector2(-308, -3)
-color = Color(0.168627, 0.180392, 0.196078, 1)
+texture = ExtResource("7_jkxa6")
 polygon = PackedVector2Array(3131, 3778, 3131, 3778, 3118, 4241, 3285, 4622, 3732, 4945, 4269, 5132, 5259, 5169, 6041, 5179, 6731, 4852, 7126, 4497, 7354, 4212, 8017, 4226, 8042, 3774, 7440, 3773, 7076, 3775, 7004, 4033, 6792, 4350, 6478, 4591, 5989, 4757, 5301, 4809, 4457, 4727, 4065, 4609, 3806, 4357, 3628, 4083, 3573, 3785)
 
 [node name="Bridge Collision" type="StaticBody2D" parent="SpaceShip"]
 
-[node name="Bridge" type="Polygon2D" parent="SpaceShip/Bridge Collision"]
-position = Vector2(0, -3)
-polygon = PackedVector2Array(5875, 3769, 6768, 3775, 6753, 3835, 5879, 3828)
-
 [node name="Bridge Collisions" type="CollisionPolygon2D" parent="SpaceShip/Bridge Collision"]
 position = Vector2(-1, 0)
-polygon = PackedVector2Array(5876, 3766, 6769, 3772, 6753, 3835, 5879, 3828)
+polygon = PackedVector2Array(5876, 3766, 6769, 3772, 6753, 3831, 5879, 3829)
+
+[node name="Bridge" type="Polygon2D" parent="SpaceShip/Bridge Collision"]
+texture_repeat = 2
+position = Vector2(0, -3)
+texture = ExtResource("8_w75he")
+polygon = PackedVector2Array(5875, 3769, 6768, 3775, 6752, 3835, 5878, 3832)
 
 [node name="Platforms" type="Node" parent="."]
 
@@ -319,11 +474,11 @@ position = Vector2(3704, 3736)
 position = Vector2(3941, 3768)
 
 [node name="Platform23" parent="Platforms" instance=ExtResource("5_n46q3")]
-position = Vector2(2578, 3726)
+position = Vector2(2449, 3732)
 scale = Vector2(2, 1)
 
 [node name="Platform21" parent="Platforms" instance=ExtResource("5_n46q3")]
-position = Vector2(2696, 3576)
+position = Vector2(2690, 3568)
 
 [node name="Platform19" parent="Platforms" instance=ExtResource("5_n46q3")]
 position = Vector2(2311, 3485)
@@ -342,7 +497,11 @@ position = Vector2(1410, 1269)
 scale = Vector2(0.5, 1)
 
 [node name="Platform22" parent="Platforms" instance=ExtResource("5_n46q3")]
-position = Vector2(2840, 3664)
+position = Vector2(2840, 3635)
+scale = Vector2(0.5, 1)
+
+[node name="Platform33" parent="Platforms" instance=ExtResource("5_n46q3")]
+position = Vector2(2723, 3773)
 scale = Vector2(0.5, 1)
 
 [node name="Kill Floor" type="Node2D" parent="."]
@@ -351,36 +510,38 @@ scale = Vector2(0.5, 1)
 position = Vector2(3456, 1720)
 
 [node name="CollisionShape2D" parent="Kill Floor/KillArea" index="0"]
-position = Vector2(-992, 12)
+position = Vector2(-992.5, 12)
 shape = SubResource("RectangleShape2D_5ot28")
 
 [node name="KillArea2" parent="Kill Floor" instance=ExtResource("8_08mmt")]
 position = Vector2(2384, 3840)
 
 [node name="CollisionShape2D" parent="Kill Floor/KillArea2" index="0"]
-position = Vector2(596, 0)
+position = Vector2(592, 0)
 shape = SubResource("RectangleShape2D_08mmt")
 
 [node name="Kill Floor 1" type="Polygon2D" parent="Kill Floor"]
+position = Vector2(0, 24)
 color = Color(0.631373, 0.176471, 0.0823529, 1)
-polygon = PackedVector2Array(2795, 1693, 4433, 1703, 4431, 1659, 2796, 1661)
+polygon = PackedVector2Array(2796, 1737, 4436, 1737, 4435, 1680, 2796, 1680)
 
 [node name="Kill Floor 2" type="Polygon2D" parent="Kill Floor"]
+position = Vector2(0, 16)
 color = Color(0.631373, 0.176471, 0.0823529, 1)
-polygon = PackedVector2Array(1283, 1684, 2621, 1662, 2623, 1702, 1283, 1722)
+polygon = PackedVector2Array(1281, 1688, 2623, 1689, 2623, 1745, 1281, 1745)
 
 [node name="Kill Floor 3" type="Polygon2D" parent="Kill Floor"]
 color = Color(0.631373, 0.176471, 0.0823529, 1)
-polygon = PackedVector2Array(495, 1700, 1155, 1700, 1184, 1731, 497, 1732)
+polygon = PackedVector2Array(494, 1704, 1139, 1704, 1162, 1760, 493, 1760)
 
 [node name="Kill Floor 4" type="Polygon2D" parent="Kill Floor"]
 color = Color(0.631373, 0.176471, 0.0823529, 1)
-polygon = PackedVector2Array(2823, 3802, 1885, 3798, 1888, 3818, 2824, 3817)
+polygon = PackedVector2Array(2822, 3824, 1891, 3824, 1893, 3857, 2821, 3856)
 
 [node name="Kill Floor 5" type="Polygon2D" parent="Kill Floor"]
 position = Vector2(0, 10)
 color = Color(0.631373, 0.176471, 0.0823529, 1)
-polygon = PackedVector2Array(3271, 3792, 4065, 3798, 4063, 3842, 3271, 3829)
+polygon = PackedVector2Array(3273, 3814, 4062, 3814, 4061, 3846, 3279, 3846)
 
 [node name="Checkpoints" type="Node" parent="."]
 
@@ -398,7 +559,7 @@ position = Vector2(7632, 3704)
 next_scene = "res://levels/level_2.tscn"
 
 [node name="CollisionShape2D" parent="SceneEntrance" index="0"]
-position = Vector2(28, -200)
+position = Vector2(-742, -197)
 shape = SubResource("RectangleShape2D_gwceb")
 
 [node name="PlayerShipStatic" parent="." instance=ExtResource("9_betor")]
@@ -414,6 +575,9 @@ position = Vector2(5024, 3766)
 
 [node name="BossEnemy" parent="." instance=ExtResource("5_l53as")]
 position = Vector2(4952, 3728)
+
+[node name="AnimatedSprite2D" parent="BossEnemy" index="2"]
+flip_h = true
 
 [node name="DoorSign" type="Control" parent="."]
 layout_mode = 3
@@ -493,7 +657,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PlayerPlatformer" parent="." instance=ExtResource("3_btoec")]
-position = Vector2(579, 451)
+z_index = 1
+position = Vector2(4152, 3742)
 
 [node name="Level1BGM" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("12_aerfg")
@@ -509,3 +674,4 @@ stream = ExtResource("16_bgw3c")
 [editable path="Kill Floor/KillArea"]
 [editable path="Kill Floor/KillArea2"]
 [editable path="SceneEntrance"]
+[editable path="BossEnemy"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://b5o3173tmhfnp"]
+[gd_scene load_steps=33 format=3 uid="uid://b5o3173tmhfnp"]
 
 [ext_resource type="Script" uid="uid://dr44kb8ahe6pu" path="res://objects/enemies/BossEnemy/boss_enemy.gd" id="1_3vdqm"]
 [ext_resource type="Texture2D" uid="uid://ci5o7vxxr023a" path="res://assets/sprites/boss_72x.png" id="1_bg26o"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://dws4uf0vdr036" path="res://assets/sounds/enemy_shoot.wav" id="4_gtotk"]
 [ext_resource type="AudioStream" uid="uid://cejpca6og0q3y" path="res://assets/sounds/enemy_hurt.wav" id="5_yonik"]
 [ext_resource type="AudioStream" uid="uid://b31iafnruux3h" path="res://assets/sounds/finish_recharging.wav" id="6_yonik"]
+[ext_resource type="AudioStream" uid="uid://bvunqqt240e2r" path="res://assets/sounds/recharging.wav" id="7_k3ejj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vdqm"]
 radius = 32.249
@@ -204,7 +205,13 @@ _data = {
 &"hover": SubResource("Animation_yonik")
 }
 
+[sub_resource type="LabelSettings" id="LabelSettings_yonik"]
+font_size = 20
+font_color = Color(1, 0, 0, 1)
+shadow_color = Color(0, 0, 0, 0.313726)
+
 [node name="BossEnemy" type="CharacterBody2D" groups=["enemies"]]
+z_index = 1
 collision_layer = 2
 script = ExtResource("1_3vdqm")
 
@@ -221,7 +228,6 @@ shape = SubResource("CircleShape2D_h3843")
 debug_color = Color(0.997788, 0, 0.158, 0.42)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-z_index = 1
 sprite_frames = SubResource("SpriteFrames_6idkp")
 animation = &"jump"
 autoplay = "idle"
@@ -264,10 +270,25 @@ volume_db = 5.0
 stream = ExtResource("6_yonik")
 pitch_scale = 0.5
 
+[node name="Jump" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("7_k3ejj")
+pitch_scale = 0.5
+max_distance = 500.0
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_k8is3")
 }
+
+[node name="StatusLabel" type="Label" parent="."]
+visible = false
+offset_left = -8.0
+offset_top = -60.0
+offset_right = 8.0
+offset_bottom = -28.0
+text = "!!!"
+label_settings = SubResource("LabelSettings_yonik")
+horizontal_alignment = 1
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="animation_finished" from="DeathAnimation" to="." method="_on_death_animation_animation_finished"]

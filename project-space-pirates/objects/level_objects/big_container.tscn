@@ -33,7 +33,7 @@ texture_repeat = 2
 position = Vector2(-60, -52)
 texture = ExtResource("2_ygvxo")
 texture_offset = Vector2(0, -2)
-polygon = PackedVector2Array(16, 2, 16, 9, 112, 9, 112, 2)
+polygon = PackedVector2Array(-8, 2, -8, 9, 136, 9, 136, 2)
 
 [node name="TopPoly5" type="Polygon2D" parent="."]
 texture_repeat = 2
