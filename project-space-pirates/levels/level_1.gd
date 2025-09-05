@@ -12,6 +12,9 @@ func _process(delta: float) -> void:
 		$Level1BGM.stop()
 		$InvisiWall/CollisionShape2D.set_deferred("disabled", false)
 	if SceneManager.escape_seq_active:
+		# Disables collision for the exit
+		$InvisiWallRight/CollisionShape2D.set_deferred("disabled", true)
+		
 		# Changes screens
 		$Screens/TL/ScreenTL.color = Color(1, 0, 0) # To red
 		$Screens/TM/ScreenTM.color = Color(1, 0, 0)

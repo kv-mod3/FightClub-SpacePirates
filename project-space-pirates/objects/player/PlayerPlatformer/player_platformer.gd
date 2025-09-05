@@ -179,20 +179,6 @@ func i_frames(duration) -> void:
 	await get_tree().create_timer(duration).timeout
 	is_invincible = false
 
-# NOTE: Currently unused.
-func i_frames_effect() -> void:
-	$AnimatedSprite2D.visible = false
-	await get_tree().create_timer(0.2).timeout
-	$AnimatedSprite2D.visible = true
-	await get_tree().create_timer(0.2).timeout
-	$AnimatedSprite2D.visible = false
-	await get_tree().create_timer(0.2).timeout
-	$AnimatedSprite2D.visible = true
-	await get_tree().create_timer(0.2).timeout
-	$AnimatedSprite2D.visible = false
-	await get_tree().create_timer(0.2).timeout
-	$AnimatedSprite2D.visible = true
-
 
 func restore_health(health) -> void:
 	PlayerVariables.health += health

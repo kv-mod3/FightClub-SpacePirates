@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cdmp8ry4bd76d"]
+[gd_scene load_steps=24 format=3 uid="uid://cdmp8ry4bd76d"]
 
 [ext_resource type="Script" uid="uid://stju4lg1eawp" path="res://levels/level_2.gd" id="1_ep78u"]
 [ext_resource type="PackedScene" uid="uid://bacqw7l3u02n6" path="res://objects/level_objects/platform.tscn" id="1_mi4ay"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://dc87e8bajv67w" path="res://objects/level_objects/checkpoint_area.tscn" id="6_ilhis"]
 [ext_resource type="AudioStream" uid="uid://c5hdp7ex12hct" path="res://assets/music/The Great Escape Level 2.wav" id="9_at1ld"]
 [ext_resource type="PackedScene" uid="uid://bgu7u2465aw55" path="res://objects/level_objects/player_ship_static.tscn" id="9_sd18g"]
+[ext_resource type="PackedScene" uid="uid://df4phoxqoox8e" path="res://objects/enemies/PirateEnemy/pirate_actor.tscn" id="14_5orea"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hbb88"]
 size = Vector2(16, 95)
@@ -91,6 +92,10 @@ texture_repeat = 2
 position = Vector2(6, 2)
 texture = ExtResource("5_5orea")
 polygon = PackedVector2Array(1863, 370, 1866, 294, 2016, 244, 2276, 197, 2645, 181, 3233, 235, 3569, 273, 4321, 275, 4543, 293, 5241, 325, 5336, 690, 5383, 1641, 5714, 2382, 5714, 2822, 7762, 2814, 7762, 2638, 8122, 2606, 8122, 3880, 8113, 5185, 7145, 5180, 6563, 5170, 5903, 5180, 4710, 5189, 2770, 5167, 1493, 5153, 37, 5153, -7, 1344, 84, 742, 837, 636, 1397, 593, 1901, 594, 1869, 533)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.0392157, 0.0117647, 0.00784314, 0.858824)
+polygon = PackedVector2Array(6772, 4335, 7232, 4335, 7232, 4208, 6772, 4209)
 
 [node name="LandingPand" type="Polygon2D" parent="."]
 texture_repeat = 2
@@ -396,6 +401,16 @@ libraries = {
 &"": SubResource("AnimationLibrary_0ourt")
 }
 autoplay = "red warning"
+
+[node name="PirateActor" parent="." instance=ExtResource("14_5orea")]
+position = Vector2(6736, 4268)
+move_speed = 30.0
+is_frozen = false
+
+[node name="PirateActor2" parent="." instance=ExtResource("14_5orea")]
+position = Vector2(6659, 4268)
+move_speed = 200.0
+is_frozen = false
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 
