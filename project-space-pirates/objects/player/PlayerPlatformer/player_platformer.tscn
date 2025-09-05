@@ -230,7 +230,7 @@ wait_time = 0.2
 one_shot = true
 
 [node name="RechargeTimer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 1.2
 one_shot = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -267,9 +267,6 @@ offset_right = 191.0
 offset_bottom = 128.0
 text = "Recharging... 100%"
 label_settings = SubResource("LabelSettings_e3i7r")
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-visible = false
 
 [node name="Sounds" type="Node2D" parent="."]
 

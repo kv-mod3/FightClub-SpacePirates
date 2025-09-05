@@ -7,6 +7,7 @@ var color_increment: float = 1
 func _ready() -> void:
 	$Timer.start()
 	$Control/CanvasLayer/TimerLabel.text = "Time left: %d" % countdown
+	$"Doors That Dont Open/FakeDoor/Sprite2D".modulate = Color(0.59, 0.147, 0.147)
 
 
 func _on_timer_timeout() -> void:

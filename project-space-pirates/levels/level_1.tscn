@@ -449,6 +449,13 @@ position = Vector2(-4, -388)
 shape = SubResource("RectangleShape2D_4knja")
 disabled = true
 
+[node name="InvisiWallRight" type="StaticBody2D" parent="."]
+position = Vector2(5883, 3754)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InvisiWallRight"]
+position = Vector2(-4, -388)
+shape = SubResource("RectangleShape2D_4knja")
+
 [node name="Platforms" type="Node" parent="."]
 
 [node name="Platform" parent="Platforms" instance=ExtResource("5_n46q3")]
